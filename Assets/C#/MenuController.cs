@@ -21,7 +21,7 @@ public class MenuController : API_controller
 
             StartCoroutine(base.GetPhoto(_player.UserID.ToString(), AvatarImage));
 
-            ID.text = "ID: " + _player.UserID.ToString();
+            ID.text = "ID: " + ToID(_player.UserID);
             Name.text = _player.Name;
         }));
     }

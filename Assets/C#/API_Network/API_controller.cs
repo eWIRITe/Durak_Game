@@ -6,10 +6,11 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.IO;
 
-public class API_controller : MonoBehaviour
+public class API_controller : GameController
 {
     string url_Users = "http://localhost/BackEnd/LobbyBackEnd.php";
-    string url_Photos = "http://localhost/BackEnd/MenuBackEnd.php";
+    string url_Balance = "http://localhost/BackEnd/BalanceController.php";
+    string url_Photos = "http://localhost/BackEnd/AvatarController.php";
 
     /////////////////////////////
     ///////////Users/////////////
@@ -128,16 +129,49 @@ public class API_controller : MonoBehaviour
         
     }
 
-
-    /////////////////////////////
-    /////////User_class//////////
-    /////////////////////////////
-    public class User
+    //////////////////////////////
+    ///////////Balance////////////
+    //////////////////////////////
+    public IEnumerator GetBalanceOfUserByID(string ID, Action<string> callback)
     {
-        public int UserID;
-        public string Name;
-        public string Email;
-        public string Phone;
-        public string Password;
+        WWWForm form = new WWWForm();
+
+        using (UnityWebRequest request = UnityWebRequest.Get(url_Balance + "?ID="+ID))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                callback(request.error);
+            }
+            else
+            {
+                string json = request.downloadHandler.text;
+                callback(json);
+            }
+        }
     }
+    public IEnumerator WriteBalance(string ID, int balanceOperation, Action<bool> callback)
+    {
+        WWWForm _form = new WWWForm();
+        _form.AddField("balanceOperation", balanceOperation);
+        _form.AddField("ID", ID);
+
+        using (UnityWebRequest request = UnityWebRequest.Post(url_Balance, _form))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(request.error);
+                callback(false);
+            }
+
+            else Debug.Log(request.downloadHandler.text); 
+            
+            callback(true);
+        }
+    }
+
+
 }

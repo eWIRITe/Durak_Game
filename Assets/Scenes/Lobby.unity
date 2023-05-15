@@ -18182,7 +18182,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66adc23b062012945b721b5e36e4c392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BackEndLoc: http://localhost/BackEnd/AvatarController.php
   AvatarImage: {fileID: 4225990606269432400}
   Name: {fileID: 4225990604838563568}
   ID: {fileID: 936809080}
