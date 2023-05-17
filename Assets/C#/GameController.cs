@@ -7,6 +7,8 @@ using TMPro;
 
 public class GameController : MonoBehaviour
 {
+    public User Player;
+
     public string ToID(int ID)
     {
         string strID = ID.ToString();
@@ -51,5 +53,14 @@ public class GameController : MonoBehaviour
         public string Email;
         public string Phone;
         public string Password;
+    }
+
+    public class Room
+    {
+        public int RoomID;
+        public string nuberOfPlayers;
+        public string MaxPlayers;
+        public string BET;
+        public string OwnerRoomID;
     }
 }

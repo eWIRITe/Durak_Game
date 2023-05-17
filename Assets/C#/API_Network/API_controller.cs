@@ -11,6 +11,7 @@ public class API_controller : GameController
     string url_Users = "http://localhost/BackEnd/LobbyBackEnd.php";
     string url_Balance = "http://localhost/BackEnd/BalanceController.php";
     string url_Photos = "http://localhost/BackEnd/AvatarController.php";
+    string url_Room = "http://localhost/BackEnd/Room.php";
 
     /////////////////////////////
     ///////////Users/////////////
@@ -173,5 +174,140 @@ public class API_controller : GameController
         }
     }
 
+    //////////////////////////////
+    ////////////Room//////////////
+    //////////////////////////////
+    public IEnumerator GetFreeRoms(Action<string> callback)
+    {
+        WWWForm form = new WWWForm();
 
+        using (UnityWebRequest request = UnityWebRequest.Get(url_Room + "?requestType=GetFreeRoms"))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                callback(request.error);
+            }
+            else
+            {
+                string json = request.downloadHandler.text;
+                callback(json);
+            }
+        }
+    }
+    public IEnumerator GetRoomUsers(int RoomID, Action<string> callback)
+    {
+        WWWForm form = new WWWForm();
+
+        using (UnityWebRequest request = UnityWebRequest.Get(url_Room + "?requestType=GetRoomUsers&RoomID="+RoomID.ToString()))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                callback(request.error);
+            }
+            else
+            {
+                string json = request.downloadHandler.text;
+                callback(json);
+            }
+        }
+    }
+    public IEnumerator CreateRoom(int MaxPlayers, int BET, int OwnerRoomID, Action<string> callback)
+    {
+        WWWForm _form = new WWWForm();
+        _form.AddField("requestType", "CreateRoom");
+        _form.AddField("MaxPlayers", MaxPlayers);
+        _form.AddField("OwnerRoomID", OwnerRoomID);
+        _form.AddField("BET", BET);
+
+        using (UnityWebRequest request = UnityWebRequest.Post(url_Room, _form))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                callback(request.error);
+            }
+            
+            string json = request.downloadHandler.text;
+            callback(json);
+        }
+    }
+    public IEnumerator AddUser(int RoomID, int UserID, Action<bool> callback)
+    {
+        WWWForm _form = new WWWForm();
+        _form.AddField("requestType", "AddUser");
+        _form.AddField("RoomID", RoomID);
+        _form.AddField("UserID", UserID);
+
+        using (UnityWebRequest request = UnityWebRequest.Post(url_Room, _form))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                callback(false);
+            }
+            
+            callback(true);
+        }
+    }
+    public IEnumerator DeliteRoom(int RoomID, Action<bool> callback)
+    {
+        WWWForm _form = new WWWForm();
+        _form.AddField("requestType", "DeliteRoom");
+        _form.AddField("RoomID", RoomID);
+
+        using (UnityWebRequest request = UnityWebRequest.Post(url_Room, _form))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                callback(false);
+            }
+            
+            callback(true);
+        }
+    }
+    public IEnumerator GetRoomOwner(int RoomID, Action<string> callback)
+    {
+        WWWForm form = new WWWForm();
+
+        using (UnityWebRequest request = UnityWebRequest.Get(url_Room + "?requestType=GetRoomOwner&RoomID=" + RoomID.ToString()))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                callback(request.error);
+            }
+            else
+            {
+                string json = request.downloadHandler.text;
+                callback(json);
+            }
+        }
+    }
+    public IEnumerator RoomIsReady(int RoomID)
+    {
+        WWWForm _form = new WWWForm();
+        _form.AddField("requestType", "RoomIsReady");
+        _form.AddField("RoomID", RoomID);
+
+        using (UnityWebRequest request = UnityWebRequest.Post(url_Room, _form))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Room not ready");
+            }
+
+            Debug.Log("Room ready");
+        }
+    }
 }

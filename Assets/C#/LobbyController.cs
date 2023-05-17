@@ -96,10 +96,10 @@ public class LobbyController : API_controller
     /////////////////
     //enter to game//
     //-------------//
-    public void SucsessfulEnter(User nbnbnbn)
+    public void SucsessfulEnter(User _user)
     {
         PlayerPrefs.DeleteAll();
-        PlayerPrefs.SetInt("UserID", nbnbnbn.UserID);
+        PlayerPrefs.SetInt("UserID", _user.UserID);
         SceneManager.LoadScene(1);
     }
 
