@@ -11,6 +11,8 @@ using UnityEngine.SceneManagement;
 
 public class RoomsController : API_controller
 {
+    private SocketNetwork _socketNetwork;
+
     [Header("UI")]
     public GameObject roomsListField;
     public TMP_Text MistakeText;
@@ -18,6 +20,9 @@ public class RoomsController : API_controller
     [Header("CreateNewRoom parameters")]
     public Dropdown PlayersNumber;
     public Slider Slider;
+    public Dropdown isPrivate;
+    public Dropdown CardsNumber;
+    public Dropdown m_typeGameDropdown;
 
     [Header("room window prefab")]
     public GameObject roomWindowPref;
@@ -26,10 +31,14 @@ public class RoomsController : API_controller
 
     int BET;
     int MaxPlayers;
+    int CardNumber;
+    ETypeGame m_typeOfGame;
 
     // Start is called before the first frame update
     void Start()
     {
+        _socketNetwork = GameObject.FindGameObjectWithTag("SocketNetwork").GetComponent<SocketNetwork>();
+
         StartCoroutine(base.GetFreeRoms( result =>
         { 
             FreeRoms = JsonConvert.DeserializeObject<List<Room>>(result);
@@ -50,8 +59,15 @@ public class RoomsController : API_controller
         }));
     }
 
+    public void TypeGameValueChangedHandler()
+    {
+        m_typeOfGame = (ETypeGame)m_typeGameDropdown.value;
+    }
+
     public void CreateNewRoom()
     {
+        string token = Session.Token;
+
         switch (Slider.value)
         {
             case 0:
@@ -114,8 +130,25 @@ public class RoomsController : API_controller
             default:
                 break;
         }
+        switch (CardsNumber.value)
+        {
+            case 0:
+                CardNumber = 24;
+                break;
+            case 1:
+                CardNumber = 36;
+                break;
+            case 2:
+                CardNumber = 52;
+                break;
+            default:
+                GotMistake("you did not choosed cards number");
+                break;
+        }
+        bool _isPrivate = isPrivate.value == 0 ? false : true;
 
-        StartCoroutine(base.CreateRoom(MaxPlayers, BET, PlayerPrefs.GetInt("UserID"), result => { PlayerPrefs.SetInt("RoomID", int.Parse(result)); SceneManager.LoadScene(2); }));
+        _socketNetwork.EmitCreateRoom(token, _isPrivate, "", (uint)BET, (uint)CardNumber, (uint)MaxPlayers, m_typeOfGame);
+        SceneManager.LoadScene(2);
     }
 
     public void JoinToRoom(int RoomID)
