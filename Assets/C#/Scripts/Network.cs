@@ -11,6 +11,10 @@ public class Network : MonoBehaviour
 {
     public string m_hostName = "http://localhost:5000/api";
 
+
+    //User enter functions\\
+    //____________________\\
+    //++++++++++++++++++++\\
     public IEnumerator Login(string name, string password, Action<string> successed, Action<string> failed)
     {
         var hashAlgorithm = new Org.BouncyCastle.Crypto.Digests.Sha3Digest(224);
@@ -52,7 +56,6 @@ public class Network : MonoBehaviour
             failed($"{re.responseCode}: {re.error}");
         }
     }
-
     public IEnumerator Logout(string token, Action successed, Action<string> failed)
     {
         using var re = UnityWebRequest.Post($"{m_hostName}/logout?token={token}", string.Empty);
@@ -78,7 +81,6 @@ public class Network : MonoBehaviour
             failed($"{re.responseCode}: {re.error}");
         }
     }
-
     public IEnumerator Signin(string name, string email, string password, Action successed, Action<string> failed)
     {
         var hashAlgorithm = new Org.BouncyCastle.Crypto.Digests.Sha3Digest(224);
@@ -122,37 +124,42 @@ public class Network : MonoBehaviour
         }
     }
 
+    //Get user data functions\\
+    //_______________________\\
+    //=======================\\
     public IEnumerator GetPlayerId(string token, Action<uint> successed, Action<string> failed)
     {
-        using var re = UnityWebRequest.Get($"{m_hostName}/get_uid?token={token}");
+        Debug.Log("GetPlayerId");
 
-        yield return re.SendWebRequest();
-
-        if (re.result == UnityWebRequest.Result.Success)
+        using (var re = UnityWebRequest.Get($"{m_hostName}/get_uid?token={token}"))
         {
-            JObject resp = JObject.Parse(re.downloadHandler.text);
+            Debug.Log("make recuest");
 
-            JToken error = resp["error"];
+            yield return re.SendWebRequest();
 
-            if (error != null)
+            Debug.Log("send recuest");
+
+            if (re.result == UnityWebRequest.Result.Success)
             {
-                failed($"error: {Convert.ToString(error)}");
-                yield break;
+                uint uid = uint.Parse(re.downloadHandler.text);
+
+                Debug.Log("Send UId");
+
+                successed(uid);
+
+                Debug.Log("GetPlayerId - suc");
             }
+            else
+            {
+                failed($"{re.responseCode}: {re.error}");
 
-            uint uid = Convert.ToUInt32(resp.GetValue("uid"));
-
-            successed(uid);
-        }
-        else
-        {
-            failed($"{re.responseCode}: {re.error}");
+                Debug.Log("GetPlayerId - error");
+            }
         }
     }
-
     public IEnumerator GetPlayerName(string token, uint uid, Action<string> successed, Action<string> failed)
     {
-        using var re = UnityWebRequest.Get($"{m_hostName}/get_username/{uid}/?token={token}");
+        using var re = UnityWebRequest.Get($"{m_hostName}/get_username/{uid}?token={token}");
 
         yield return re.SendWebRequest();
 
@@ -177,7 +184,6 @@ public class Network : MonoBehaviour
             failed($"{re.responseCode}: {re.error}");
         }
     }
-
     public IEnumerator GetChips(string token, Action<uint> successed, Action<string> failed)
     {
         using var re = UnityWebRequest.Get($"{m_hostName}/get_chips?token={token}");
@@ -205,7 +211,66 @@ public class Network : MonoBehaviour
             failed($"{re.responseCode}: {re.error}");
         }
     }
+    public IEnumerator GetRating(string token, int offset, int limit, Action<List<RatingLine>> successed, Action<string> failed)
+    {
+        using var re = UnityWebRequest.Get($"{m_hostName}/get_rating?token={token}&offset={offset}&limit={limit}");
 
+        yield return re.SendWebRequest();
+
+        if (re.result == UnityWebRequest.Result.Success)
+        {
+            try
+            {
+                List<RatingLine> top = Newtonsoft.Json.JsonConvert.DeserializeObject<List<RatingLine>>(re.downloadHandler.text);
+                successed(top);
+            }
+            catch (Exception)
+            {
+                JObject resp = JObject.Parse(re.downloadHandler.text);
+
+                JToken error = resp["error"];
+
+                failed($"error: {Convert.ToString(error)}");
+                yield break;
+            }
+        }
+        else
+        {
+            failed($"{re.responseCode}: {re.error}");
+        }
+    }
+    public IEnumerator GetAvatar(string token, uint uid, Action<Texture2D> successed, Action<string> failed)
+    {
+        using var re = UnityWebRequestTexture.GetTexture($"{m_hostName}/get_avatar/{uid}?token={token}");
+
+        yield return re.SendWebRequest();
+
+        if (re.result == UnityWebRequest.Result.Success)
+        {
+            try
+            {
+                Texture2D avatar = ((DownloadHandlerTexture)re.downloadHandler).texture;
+                successed(avatar);
+            }
+            catch (Exception)
+            {
+                JObject resp = JObject.Parse(re.downloadHandler.text);
+
+                JToken error = resp["error"];
+
+                failed($"error: {Convert.ToString(error)}");
+                yield break;
+            }
+        }
+        else
+        {
+            failed($"{re.responseCode}: {re.error}");
+        }
+    }
+
+    //user change functions\\
+    //_____________________\\
+    //((((((((((())))))))))\\
     public IEnumerator ChangeEmail(string token, string newEmail, string oldEmail, Action successed, Action<string> failed)
     {
         WWWForm form = new();
@@ -235,62 +300,33 @@ public class Network : MonoBehaviour
             failed($"{re.responseCode}: {re.error}");
         }
     }
-
-    public IEnumerator GetRating(string token, int offset, int limit, Action<List<RatingLine>> successed, Action<string> failed)
+    public IEnumerator GetChips_admin(string token, int chips, Action<int> successed, Action<string> failed)
     {
-        using var re = UnityWebRequest.Get($"{m_hostName}/get_rating?token={token}&offset={offset}&limit={limit}");
+        WWWForm form = new();
+        form.AddField("token", token);
+        form.AddField("Chips", chips);
+
+        using var re = UnityWebRequest.Post($"{m_hostName}/GetChips_admin", form);
+
+        Debug.Log("GetChips_admin request");
 
         yield return re.SendWebRequest();
 
         if (re.result == UnityWebRequest.Result.Success)
         {
-            try
-            {
-                List<RatingLine> top = Newtonsoft.Json.JsonConvert.DeserializeObject<List<RatingLine>>(re.downloadHandler.text);
-                successed(top);
-            }
-            catch (Exception)
-            {
-                JObject resp = JObject.Parse(re.downloadHandler.text);
+            int newChips = int.Parse(re.downloadHandler.text);
 
-                JToken error = resp["error"];
-
-                failed($"error: {Convert.ToString(error)}");
-                yield break;
-            }
+            successed(newChips);
         }
         else
         {
             failed($"{re.responseCode}: {re.error}");
         }
     }
-
-    public IEnumerator GetAvatar(string token, uint uid, Action<Texture2D> successed, Action<string> failed)
+    public IEnumerator BuyChips()
     {
-        using var re = UnityWebRequestTexture.GetTexture($"{m_hostName}/get_avatar/{uid}?token={token}");
+        //Tere you can write a function with buying chips
 
-        yield return re.SendWebRequest();
-
-        if (re.result == UnityWebRequest.Result.Success)
-        {
-            try
-            {
-                Texture2D avatar = ((DownloadHandlerTexture)re.downloadHandler).texture;
-                successed(avatar);
-            }
-            catch (Exception)
-            {
-                JObject resp = JObject.Parse(re.downloadHandler.text);
-
-                JToken error = resp["error"];
-
-                failed($"error: {Convert.ToString(error)}");
-                yield break;
-            }
-        }
-        else
-        {
-            failed($"{re.responseCode}: {re.error}");
-        }
+        yield return null;
     }
 }

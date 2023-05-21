@@ -2,6 +2,16 @@ using UnityEngine;
 
 public static class Session
 {
+    //event\\
+    ////_\\\\
+
+    //chips change event
+    public delegate void chipsChangeEvent(uint chips);
+    public static event chipsChangeEvent changeChips;
+    //ID change event
+    public delegate void UIdChangeEvent(uint UId);
+    public static event UIdChangeEvent changeUId;
+
     private static string m_token;
     public static string Token
     {
@@ -16,11 +26,28 @@ public static class Session
         set { m_name = value; }
     }
 
+    private static int m_chips;
+    public static int Chips
+    {
+        get { return m_chips; }
+        set { 
+            m_chips = value;
+
+            //set event
+            changeChips?.Invoke((uint)value);
+        }
+    }
+
     private static uint m_id;
     public static uint UId
     {
         get { return m_id; }
-        set { m_id = value; }
+        set { 
+            m_id = value;
+
+            //set event
+            changeUId?.Invoke((uint)value);
+        }
     }
 
     private static EStyle m_style = EStyle.Base;
@@ -48,7 +75,7 @@ public static class Session
 
     // room
     private static uint m_rid;
-    public static uint Rid
+    public static uint RoomID
     {
         get { return m_rid; }
         set { m_rid = value; }

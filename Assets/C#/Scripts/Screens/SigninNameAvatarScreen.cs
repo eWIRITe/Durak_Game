@@ -10,15 +10,13 @@ public class SigninNameAvatarScreen : BaseScreen
     public GameObject MenuScreen;
     public GameObject ThisScreen;
 
-    public void SigninSuccessed()
+    private void SigninSuccessed()
     {
-        //m_screenDirector.SetScreen(EScreens.LoginScreen);
-        ThisScreen.SetActive(false);
-        MenuScreen.SetActive(true);
+        m_screenDirector.ActiveScreen(EScreens.LoginScreen);
         Debug.Log("SigninSuccessed");
     }
 
-    public void SigninFailed(string resp)
+    private void SigninFailed(string resp)
     {
         Debug.LogError($"LoginFailed:\n\t{resp}");
     }

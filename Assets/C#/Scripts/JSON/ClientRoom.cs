@@ -1,5 +1,10 @@
 namespace JSON
 {
+    public class Room
+    {
+        public uint RoomID;
+    }
+
     public class ClientCreateRoom
     {
         public uint uid; // owner user id
@@ -12,7 +17,7 @@ namespace JSON
 
         public uint cards;
 
-        public ETypeGame type;
+        public int type;
 
         public uint bet;
     }

@@ -1,87 +1,129 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class ScreenDirector : MonoBehaviour
+public class ScreenDirector : BaseScreen
 {
-    private EScreens m_activeScreen;
+    public TMP_Text ID_text;
 
-    public GameObject[] m_screens = new GameObject[(int)EScreens.Count];
+    public GameObject StartScreen;
+    public GameObject SignInScreen;
+    public GameObject LoginScreenl;
+    public GameObject MenuScreen;
+    public GameObject SettingsScreen;
+    public GameObject PolicyScreen;
+    public GameObject ShopScreen;
+    public GameObject RatingScreen;
+    public GameObject CollectionsScreen;
+    public GameObject RewardsScreen;
+    public GameObject SkinsScreen;
 
-    public GameObject m_top;
+    public GameObject AdminPanel;
+
+    List<GameObject> screens = new List<GameObject>();
 
     void Start()
     {
-        foreach (var item in m_screens)
-            item.SetActive(false);
+        screens.Add(StartScreen);
+        screens.Add(SignInScreen);
+        screens.Add(LoginScreenl);
+        screens.Add(MenuScreen);
+        screens.Add(SettingsScreen);
+        screens.Add(PolicyScreen);
+        screens.Add(ShopScreen);
+        screens.Add(RatingScreen);
+        screens.Add(CollectionsScreen);
+        screens.Add(RewardsScreen);
+        screens.Add(SkinsScreen);
 
-        m_top.SetActive(false);
-        m_activeScreen = EScreens.StartScreen;
-        this.SetActive(m_activeScreen, true);
-    }
-
-    private void SetActive(EScreens screen, bool value)
-    {
-        GameObject screenObject = m_screens[(int)m_activeScreen];
-
-        screenObject.GetComponent<BaseScreen>().SetActiveHandler(value);
-
-        screenObject.SetActive(value);
-    }
-
-    public void Back()
-    {
-        switch (m_activeScreen)
+        string token = PlayerPrefs.GetString("token");
+        if (string.IsNullOrEmpty(token))
         {
+            if (PlayerPrefs.GetInt("remember") == 1)
+            {
+                ActiveScreen(EScreens.MenuScreen);
+                return;
+            }
+        }
+        ActiveScreen(EScreens.StartScreen);
+
+        Session.changeUId += UpdateID;
+    }
+
+    public void ActiveScreen(EScreens _screenToActive = EScreens.MenuScreen)
+    {
+        foreach (GameObject _screen in screens)
+        {
+            _screen.SetActive(false);
+        }
+
+        switch (_screenToActive)
+        {
+            case EScreens.StartScreen:
+                StartScreen.SetActive(true);
+                break;
+
+            case EScreens.MenuScreen:
+                MenuScreen.SetActive(true);
+                MenuScreen.GetComponent<MenuScreen>().OnShow();
+                break;
+
             case EScreens.LoginScreen:
-            case EScreens.SignInScreen:
+                LoginScreenl.SetActive(true);
+                break;
+
             case EScreens.SignInScreen_NameAvatar:
-                this.SetScreen(EScreens.StartScreen);
+                SignInScreen.SetActive(true);
+                break;
+
+            case EScreens.PolicyScreen:
+                PolicyScreen.SetActive(true);
+                break;
+
+            case EScreens.CollectionsScreen:
+                CollectionsScreen.SetActive(true);
+                break;
+
+            case EScreens.RatingScreen:
+                RatingScreen.SetActive(true);
+                break;
+
+            case EScreens.ShopScreen:
+                ShopScreen.SetActive(true);
+                break;
+
+            case EScreens.SkinsScreen:
+                SkinsScreen.SetActive(true);
                 break;
 
             case EScreens.SettingsScreen:
-            case EScreens.ShopScreen:
-            case EScreens.SkinsScreen:
-            case EScreens.CollectionsScreen:
-            case EScreens.RatingScreen:
-            case EScreens.RewardsScreen:
-                this.SetScreen(EScreens.MenuScreen);
+                SettingsScreen.SetActive(true);
                 break;
+
+            case EScreens.RewardsScreen:
+                RewardsScreen.SetActive(true);
+                break;
+
             default:
                 break;
         }
     }
 
-    public void SetScreen(EScreens screen)
+    public void UpdateID(uint ID)
     {
-        if (!EScreens.IsDefined(typeof(EScreens), screen))
+        if(ID != 0) ID_text.text = "ID: " + ID.ToString();
+    }
+
+    public void activeAdminPanel()
+    {
+        AdminPanel.SetActive(true);
+    }
+
+    public void GameStarted()
+    {
+        foreach (GameObject _screen in screens)
         {
-            return;
-        }
-        
-        m_top.SetActive(false);
-        this.SetActive(m_activeScreen, false);
-        m_activeScreen = screen;
-        this.SetActive(m_activeScreen, true);
-
-        switch (screen)
-        {
-            case EScreens.SignInScreen_NameAvatar:
-            case EScreens.SignInScreen:
-            case EScreens.ShopScreen:
-            case EScreens.RewardsScreen:
-            case EScreens.SettingsScreen:
-            case EScreens.SkinsScreen:
-            case EScreens.LoginScreen:
-                m_top.SetActive(true);
-                break;
-
-            case EScreens.MenuScreen:
-                m_screens[(int)screen].GetComponent<MenuScreen>().OnShow();
-                break;
-
-            case EScreens.RatingScreen:
-                m_screens[(int)screen].GetComponent<RatingScreen>().OnShow();
-                m_top.SetActive(true);
-                break;
+            _screen.SetActive(false);
         }
     }
 }

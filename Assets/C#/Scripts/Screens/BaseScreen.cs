@@ -6,9 +6,9 @@ public class BaseScreen : MonoBehaviour
     protected ScreenDirector m_screenDirector;
     protected Network m_network;
 
-    protected void Start()
+    protected void Awake()
     {
-        //m_screenDirector = GameObject.FindGameObjectWithTag("ScreenDirector").GetComponent<ScreenDirector>();
+        m_screenDirector = GameObject.FindGameObjectWithTag("ScreenDirector").GetComponent<ScreenDirector>();
         m_network = GameObject.FindGameObjectWithTag("Network").GetComponent<Network>();
     }
 

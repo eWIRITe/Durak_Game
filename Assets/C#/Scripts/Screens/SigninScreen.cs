@@ -9,9 +9,7 @@ public class SigninScreen : BaseScreen
 
     public void SigninSuccessed()
     {
-        m_screenDirector.SetScreen(EScreens.LoginScreen);
-        //string token = PlayerPrefs.GetString("token");
-        //StartCoroutine(m_durakNetwork.GetPlayerId(token, m_durakNetwork.GetPlayerIdSuccessed, m_durakNetwork.GetPlayerIdFailed));
+        m_screenDirector.ActiveScreen(EScreens.LoginScreen);
     }
 
     public void SigninFailed(string resp)

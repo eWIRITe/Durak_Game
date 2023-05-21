@@ -1,5 +1,6 @@
 using Newtonsoft.Json.Linq;
 using System.Xml.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,10 +11,8 @@ public class LoginScreen : BaseScreen
 
     public Toggle m_remember;
 
-    private new void Start()
-    {
-        base.Start();
-    }
+    [Header("message")]
+    public TMP_Text Message;
 
     public override void SetActiveHandler(bool active)
     {
@@ -28,12 +27,7 @@ public class LoginScreen : BaseScreen
         }
     }
 
-    public void RestoreClickHandler()
-    {
-        Debug.LogWarning("Player login error");
-    }
-
-    private void LoginSuccessed(string token)
+    public void LoginSuccessed(string token)
     {
         Debug.Log($"My token is {token}");
 
@@ -50,10 +44,13 @@ public class LoginScreen : BaseScreen
             PlayerPrefs.DeleteKey("password");
         }
 
+        PlayerPrefs.SetString("token", token);
+
         Session.Token = token;
         Session.Name = m_name.text;
+        StartCoroutine(m_network.GetPlayerId(token, ID => { Session.UId = ID; }, FailedID => { Debug.Log(FailedID); }));
 
-        m_screenDirector.SetScreen(EScreens.MenuScreen);
+        m_screenDirector.ActiveScreen(EScreens.MenuScreen);
 
         ScreenReset();
     }
@@ -76,6 +73,7 @@ public class LoginScreen : BaseScreen
     {
         if (string.IsNullOrEmpty(m_name.text) || string.IsNullOrEmpty(m_password.text))
         {
+            Message.text = "Incorrect data";
             return;
         }
 

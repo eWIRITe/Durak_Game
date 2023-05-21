@@ -15,9 +15,9 @@ public class Player : MonoBehaviour
     public Image m_progress;
 
     private uint m_uid;
-    
+
     public uint Uid
-    { 
+    {
         get { return m_uid; }
     }
 
