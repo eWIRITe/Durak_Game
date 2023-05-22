@@ -91,7 +91,7 @@ public class Player : MonoBehaviour
 
         Network net = GameObject.FindGameObjectWithTag("Network").GetComponent<Network>();
 
-        net.GetAvatar(Session.Token, m_uid, GetAvatarSuccessed, GetAvatarFailed);
+        net.GetAvatar(m_uid, GetAvatarSuccessed, GetAvatarFailed);
         net.GetPlayerName(Session.Token, m_uid, GetPlayerNameSuccessed, GetPlayerNameFailed);
     }
 

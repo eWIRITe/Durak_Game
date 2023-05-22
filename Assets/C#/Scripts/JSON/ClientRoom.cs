@@ -7,9 +7,9 @@ namespace JSON
 
     public class ClientCreateRoom
     {
-        public uint uid; // owner user id
+        public uint uid;
 
-        public uint rid; // room id
+        public uint rid;
 
         public uint players;
 
@@ -24,11 +24,9 @@ namespace JSON
 
     public class ClientJoinRoom
     {
-        public uint uid; // owner user id
+        public uint JoinUserID; 
 
-        public uint pid; // place id
-
-        public uint rid; // room id
+        public uint RoomID;
 
         public uint players;
 
@@ -39,24 +37,12 @@ namespace JSON
         public ETypeGame type;
 
         public uint bet;
+
+        public uint RoomOwnerID;
     }
 
     public class ClientExitRoom
     {
-        public uint uid; // owner user id
-
-        public uint pid; // place id
-
-        public uint rid; // room id
-
-        public uint players;
-
-        public uint maxPlayers;
-
-        public uint cards;
-
-        public ETypeGame type;
-
-        public uint bet;
+        public uint ExitUserID;
     }
 }

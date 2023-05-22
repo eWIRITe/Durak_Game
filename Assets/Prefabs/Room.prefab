@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7474285781442560509
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5491495889257586373}
+  m_Layer: 0
+  m_Name: NewPlayerSpawnPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5491495889257586373
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7474285781442560509}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 80, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8674856851177716421}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7568104006844853397
 GameObject:
   m_ObjectHideFlags: 0
@@ -900,8 +931,8 @@ RectTransform:
   m_GameObject: {fileID: 8674856850705416950}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6323232, y: 0.6323232, z: 0.6323232}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8674856851177716421}
   m_RootOrder: 0
@@ -909,7 +940,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 728.0001, y: 358.18536}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8674856850705416955
 CanvasRenderer:
@@ -1779,6 +1810,7 @@ GameObject:
   - component: {fileID: 8674856851177716419}
   - component: {fileID: 8674856851177716416}
   - component: {fileID: 8674856851177716417}
+  - component: {fileID: 6211430104391898735}
   m_Layer: 5
   m_Name: Room
   m_TagString: Untagged
@@ -1808,6 +1840,7 @@ RectTransform:
   - {fileID: 8674856850688000292}
   - {fileID: 8674856850892809737}
   - {fileID: 8674856851356497284}
+  - {fileID: 5491495889257586373}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1889,13 +1922,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64d19756e0c3ffa4ea11212d25affcd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_betText: {fileID: 8674856850795142400}
-  m_nameText: {fileID: 0}
-  m_typeOfGameObjects: []
-  m_numberOfCardsText: {fileID: 0}
-  m_playersImages: []
-  m_leavedPlayer: {fileID: 0}
-  m_joinedPlayer: {fileID: 0}
+  roomPlayingUsersID: 
+  isGameStarted: 0
+  PlayerAvatar: {fileID: 7568104006844853395}
+  roomPlayers: []
+--- !u!114 &6211430104391898735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8674856851177716286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a5b3d950b95a024ba8bd6a05cf64e31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartUsersLine: -121
+  ScreenWith: 1980
+  MaxUsersLise: -24
+  _roomRow: {fileID: 8674856851177716417}
+  NewPlayer: {fileID: 7847554855596269028, guid: dbf34bc284fde7b478a0f95e1d71bc92,
+    type: 3}
+  NewPlayerSpawnPoint: {fileID: 5491495889257586373}
 --- !u!1 &8674856851190886965
 GameObject:
   m_ObjectHideFlags: 0
@@ -2574,16 +2623,16 @@ RectTransform:
   m_GameObject: {fileID: 8674856851404753568}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6323232, y: 0.6323232, z: 0.6323232}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8674856851177716421}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -126.464676}
-  m_SizeDelta: {x: 728.0001, y: -41.814636}
+  m_AnchoredPosition: {x: 0, y: -169.23503}
+  m_SizeDelta: {x: 0, y: -338.46994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8674856851404753573
 CanvasRenderer:

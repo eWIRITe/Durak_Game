@@ -1,8 +1,12 @@
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using JSON;
+using System.Runtime.InteropServices;
+using UnityEngine.EventSystems;
+using SFB;
+using System.IO;
 
 public class MenuScreen : BaseScreen
 {
@@ -43,12 +47,6 @@ public class MenuScreen : BaseScreen
         MaxPlayersValueChangedHandler();
         IsPrivateValueChangedHandler();
 
-        m_network.GetAvatar(Session.Token, Session.UId, avatar => {
-
-            Avatar.sprite = Sprite.Create(avatar, new Rect(0, 0, avatar.width, avatar.height), Vector2.zero, 0);
-
-        }, fail => { Debug.Log(fail); });
-
         Session.changeChips += GetChipsSuccessed;
     }
 
@@ -56,6 +54,7 @@ public class MenuScreen : BaseScreen
     {
         StartCoroutine(m_network.GetChips(Session.Token, GetChipsSuccessed, GetChipsFailed));
         StartCoroutine(m_network.GetPlayerId(Session.Token, GetUIdSuccessed, GetUIdFailed));
+        StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
         Debug.Log("ID: " + Session.UId.ToString());
         m_name.text = Session.Name;
     }
@@ -78,7 +77,6 @@ public class MenuScreen : BaseScreen
             m_bet = 0;
         }
     }
-
     public void CardsValueChangedHandler()
     {
         try
@@ -93,13 +91,11 @@ public class MenuScreen : BaseScreen
         }
 
     }
-
     public void TypeGameValueChangedHandler()
     {
         m_typeOfGame = (ETypeGame)m_typeGameDropdown.value;
         //this.Filter();
     }
-
     public void MaxPlayersValueChangedHandler()
     {
         try
@@ -112,7 +108,6 @@ public class MenuScreen : BaseScreen
             m_maxPlayers = 0;
         }
     }
-
     public void IsPrivateValueChangedHandler()
     {
         m_isPrivate = m_isPrivateDropdown.value != 0;
@@ -173,6 +168,54 @@ public class MenuScreen : BaseScreen
         m_name.text = "Cant get your name";
     }
 
+
+    //set avatar
+    public void SetAvatarClickHandler()
+    {
+        OnClick();
+    }
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+    //
+    // WebGL
+    //
+    [DllImport("__Internal")]
+    private static extern void UploadFile(string gameObjectName, string methodName, string filter, bool multiple);
+
+    public void OnClick() {
+        UploadFile(gameObject.name, "Chose new avatar", ".png", false);
+    }
+
+    // Called from browser
+    public void OnFileUpload(string url) {
+        if (url.Length > 0)
+        {
+            StartCoroutine(m_network.UploadAvatar(Session.Token, File.ReadAllBytes(url), sucsessed => {
+
+                StartCoroutine(m_network.GetAvatar(Session.Token, Session.UId, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
+
+            }, fail => { Debug.Log(fail); }));
+        }
+    }
+#else
+    //
+    // Standalone platforms & editor
+    //
+
+    private void OnClick()
+    {
+        string filePath = UnityEditor.EditorUtility.OpenFilePanel("Select avatar", "", "png");
+
+        if (filePath.Length > 0)
+        {
+            StartCoroutine(m_network.UploadAvatar(Session.Token, filePath, sucsessed => {
+
+                StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
+
+            }, fail => { Debug.Log(fail); }));
+        }
+    }
+#endif
 
     ////////Screens\\\\\\\\\
     //--------------------\\

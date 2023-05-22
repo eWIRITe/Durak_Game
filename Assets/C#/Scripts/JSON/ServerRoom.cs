@@ -19,11 +19,13 @@ namespace JSON
 
     public class ServerJoinRoom
     {
-        public string token;
+        public uint joinUserID;
 
-        public uint rid;
+        public uint RoomID;
 
         public string key;
+
+        public uint RoomOwnerID;
     }
 
     public class ServerExitRoom

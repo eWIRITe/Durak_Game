@@ -22,8 +22,12 @@ public class SocketNetwork : MonoBehaviour
     private SocketIOUnity m_socket;
 
     public Room m_room;
+    public RoomRow m_roomRow;
+    public GameObject RoomPrefab;
 
     public int _type;
+
+    protected Network m_network;
 
     // private List<Ro>
     void Start()
@@ -38,6 +42,7 @@ public class SocketNetwork : MonoBehaviour
         m_socket.unityThreadScope = UnityThreadScope.Update;
         m_socket.JsonSerializer = new NewtonsoftJsonSerializer();
 
+        m_network = GameObject.FindGameObjectWithTag("Network").GetComponent<Network>();
 
         //Game start server resposses\\
         ///////////////=\\\\\\\\\\\\\\\
@@ -45,19 +50,39 @@ public class SocketNetwork : MonoBehaviour
         //we are entering to the room
         m_socket.OnUnityThread("cl_enterInTheRoom", response =>
         {
+            Debug.Log("cl_enterInTheRoom: " + response);
+        });
 
+        //we are entering to the room as owner
+        m_socket.OnUnityThread("cl_enterInTheRoomAsOwner", response =>
+        {
+            var json = response.GetValue<JSON.ClientJoinRoom>();
+
+            GameObject Room = Instantiate(RoomPrefab);
+
+            m_room = Room.GetComponent<Room>();
+            m_roomRow = Room.GetComponent<RoomRow>();
+
+            m_roomRow.RoomID = json.RoomID;
+            m_roomRow.RoomOwner = json.JoinUserID;
+
+            Debug.Log("cl_enterInTheRoomAsOwner: " + json);
         });
 
         //when some ather one joinning in the room
         m_socket.OnUnityThread("cl_joinRoom", response =>
         {
-            
+            var json = response.GetValue<JSON.ClientJoinRoom>();
+
+            m_room.NewPlayerJoin(json.JoinUserID);
+
+            Debug.Log("cl_joinRoom: " + response);
         });
 
         //we are exiting from the room
         m_socket.OnUnityThread("cl_exitRoom", response =>
         {
-
+            Debug.Log("cl_exitRoom: " + response);
         });
 
 
@@ -126,6 +151,8 @@ public class SocketNetwork : MonoBehaviour
 
         m_socket.OnUnityThread("cl_start", response =>
         {
+            Debug.Log("Start");
+
             var json = response.GetValue<JSON.ClientStart>();
             m_room.StartGame(json.first, json.trump);
         });
@@ -203,7 +230,7 @@ public class SocketNetwork : MonoBehaviour
     }
     public void EmitJoinRoom(int rid, string key = "")
     {
-        m_socket.Emit("srv_joinRoom", new JSON.ServerJoinRoom() { token = Session.Token, rid = Convert.ToUInt32(rid), key = key });
+        m_socket.Emit("srv_joinRoom", new JSON.ServerJoinRoom() { joinUserID = Session.UId, RoomID = Convert.ToUInt32(rid), key = key });
     }
     public void EmitExitRoom(uint rid)
     {

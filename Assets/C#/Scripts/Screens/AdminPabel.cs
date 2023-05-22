@@ -7,7 +7,7 @@ using TMPro;
 public class AdminPabel : BaseScreen
 {
     public TMP_InputField ChipsInput;
-    public TMP_InputField NewAdminIDInput;
+    public TMP_InputField roomJoinUserIDInput;
 
     public void GetChipsAdminClickHandler()
     {
@@ -21,8 +21,10 @@ public class AdminPabel : BaseScreen
        }));
     }
     
-    public void SetNewAdminClickHandler()
+    public void RoomJoinUser()
     {
+        Room m_room = GameObject.Find("Room(Clone)").GetComponent<Room>();
 
+        m_room.NewPlayerJoin(uint.Parse(roomJoinUserIDInput.text));
     }
 }

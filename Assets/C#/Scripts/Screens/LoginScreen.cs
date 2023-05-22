@@ -48,16 +48,17 @@ public class LoginScreen : BaseScreen
 
         Session.Token = token;
         Session.Name = m_name.text;
-        StartCoroutine(m_network.GetPlayerId(token, ID => { Session.UId = ID; }, FailedID => { Debug.Log(FailedID); }));
-
-        m_screenDirector.ActiveScreen(EScreens.MenuScreen);
-
-        ScreenReset();
+        StartCoroutine(m_network.GetPlayerId(token, ID => {
+            Session.UId = ID; 
+            m_screenDirector.ActiveScreen(EScreens.MenuScreen);
+            ScreenReset();
+        }
+        , FailedID => { Debug.Log(FailedID); }));
     }
 
     private void LoginFailed(string resp)
     {
-        Debug.LogError($"LoginFailed:\n\t{resp}");
+        Message.text = resp.ToString();
 
         ScreenReset();
     }

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Networking;
 using System;
 using System.Collections;
@@ -6,6 +6,8 @@ using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Collections.Generic;
 using static RatingScreen;
+using System.IO;
+using Newtonsoft.Json;
 
 public class Network : MonoBehaviour
 {
@@ -129,31 +131,19 @@ public class Network : MonoBehaviour
     //=======================\\
     public IEnumerator GetPlayerId(string token, Action<uint> successed, Action<string> failed)
     {
-        Debug.Log("GetPlayerId");
-
         using (var re = UnityWebRequest.Get($"{m_hostName}/get_uid?token={token}"))
         {
-            Debug.Log("make recuest");
-
             yield return re.SendWebRequest();
-
-            Debug.Log("send recuest");
 
             if (re.result == UnityWebRequest.Result.Success)
             {
                 uint uid = uint.Parse(re.downloadHandler.text);
 
-                Debug.Log("Send UId");
-
                 successed(uid);
-
-                Debug.Log("GetPlayerId - suc");
             }
             else
             {
                 failed($"{re.responseCode}: {re.error}");
-
-                Debug.Log("GetPlayerId - error");
             }
         }
     }
@@ -239,32 +229,46 @@ public class Network : MonoBehaviour
             failed($"{re.responseCode}: {re.error}");
         }
     }
-    public IEnumerator GetAvatar(string token, uint uid, Action<Texture2D> successed, Action<string> failed)
+    public IEnumerator GetAvatar(uint uid, Action<Texture2D> successed, Action<string> failed)
     {
-        using var re = UnityWebRequestTexture.GetTexture($"{m_hostName}/get_avatar/{uid}?token={token}");
+        using var re = UnityWebRequestTexture.GetTexture($"{m_hostName}/getAvatar/{uid}");
 
         yield return re.SendWebRequest();
 
-        if (re.result == UnityWebRequest.Result.Success)
+        if (re.result != UnityWebRequest.Result.Success)
         {
-            try
-            {
-                Texture2D avatar = ((DownloadHandlerTexture)re.downloadHandler).texture;
-                successed(avatar);
-            }
-            catch (Exception)
-            {
-                JObject resp = JObject.Parse(re.downloadHandler.text);
-
-                JToken error = resp["error"];
-
-                failed($"error: {Convert.ToString(error)}");
-                yield break;
-            }
+            Debug.Log(re.error);
         }
+        else if (((DownloadHandlerTexture)re.downloadHandler).texture == null) yield return null;
         else
         {
-            failed($"{re.responseCode}: {re.error}");
+            successed(((DownloadHandlerTexture)re.downloadHandler).texture);
+        }
+    }
+    public IEnumerator UploadAvatar(string token, string avatar,  Action<string> successed, Action<string> failed)
+    {
+        // Load the photo file from the directory
+        byte[] photoData = File.ReadAllBytes(avatar);
+
+        // Create a new form to submit to the PHP script
+        WWWForm form = new WWWForm();
+
+        form.AddField("token", token);
+        form.AddBinaryData("avatar", photoData, "avatar.png", "image/png");
+
+        using (UnityWebRequest request = UnityWebRequest.Post($"{m_hostName}/upload_avatar", form))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log(request.downloadHandler.text);
+                successed(request.downloadHandler.text);
+            }
+            else
+            {
+                failed($"{request.responseCode}: {request.error}");
+            }
         }
     }
 
@@ -328,5 +332,33 @@ public class Network : MonoBehaviour
         //Tere you can write a function with buying chips
 
         yield return null;
+    }
+
+    //////////////////
+    //Room functions\\
+    //////////////////
+    public IEnumerator GetRoomPlayers(uint RoomID, Action<uint[]> PlayerInTheRoom)
+    {
+        using var re = UnityWebRequest.Get($"{m_hostName}/get_RoomPlayers?RoomID={RoomID}");
+
+        yield return re.SendWebRequest();
+
+        if (re.result == UnityWebRequest.Result.Success)
+        {
+            JObject resp = JObject.Parse(re.downloadHandler.text);
+
+            JToken error = resp["error"];
+
+            if (error != null)
+            {
+                yield break;
+            }
+
+            // Десериализация свойства "Players" из JSON-ответа как массива целых чисел
+            JArray playersArray = resp["Players"] as JArray;
+            uint[] players = playersArray.ToObject<uint[]>();
+
+            PlayerInTheRoom(players);
+        }
     }
 }
