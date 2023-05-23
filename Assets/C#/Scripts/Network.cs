@@ -337,7 +337,7 @@ public class Network : MonoBehaviour
     //////////////////
     //Room functions\\
     //////////////////
-    public IEnumerator GetRoomPlayers(uint RoomID, Action<uint[]> PlayerInTheRoom)
+    public IEnumerator GetRoomPlayers(uint RoomID, Action<List<uint>> PlayerInTheRoom)
     {
         using var re = UnityWebRequest.Get($"{m_hostName}/get_RoomPlayers?RoomID={RoomID}");
 
@@ -345,20 +345,38 @@ public class Network : MonoBehaviour
 
         if (re.result == UnityWebRequest.Result.Success)
         {
-            JObject resp = JObject.Parse(re.downloadHandler.text);
+            string responseText = re.downloadHandler.text;
 
-            JToken error = resp["error"];
+            List<uint> roomIDList = JsonConvert.DeserializeObject<List<uint>>(responseText);
 
-            if (error != null)
+            PlayerInTheRoom(roomIDList);
+
+            Debug.Log(roomIDList);
+        }
+    }
+
+    public IEnumerator GetFreeRooms(Action<List<uint>> sucsessed)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Get($"{m_hostName}/get_freeRooms"))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.Success)
             {
-                yield break;
+                string responseText = www.downloadHandler.text;
+
+                List<uint> roomIDList = JsonConvert.DeserializeObject<List<uint>>(responseText);
+
+                sucsessed(roomIDList);
+
+                Debug.Log(roomIDList);
+
             }
-
-            // Десериализация свойства "Players" из JSON-ответа как массива целых чисел
-            JArray playersArray = resp["Players"] as JArray;
-            uint[] players = playersArray.ToObject<uint[]>();
-
-            PlayerInTheRoom(players);
+            else
+            {
+                // Обработка ошибки при запросе к бэкенду
+                Debug.Log("Ошибка при запросе к бэкенду: " + www.error);
+            }
         }
     }
 }

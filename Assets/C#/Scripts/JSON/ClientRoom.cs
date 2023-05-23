@@ -24,7 +24,7 @@ namespace JSON
 
     public class ClientJoinRoom
     {
-        public uint JoinUserID; 
+        public uint uid; 
 
         public uint RoomID;
 
@@ -38,11 +38,11 @@ namespace JSON
 
         public uint bet;
 
-        public uint RoomOwnerID;
+        public uint roomOwner;
     }
 
     public class ClientExitRoom
     {
-        public uint ExitUserID;
+        public uint uid;
     }
 }

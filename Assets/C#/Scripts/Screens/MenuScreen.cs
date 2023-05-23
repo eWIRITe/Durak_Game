@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using UnityEngine.EventSystems;
 using SFB;
 using System.IO;
+using TMPro;
 
 public class MenuScreen : BaseScreen
 {
@@ -22,6 +23,10 @@ public class MenuScreen : BaseScreen
     public Dropdown m_typeGameDropdown;
     public Dropdown m_maxPlayersDropdown;
     public Dropdown m_isPrivateDropdown;
+
+    [Header("free rooms")]
+    public VerticalLayoutGroup _listOfFreeRooms;
+    public GameObject FreeRoomPanel;
 
     private uint m_bet;
     private uint m_numberOfCards;
@@ -55,6 +60,20 @@ public class MenuScreen : BaseScreen
         StartCoroutine(m_network.GetChips(Session.Token, GetChipsSuccessed, GetChipsFailed));
         StartCoroutine(m_network.GetPlayerId(Session.Token, GetUIdSuccessed, GetUIdFailed));
         StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
+
+        StartCoroutine(m_network.GetFreeRooms(sucsessed => 
+        {
+            foreach (uint RoomID in sucsessed)
+            {
+                GameObject _freeRoomPanel = Instantiate(FreeRoomPanel);
+                _freeRoomPanel.transform.SetParent(_listOfFreeRooms.transform);
+
+                _freeRoomPanel.transform.localScale = new Vector2(1, 1);
+
+                _freeRoomPanel.transform.Find("RoomID").GetComponent<TMP_Text>().text = "ID: " + RoomID.ToString();
+                _freeRoomPanel.transform.Find("Button").GetComponent<Button>().onClick.AddListener(() => { m_socketNetwork.EmitJoinRoom(RoomID); });
+            }
+        }));
         Debug.Log("ID: " + Session.UId.ToString());
         m_name.text = Session.Name;
     }
@@ -235,7 +254,6 @@ public class MenuScreen : BaseScreen
     {
         m_screenDirector.ActiveScreen(EScreens.SettingsScreen);
     }
-
 
 
     public void CreateRoomClickHandler()

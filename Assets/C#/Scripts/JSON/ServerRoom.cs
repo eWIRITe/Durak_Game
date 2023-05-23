@@ -15,11 +15,13 @@ namespace JSON
         public int type;
 
         public uint maxPlayers;
+
+        public uint roomOwner;
     }
 
     public class ServerJoinRoom
     {
-        public uint joinUserID;
+        public string Token;
 
         public uint RoomID;
 

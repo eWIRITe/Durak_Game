@@ -6,13 +6,16 @@ public class RoomRow : MonoBehaviour
 {
     private GameObject _self;
 
+    private Room _room;
+
     private Network m_network;
     private SocketNetwork m_socketNetwork;
 
-    [Header("RoomUI")]
+    [Header("RoomDATA")]
 
     public uint _roomOwnerID;
     private uint _roomID;
+    public ESuit Trump;
 
     public uint RoomOwner
     {
@@ -43,14 +46,25 @@ public class RoomRow : MonoBehaviour
 
     public void Init(uint roomID) 
     {
-        StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { PlayerAvatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
+        _room = GetComponent<Room>();
 
-        uint[] PlayersInTheRoom;
-        StartCoroutine(m_network.GetRoomPlayers(roomID, _playersInTheRoom => { PlayersInTheRoom = _playersInTheRoom; }));
+        StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { PlayerAvatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
+        
+        StartCoroutine(m_network.GetRoomPlayers(roomID, _playersInTheRoom => { foreach (uint UId in _playersInTheRoom){ if(UId != Session.UId) _room.NewPlayerJoin(UId); } }));
+
+        _room.StartScreen.SetActive(true);
+
+        if (_roomOwnerID == Session.UId)
+        {
+            _room.OwnerStartGameButton.SetActive(true);
+            Debug.Log("We are owner");
+        }
     }
 
-    public void PlayerJoinToOurRoom()
+    public void ExitClickHandler()
     {
+        m_socketNetwork.EmitExitRoom(_roomID);
 
+        Destroy(gameObject);
     }
 }

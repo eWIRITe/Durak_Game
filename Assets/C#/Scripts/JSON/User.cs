@@ -21,11 +21,11 @@ public class User : BaseScreen
         StartCoroutine(m_network.GetAvatar(UserID, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
     }
 
-    public IEnumerator MoveTo(Vector2 MoveToPoint)
+    public IEnumerator MoveTo(Vector3 MoveToPoint)
     {
         yield return moveTo(MoveToPoint);
     }
-    private bool moveTo(Vector2 MoveToPoint)
+    private bool moveTo(Vector3 MoveToPoint)
     {
         Debug.Log(MoveToPoint);
 

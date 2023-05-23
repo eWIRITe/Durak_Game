@@ -1,22 +1,41 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    public float StartUsersLine;
+    public float Cooficent;
     public float ScreenWith = 1980;
-    public float MaxUsersLise;
+
+    public GameObject StartScreen;
+    public GameObject OwnerStartGameButton;
 
     public RoomRow _roomRow;
+
+    private SocketNetwork m_socketNetwork;
 
     private void Start()
     {
         ScreenWith = Screen.width;
+
+        m_socketNetwork = GameObject.FindGameObjectWithTag("SocketNetwork").GetComponent<SocketNetwork>();
     }
 
-    public void StartGame(uint firstPlayerID, byte trump)
+    public void StartGame()
     {
+        Debug.Log("RoomID: " + _roomRow.RoomID);
+        m_socketNetwork.EmitReady(_roomRow.RoomID);
 
+        StartScreen.SetActive(false);
+    }
+
+    public void OnReady()
+    {
+        StartScreen.SetActive(false);
+
+        _roomRow.isGameStarted = true;
+        //what to do when owner pressed ready
+        //...\\
     }
 
     public void PlayersTurn(uint turnPlayerID)
@@ -41,6 +60,26 @@ public class Room : MonoBehaviour
         _roomRow.roomPlayers.Add(_user);
 
         _user.Initi(UId);
+
+        SetPositionsForAllUsers(_roomRow.roomPlayers);
+    }
+
+    public void DeletePlayer(uint UId)
+    {
+        Debug.Log("DeletePlayer");
+
+        for(int i = 0; i < _roomRow.roomPlayers.Count; i++)
+        {
+            Debug.Log("for");
+            if ((int)_roomRow.roomPlayers[i].UserID == (int)UId)
+            {
+                Destroy(_roomRow.roomPlayers[i].gameObject);
+                _roomRow.roomPlayers.RemoveAt(i);
+
+                Debug.Log("remove user");
+            }
+        }
+        Debug.Log("no one");
 
         SetPositionsForAllUsers(_roomRow.roomPlayers);
     }
@@ -73,18 +112,21 @@ public class Room : MonoBehaviour
     private void SetPositionsForAllUsers(List<User> users)
     {
         int i = 1;
-        Debug.Log(i);
 
         while(i < users.Count)
         {
             float x = (float)((ScreenWith * i / users.Count) - ScreenWith * 0.5);
-            float y = x > 0 ? (float)(((float)((float)((float)MaxUsersLise - (float)StartUsersLine)%1) * (float)((float)i / (float)users.Count)) * -1) : (((float)((float)((float)MaxUsersLise - (float)StartUsersLine) % 1) * (float)((float)i / (float)users.Count)));
+            float y = (float)( Math.Abs(x) / Cooficent) * -1;
 
-            Vector2 coords = new Vector2(x, y);
+            Debug.Log(y);
+
+            Vector3 coords = new Vector3(x, y, 0);
 
             StartCoroutine(users[i].MoveTo(coords));
 
             i++;
         }
+
+        Debug.Log("SetPositionsForAllUsers");
     }
 }
