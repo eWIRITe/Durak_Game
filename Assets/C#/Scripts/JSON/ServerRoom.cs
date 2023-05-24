@@ -2,6 +2,8 @@ namespace JSON
 {
     public class ServerCreateRoom
     {
+        public uint RoomID;
+
         public string token;
 
         public bool isPrivate;

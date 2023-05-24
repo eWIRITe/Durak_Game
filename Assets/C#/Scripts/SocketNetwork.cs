@@ -29,6 +29,10 @@ public class SocketNetwork : MonoBehaviour
 
     protected Network m_network;
 
+    //room was created event
+    public delegate void RoomCreateEvent();
+    public static event RoomCreateEvent _roomCreateEvent;
+
     // private List<Ro>
     void Start()
     {
@@ -107,6 +111,12 @@ public class SocketNetwork : MonoBehaviour
             Debug.Log("cl_exitRoom: " + response);
         });
 
+        m_socket.OnUnityThread("cl_RoomWasCreated", response => 
+        {
+            var json = response.GetValue<JSON.ServerCreateRoom>();
+
+            _roomCreateEvent?.Invoke();
+        });
 
         //////////\\\\\\\\\\\
         //playing functions\\
@@ -299,6 +309,7 @@ public class SocketNetwork : MonoBehaviour
     //.......................\\
     void OnApplicationQuit()
     {
+        if(m_roomRow != null) EmitExitRoom(m_roomRow.RoomID);
         m_socket.Disconnect();
     }
 }

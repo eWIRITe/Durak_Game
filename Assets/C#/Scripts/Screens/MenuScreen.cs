@@ -53,6 +53,7 @@ public class MenuScreen : BaseScreen
         IsPrivateValueChangedHandler();
 
         Session.changeChips += GetChipsSuccessed;
+        SocketNetwork._roomCreateEvent += reloadRooms;
     }
 
     public void OnShow()
@@ -61,7 +62,20 @@ public class MenuScreen : BaseScreen
         StartCoroutine(m_network.GetPlayerId(Session.Token, GetUIdSuccessed, GetUIdFailed));
         StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
 
-        StartCoroutine(m_network.GetFreeRooms(sucsessed => 
+        reloadRooms();
+
+        Debug.Log("ID: " + Session.UId.ToString());
+        m_name.text = Session.Name;
+    }
+
+    public void reloadRooms()
+    {
+        for (int i = _listOfFreeRooms.transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(_listOfFreeRooms.transform.GetChild(i).gameObject);
+        }
+
+        StartCoroutine(m_network.GetFreeRooms(sucsessed =>
         {
             foreach (uint RoomID in sucsessed)
             {
@@ -74,8 +88,6 @@ public class MenuScreen : BaseScreen
                 _freeRoomPanel.transform.Find("Button").GetComponent<Button>().onClick.AddListener(() => { m_socketNetwork.EmitJoinRoom(RoomID); });
             }
         }));
-        Debug.Log("ID: " + Session.UId.ToString());
-        m_name.text = Session.Name;
     }
 
     //////Value changing functions\\\\\\\\
@@ -194,7 +206,7 @@ public class MenuScreen : BaseScreen
         OnClick();
     }
 
-#if UNITY_WEBGL && !UNITY_EDITOR
+//#if UNITY_WEBGL && !UNITY_EDITOR
     //
     // WebGL
     //
@@ -209,32 +221,14 @@ public class MenuScreen : BaseScreen
     public void OnFileUpload(string url) {
         if (url.Length > 0)
         {
-            StartCoroutine(m_network.UploadAvatar(Session.Token, File.ReadAllBytes(url), sucsessed => {
-
-                StartCoroutine(m_network.GetAvatar(Session.Token, Session.UId, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
-
-            }, fail => { Debug.Log(fail); }));
-        }
-    }
-#else
-    //
-    // Standalone platforms & editor
-    //
-
-    private void OnClick()
-    {
-        string filePath = UnityEditor.EditorUtility.OpenFilePanel("Select avatar", "", "png");
-
-        if (filePath.Length > 0)
-        {
-            StartCoroutine(m_network.UploadAvatar(Session.Token, filePath, sucsessed => {
+            StartCoroutine(m_network.UploadAvatar(Session.Token, url, sucsessed => {
 
                 StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
 
             }, fail => { Debug.Log(fail); }));
         }
     }
-#endif
+
 
     ////////Screens\\\\\\\\\
     //--------------------\\
