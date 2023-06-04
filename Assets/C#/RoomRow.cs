@@ -8,7 +8,6 @@ public class RoomRow : MonoBehaviour
 
     private Room _room;
 
-    private Network m_network;
     private SocketNetwork m_socketNetwork;
 
     [Header("RoomDATA")]
@@ -40,17 +39,17 @@ public class RoomRow : MonoBehaviour
     {
         _self = gameObject;
 
-        m_network = GameObject.FindGameObjectWithTag("Network").GetComponent<Network>();
         m_socketNetwork = GameObject.FindGameObjectWithTag("SocketNetwork").GetComponent<SocketNetwork>();
+        SocketNetwork.changePlayers += UpdateRoomPlayers;
     }
 
     public void Init(uint roomID) 
     {
         _room = GetComponent<Room>();
 
-        StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { PlayerAvatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
+        //StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { PlayerAvatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
         
-        StartCoroutine(m_network.GetRoomPlayers(roomID, _playersInTheRoom => { foreach (uint UId in _playersInTheRoom){ if(UId != Session.UId) _room.NewPlayerJoin(UId); } }));
+        m_socketNetwork.GetRoomPlayers(roomID);
 
         _room.StartScreen.SetActive(true);
 
@@ -58,6 +57,27 @@ public class RoomRow : MonoBehaviour
         {
             _room.OwnerStartGameButton.SetActive(true);
             Debug.Log("We are owner");
+        }
+    }
+
+    private void UpdateRoomPlayers(uint[] PlayersID)
+    {
+        List<uint> usersID = new List<uint>();
+        foreach (User _user in roomPlayers)
+        {
+            usersID.Add(_user.UserID);
+        }
+
+        foreach (uint ID in PlayersID)
+        {
+            if (ID == Session.UId)
+            {
+                break;
+            }
+            else
+            {
+                _room.NewPlayerJoin(ID);
+            }
         }
     }
 

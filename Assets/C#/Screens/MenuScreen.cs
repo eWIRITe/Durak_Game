@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using JSON;
 using System.Runtime.InteropServices;
 using UnityEngine.EventSystems;
-using SFB;
 using System.IO;
 using TMPro;
 
@@ -28,11 +27,15 @@ public class MenuScreen : BaseScreen
     public VerticalLayoutGroup _listOfFreeRooms;
     public GameObject FreeRoomPanel;
 
+    [Header("Message")]
+    public GameObject MessageScreen;
+    public TMP_Text MessageText;
+
     private uint m_bet;
     private uint m_numberOfCards;
     private ETypeGame m_typeOfGame;
     private uint m_maxPlayers;
-    private bool m_isPrivate;
+    private int m_isPrivate;
     //private string m_key;
 
     public Text m_betText;
@@ -41,53 +44,52 @@ public class MenuScreen : BaseScreen
 
     private Hashtable m_rooms = new Hashtable();
 
-    private SocketNetwork m_socketNetwork;
-
-    private void Start()
+    public void Start()
     {
-        m_socketNetwork = GameObject.FindGameObjectWithTag("SocketNetwork").GetComponent<SocketNetwork>();
         BetValueChangedHandler();
         CardsValueChangedHandler();
         TypeGameValueChangedHandler();
         MaxPlayersValueChangedHandler();
         IsPrivateValueChangedHandler();
 
-        Session.changeChips += GetChipsSuccessed;
-        SocketNetwork._roomCreateEvent += reloadRooms;
+        SocketNetwork.roomChange += reloadRooms;
+        SocketNetwork.gotChips += GetChipsSuccessed;
+        SocketNetwork.error += PrintMaessage;
     }
 
     public void OnShow()
     {
-        StartCoroutine(m_network.GetChips(Session.Token, GetChipsSuccessed, GetChipsFailed));
-        StartCoroutine(m_network.GetPlayerId(Session.Token, GetUIdSuccessed, GetUIdFailed));
-        StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
-
-        reloadRooms();
+        m_socketNetwork.GetFreeRooms();
+        m_socketNetwork.GetChips(Session.Token);
+        //StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
 
         Debug.Log("ID: " + Session.UId.ToString());
         m_name.text = Session.Name;
     }
 
-    public void reloadRooms()
+    public void reloadRooms(uint[] FreeRoomsID)
     {
-        for (int i = _listOfFreeRooms.transform.childCount - 1; i >= 0; i--)
+        MainThreadDispatcher.RunOnMainThread(() =>
         {
-            Destroy(_listOfFreeRooms.transform.GetChild(i).gameObject);
-        }
+            Debug.Log("FreeRoomsID");
 
-        StartCoroutine(m_network.GetFreeRooms(sucsessed =>
-        {
-            foreach (uint RoomID in sucsessed)
+            for (int i = _listOfFreeRooms.transform.childCount - 1; i >= 0; i--)
+            {
+                Destroy(_listOfFreeRooms.transform.GetChild(i).gameObject);
+            }
+
+
+            foreach (uint RoomID in FreeRoomsID)
             {
                 GameObject _freeRoomPanel = Instantiate(FreeRoomPanel);
                 _freeRoomPanel.transform.SetParent(_listOfFreeRooms.transform);
 
-                _freeRoomPanel.transform.localScale = new Vector2(1, 1);
+                _freeRoomPanel.transform.localScale = new Vector3(1, 1, 1);
 
                 _freeRoomPanel.transform.Find("RoomID").GetComponent<TMP_Text>().text = "ID: " + RoomID.ToString();
                 _freeRoomPanel.transform.Find("Button").GetComponent<Button>().onClick.AddListener(() => { m_socketNetwork.EmitJoinRoom(RoomID); });
             }
-        }));
+        });
     }
 
     //////Value changing functions\\\\\\\\
@@ -141,7 +143,7 @@ public class MenuScreen : BaseScreen
     }
     public void IsPrivateValueChangedHandler()
     {
-        m_isPrivate = m_isPrivateDropdown.value != 0;
+        m_isPrivate = m_isPrivateDropdown.value != 0 ? 0:1;
     }
 
 
@@ -162,25 +164,18 @@ public class MenuScreen : BaseScreen
     }
     public void ExitClickHandler()
     {
-        StartCoroutine(m_network.Logout(Session.Token, LogoutSuccessed, LogoutFailed));
-    }
-
-    //Get ID
-    private void GetUIdSuccessed(uint uid)
-    {
-        Session.UId = uid;
-        StartCoroutine(m_network.GetPlayerName(Session.Token, Session.UId, GetPlayerNameSuccessed, GetPlayerNameFailed));
-    }
-    private void GetUIdFailed(string resp)
-    {
-        Debug.LogError($"GetUIdFailed:\n\t{resp}");
+        //StartCoroutine(m_network.Logout(Session.Token, LogoutSuccessed, LogoutFailed));
     }
 
     //Get chips
-    public void GetChipsSuccessed(uint chips)
+    public void GetChipsSuccessed(int chips)
     {
-        if (chips != 0) m_chips.text = chips.ToString();
-        else m_chips.text = "You dont have any chips";
+        MainThreadDispatcher.RunOnMainThread(() =>
+        {
+            Session.Chips = chips;
+            if (chips != 0) m_chips.text = chips.ToString();
+            else m_chips.text = "You dont have any chips";
+        });
     }
     private void GetChipsFailed(string resp)
     {
@@ -199,35 +194,14 @@ public class MenuScreen : BaseScreen
         m_name.text = "Cant get your name";
     }
 
-
-    //set avatar
+    ////////\\\\\\\\
+    ///set avatar\\\
+    ////////\\\\\\\\
     public void SetAvatarClickHandler()
     {
-        OnClick();
+        Debug.Log("dgbdgbdgb");
     }
 
-//#if UNITY_WEBGL && !UNITY_EDITOR
-    //
-    // WebGL
-    //
-    [DllImport("__Internal")]
-    private static extern void UploadFile(string gameObjectName, string methodName, string filter, bool multiple);
-
-    public void OnClick() {
-        UploadFile(gameObject.name, "Chose new avatar", ".png", false);
-    }
-
-    // Called from browser
-    public void OnFileUpload(string url) {
-        if (url.Length > 0)
-        {
-            StartCoroutine(m_network.UploadAvatar(Session.Token, url, sucsessed => {
-
-                StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
-
-            }, fail => { Debug.Log(fail); }));
-        }
-    }
 
 
     ////////Screens\\\\\\\\\
@@ -262,6 +236,25 @@ public class MenuScreen : BaseScreen
 
         m_socketNetwork.EmitCreateRoom(token, m_isPrivate, "", m_bet, m_numberOfCards, m_maxPlayers, m_typeOfGame);
         Debug.Log("room was created");
+    }
+
+    //////\\\\\\\
+    ///Message\\\
+    //////\\\\\\\
+    public void PrintMaessage(string Message)
+    {
+        MainThreadDispatcher.RunOnMainThread(() =>
+        {
+            MessageText.text = Message;
+            LeanTween.scale(MessageScreen, new Vector3(1, 1, 1), 2).setOnComplete(finishMessage);
+        });
+    }
+    public void finishMessage()
+    {
+        MainThreadDispatcher.RunOnMainThread(() =>
+        {
+            LeanTween.scale(MessageScreen, new Vector3(0, 0, 0), 1).setOnComplete(finishMessage);
+        });
     }
 
     //______\\

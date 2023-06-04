@@ -31,7 +31,7 @@ public class RatingScreen : BaseScreen
     public void OnShow()
     {
         string token = PlayerPrefs.GetString("token");
-        StartCoroutine(m_network.GetRating(token, 0, 50, GetRatingSuccessed, GetRatingFailed));
+        //StartCoroutine(m_network.GetRating(token, 0, 50, GetRatingSuccessed, GetRatingFailed));
     }
 
     public void ApplyData(Transform line, int lineNumber, string name, int total, float winRate)

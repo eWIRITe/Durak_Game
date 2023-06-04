@@ -14,6 +14,17 @@ public class LoginScreen : BaseScreen
     [Header("message")]
     public TMP_Text Message;
 
+    [Header("Message")]
+    public GameObject MessageScreen;
+    public TMP_Text MessageText;
+
+    private void Start()
+    {
+        SocketNetwork.loginSucsessed += LoginSuccessed;
+        SocketNetwork.UId += UpdateUID;
+        SocketNetwork.error += PrintMaessage;
+    }
+
     public override void SetActiveHandler(bool active)
     {
         if (active == true)
@@ -39,21 +50,26 @@ public class LoginScreen : BaseScreen
         }
         else
         {
-            PlayerPrefs.DeleteKey("remember");
-            PlayerPrefs.DeleteKey("name");
-            PlayerPrefs.DeleteKey("password");
         }
-
-        PlayerPrefs.SetString("token", token);
 
         Session.Token = token;
         Session.Name = m_name.text;
-        StartCoroutine(m_network.GetPlayerId(token, ID => {
-            Session.UId = ID; 
+
+        m_socketNetwork.GetUserID(token);
+
+        MainThreadDispatcher.RunOnMainThread(() =>
+        {
             m_screenDirector.ActiveScreen(EScreens.MenuScreen);
-            ScreenReset();
-        }
-        , FailedID => { Debug.Log(FailedID); }));
+        });
+    }
+
+    private void UpdateUID(uint UId)
+    {
+        MainThreadDispatcher.RunOnMainThread(() =>
+        {
+            Session.UId = UId;
+        });
+        
     }
 
     private void LoginFailed(string resp)
@@ -78,6 +94,22 @@ public class LoginScreen : BaseScreen
             return;
         }
 
-        StartCoroutine(m_network.Login(m_name.text, m_password.text, LoginSuccessed, LoginFailed));
+        m_socketNetwork.Login(m_name.text, m_password.text);
+    }
+
+    public void PrintMaessage(string Message)
+    {
+        MainThreadDispatcher.RunOnMainThread(() =>
+        {
+            MessageText.text = Message;
+            LeanTween.scale(MessageScreen, new Vector3(1, 1, 1), 2).setOnComplete(finishMessage);
+        });
+    }
+    public void finishMessage()
+    {
+        MainThreadDispatcher.RunOnMainThread(() =>
+        {
+            LeanTween.scale(MessageScreen, new Vector3(0, 0, 0), 1).setOnComplete(finishMessage);
+        });
     }
 }

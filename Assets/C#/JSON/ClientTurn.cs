@@ -1,7 +1,7 @@
 ﻿namespace JSON
 {
-    public class ClientTurn
+    public class Client
     {
-        public uint uid;
+        public uint UserID;
     }
 }

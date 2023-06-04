@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7131236843436957597}
   - component: {fileID: 1524584819558695163}
-  - component: {fileID: 892524245862192180}
+  - component: {fileID: 8584865732407378344}
   m_Layer: 5
   m_Name: _freeRoomForm
   m_TagString: Untagged
@@ -33,7 +33,7 @@ RectTransform:
   - {fileID: 4630309811393478069}
   - {fileID: 2405577348555967318}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -48,7 +48,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2218199813451837152}
   m_CullTransparentMesh: 1
---- !u!114 &892524245862192180
+--- !u!114 &8584865732407378344
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

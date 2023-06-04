@@ -12,13 +12,13 @@ public class AdminPabel : BaseScreen
     public void GetChipsAdminClickHandler()
     {
         Debug.Log("GetChipsAdminClickHandler");
-        StartCoroutine(m_network.GetChips_admin(Session.Token, int.Parse(ChipsInput.text), newChips =>
-       {
-           Session.Chips = newChips;
-       }, error =>
-       {
-           Debug.Log(error);
-       }));
+       // StartCoroutine(m_network.GetChips_admin(Session.Token, int.Parse(ChipsInput.text), newChips =>
+       //{
+       //    Session.Chips = newChips;
+       //}, error =>
+       //{
+       //    Debug.Log(error);
+       //}));
     }
     
     public void RoomJoinUser()

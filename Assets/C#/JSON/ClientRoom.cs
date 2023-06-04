@@ -3,6 +3,13 @@ namespace JSON
     public class Room
     {
         public uint RoomID;
+        public uint[] FreeRoomsID;
+    }
+
+    public class PlayersInRoom
+    {
+        public uint RoomID;
+        public uint[] PlayersID;
     }
 
     public class ClientCreateRoom
@@ -27,18 +34,6 @@ namespace JSON
         public uint uid; 
 
         public uint RoomID;
-
-        public uint players;
-
-        public uint maxPlayers;
-
-        public uint cards;
-
-        public ETypeGame type;
-
-        public uint bet;
-
-        public uint roomOwner;
     }
 
     public class ClientExitRoom

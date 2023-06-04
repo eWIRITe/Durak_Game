@@ -4,10 +4,7 @@ public static class Session
 {
     //event\\
     ////_\\\\
-
-    //chips change event
-    public delegate void chipsChangeEvent(uint chips);
-    public static event chipsChangeEvent changeChips;
+    ///
     //ID change event
     public delegate void UIdChangeEvent(uint UId);
     public static event UIdChangeEvent changeUId;
@@ -32,9 +29,6 @@ public static class Session
         get { return m_chips; }
         set { 
             m_chips = value;
-
-            //set event
-            changeChips?.Invoke((uint)value);
         }
     }
 

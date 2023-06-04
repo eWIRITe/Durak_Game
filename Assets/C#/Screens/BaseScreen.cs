@@ -1,15 +1,14 @@
-using Org.BouncyCastle.Asn1.BC;
 using UnityEngine;
 
 public class BaseScreen : MonoBehaviour
 {
     protected ScreenDirector m_screenDirector;
-    protected Network m_network;
+    protected SocketNetwork m_socketNetwork;
 
     protected void Awake()
     {
         m_screenDirector = GameObject.FindGameObjectWithTag("ScreenDirector").GetComponent<ScreenDirector>();
-        m_network = GameObject.FindGameObjectWithTag("Network").GetComponent<Network>();
+        m_socketNetwork = GameObject.FindGameObjectWithTag("SocketNetwork").GetComponent<SocketNetwork>();
     }
 
     public virtual void SetActiveHandler(bool active)

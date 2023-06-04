@@ -2,6 +2,9 @@
 using WebSocketSharp;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using JSON;
+using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 public class SocketNetwork : MonoBehaviour
 {
@@ -17,15 +20,51 @@ public class SocketNetwork : MonoBehaviour
 
     public int _type;
 
-    protected Network m_network;
-
     // Room was created event
-    public delegate void RoomCreateEvent();
-    public static event RoomCreateEvent _roomCreateEvent;
+    public delegate void RoomChangeEvent(uint[] FreeRoomsID);
+    public static event RoomChangeEvent roomChange;
+
+    // Logins events
+    public delegate void LoginEvent(string message);
+    public static event LoginEvent loginSucsessed;
+
+    // SignIn events
+    public delegate void SignInEvent();
+    public static event SignInEvent SignInSucsessed;
+    public static event SignInEvent SignInFailed;
+
+    // get UId event
+    public delegate void get_UID(uint ID);
+    public static event get_UID UId;
+
+    // get chips event
+    public delegate void chips(int chips);
+    public static event chips gotChips;
+
+    //Error event
+    public delegate void Error(string error);
+    public static event Error error;
+
+    //Players number change
+    public delegate void Players(uint[] PlayersID);
+    public static event Players changePlayers;
+    public static event Players joinPlayer;
+
+    //Room events
+    public delegate void RoomEvents();
+    public static event RoomEvents ready;
+
+    //Card events
+    public delegate void CardEvent(Card card);
+    public static event CardEvent GetCard;
+    public static event CardEvent DestroyCard;
+    public delegate void atherUsersCards(uint uid);
+    public static event atherUsersCards userGotCard;
+    public static event atherUsersCards userDestroyCard;
 
     void Start()
     {
-        // Server settings
+        // Server initiolization
         string url = "ws://127.0.0.1:5000";
         websocket = new WebSocket(url);
 
@@ -33,18 +72,15 @@ public class SocketNetwork : MonoBehaviour
         {
             Debug.Log("WebSocket connection opened");
         };
-
         websocket.OnMessage += (sender, e) =>
         {
             string message = e.Data;
             HandleMessageFromServer(message);
         };
-
         websocket.OnError += (sender, e) =>
         {
-            Debug.LogError("WebSocket error: " + e.Message);
+            Debug.LogError("WebSocket error: " + e.Exception + " : " + e.Message + " : " + sender);
         };
-
         websocket.OnClose += (sender, e) =>
         {
             Debug.Log("WebSocket connection closed");
@@ -57,37 +93,136 @@ public class SocketNetwork : MonoBehaviour
     {
         if (websocket != null && websocket.IsAlive)
         {
+            if (Session.RoomID != 0) EmitExitRoom(Session.RoomID);
+
             websocket.Close();
         }
     }
 
-    private void HandleMessageFromServer(string message)
+
+    //////On server massege\\\\\\\
+    /////////////\\\\\\\\\\\\\\\\\
+    void HandleMessageFromServer(string message)
     {
-        // Обработка полученного сообщения от сервера
-        // Ваш код для обработки различных сообщений от сервера
         JSON.MessageData data = JsonConvert.DeserializeObject<JSON.MessageData>(message);
 
         switch (data.eventType)
         {
             case "cl_enterInTheRoom":
-                var enterRoomData = JsonConvert.DeserializeObject<JSON.ClientJoinRoom>(data.data);
-                Debug.Log("cl_enterInTheRoom: " + enterRoomData.RoomID);
-                // Обработка события cl_enterInTheRoom
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var enterRoomData = JsonConvert.DeserializeObject<JSON.ServerJoinRoom>(data.data);
+
+                    Session.RoomID = enterRoomData.RoomID;
+
+                    GameObject Room = Instantiate(RoomPrefab);
+
+                    m_room = Room.GetComponent<Room>();
+                    m_roomRow = Room.GetComponent<RoomRow>();
+
+                    m_roomRow.RoomOwner = enterRoomData.roomOwner;
+                    m_roomRow.RoomID = enterRoomData.RoomID;
+                });
                 break;
 
             case "cl_enterInTheRoomAsOwner":
-                var enterRoomOwnerData = JsonConvert.DeserializeObject<JSON.ClientJoinRoom>(data.data);
-                Debug.Log("cl_enterInTheRoomAsOwner: " + enterRoomOwnerData.RoomID);
-                // Обработка события cl_enterInTheRoomAsOwner
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var enterRoomOwnerData = JsonConvert.DeserializeObject<JSON.ServerCreateRoom>(data.data);
+
+                    Session.RoomID = enterRoomOwnerData.RoomID;
+
+                    GameObject Room = Instantiate(RoomPrefab);
+
+                    m_room = Room.GetComponent<Room>();
+                    m_roomRow = Room.GetComponent<RoomRow>();
+
+                    m_roomRow.RoomOwner = enterRoomOwnerData.roomOwner;
+                    m_roomRow.RoomID = enterRoomOwnerData.RoomID;
+                });
+                
                 break;
 
             case "cl_joinRoom":
-                var joinRoomData = JsonConvert.DeserializeObject<JSON.ClientJoinRoom>(data.data);
-                Debug.Log("cl_joinRoom: " + joinRoomData.RoomID);
-                // Обработка события cl_joinRoom
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var joinRoomData = JsonConvert.DeserializeObject<JSON.ClientJoinRoom>(data.data);
+                    m_room.NewPlayerJoin(joinRoomData.uid);
+                });
                 break;
 
-            // Другие обработчики для различных событий от сервера
+            case "cl_leaveRoom":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var joinRoomData = JsonConvert.DeserializeObject<JSON.ClientJoinRoom>(data.data);
+                    m_room.DeletePlayer(joinRoomData.uid);
+                });
+                break;
+
+            case "sucsessedLogin":
+                var loginData = JsonConvert.DeserializeObject<JSON.ClientLogin>(data.data);
+                loginSucsessed?.Invoke(loginData.token);
+                break;
+
+            case "sucsessedSignIn":
+                SignInSucsessed?.Invoke();
+                break;
+
+            case "ID":
+                UId?.Invoke(uint.Parse(data.data));
+                break;
+
+            case "FreeRooms":
+                var freeRoomsID = JsonConvert.DeserializeObject<JSON.Room> (data.data);
+                roomChange?.Invoke(freeRoomsID.FreeRoomsID);
+                break;
+
+            case "roomPlayersID":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var playersID = JsonConvert.DeserializeObject<JSON.PlayersInRoom>(data.data);
+                    changePlayers?.Invoke(playersID.PlayersID);
+                });
+                break;
+
+            case "Chips":
+                var chips = JsonConvert.DeserializeObject<JSON.ClientData>(data.data);
+                gotChips?.Invoke(chips.chips);
+                break;
+
+            case "ready":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    ready?.Invoke();
+                });
+                break;
+
+            case "playerGetCard":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    Card Card = JsonConvert.DeserializeObject<JSON.Card>(data.data);
+                    GetCard?.Invoke(Card);
+                });
+                
+                break;
+
+            case "atherUserGotCard":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var user = JsonConvert.DeserializeObject<JSON.Client>(data.data);
+                    Debug.Log(data);
+                    Debug.Log(user.UserID);
+                    userGotCard?.Invoke(user.UserID);
+                });
+
+                break;
+
+            case "DestroyCard":
+                break;
+
+            case "error":
+                error?.Invoke(data.data);
+                break;
 
             default:
                 Debug.Log("Unknown event type: " + data.eventType);
@@ -112,7 +247,7 @@ public class SocketNetwork : MonoBehaviour
     }
 
     // Rooms
-    public void EmitCreateRoom(string token, bool isPrivate, string key, uint bet, uint cards, uint maxPlayers, ETypeGame type)
+    public void EmitCreateRoom(string token, int isPrivate, string key, uint bet, uint cards, uint maxPlayers, ETypeGame type)
     {
         switch (type)
         {
@@ -166,7 +301,17 @@ public class SocketNetwork : MonoBehaviour
             rid = rid
         };
 
-        SendMessageToServer("srv_exitRoom", exitRoomData);
+        SendMessageToServer("srv_exit", exitRoomData);
+    }
+
+    public void getAllRoomPlayersID()
+    {
+        var exitRoomData = new JSON.Room()
+        {
+            RoomID = Session.RoomID
+        };
+
+        SendMessageToServer("get_RoomPlayers", exitRoomData);
     }
 
     // Playing functions
@@ -184,7 +329,6 @@ public class SocketNetwork : MonoBehaviour
     {
         var readyData = new JSON.ServerJoinRoom()
         {
-            Token = Session.Token,
             RoomID = RoomID
         };
 
@@ -221,26 +365,85 @@ public class SocketNetwork : MonoBehaviour
         SendMessageToServer("srv_grab", tokenData);
     }
 
-    public void EmitTransfer(Card card)
+    //public void EmitTransfer(Card card)
+    //{
+    //    var transferData = new JSON.ServerTransfer()
+    //    {
+    //        token = Session.Token,
+    //        card = card.Byte
+    //    };
+
+    //    SendMessageToServer("srv_transfer", transferData);
+    //}
+
+    //public void EmitBattle(List<Card> attacked, List<Card> attacking)
+    //{
+    //    var battleData = new JSON.ServerBattle()
+    //    {
+    //        token = Session.Token,
+    //        attacked = attacked.ConvertAll(c => c.Byte).ToArray(),
+    //        attacking = attacking.ConvertAll(c => c.Byte).ToArray()
+    //    };
+
+    //    SendMessageToServer("srv_battle", battleData);
+    //}
+
+    ////\\\\\
+    //login\\
+    ////\\\\\
+    public void Login(string _name, string _password)
     {
-        var transferData = new JSON.ServerTransfer()
+        var userData = new JSON.ClientLogin()
         {
-            token = Session.Token,
-            card = card.Byte
+            name = _name,
+            password = _password
         };
 
-        SendMessageToServer("srv_transfer", transferData);
+        SendMessageToServer("Login", userData);
+    }
+    //////\\\\\\
+    ///SignIn\\\
+    ///::::::\\\
+    public void Signin(string _name, string _email, string _password)
+    {
+        var userData = new JSON.ClientSignIN()
+        {
+            name = _name,
+            password = _password,
+            email = _email
+        };
+
+        SendMessageToServer("Signin", userData);
     }
 
-    public void EmitBattle(List<Card> attacked, List<Card> attacking)
+
+    //get data help functions
+    public void GetUserID(string token)
     {
-        var battleData = new JSON.ServerBattle()
+        var userData = new JSON.ClientLogin()
         {
-            token = Session.Token,
-            attacked = attacked.ConvertAll(c => c.Byte).ToArray(),
-            attacking = attacking.ConvertAll(c => c.Byte).ToArray()
+            token = token
         };
 
-        SendMessageToServer("srv_battle", battleData);
+        SendMessageToServer("getId", userData);
+    }
+
+    public void GetFreeRooms()
+    {
+        SendMessageToServer("getFreeRooms", new JSON.Room());
+    }
+
+    public void GetChips(string token)
+    {
+        var userData = new JSON.ClientLogin()
+        {
+            token = token
+        };
+
+        SendMessageToServer("getChips", userData);
+    }
+    public void GetRoomPlayers(uint RoomID)
+    {
+        SendMessageToServer("get_RoomPlayers", new JSON.PlayersInRoom() { RoomID = Session.RoomID });
     }
 }

@@ -40,17 +40,17 @@ public class Battlefield : MonoBehaviour
         this.NextGhost();
     }
 
-    public void Beat(Card attacked, GameCard attacking)
-    {
-        foreach (Field field in m_fields)
-        {
-            if (field.Bottom.Card.Byte == attacked.Byte)
-            {
-                field.AddCard(attacking);
-                break;
-            }
-        }
-    }
+    //public void Beat(Card attacked, GameCard attacking)
+    //{
+    //    foreach (Field field in m_fields)
+    //    {
+    //        if (field.Bottom.Card.Byte == attacked.Byte)
+    //        {
+    //            field.AddCard(attacking);
+    //            break;
+    //        }
+    //    }
+    //}
 
     public void Clear()
     {

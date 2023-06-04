@@ -6,7 +6,7 @@ namespace JSON
 
         public string token;
 
-        public bool isPrivate;
+        public int isPrivate;
 
         public string key;
 
@@ -27,9 +27,7 @@ namespace JSON
 
         public uint RoomID;
 
-        public string key;
-
-        public uint RoomOwnerID;
+        public uint roomOwner;
     }
 
     public class ServerExitRoom

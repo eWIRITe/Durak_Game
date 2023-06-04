@@ -21,6 +21,6 @@ public class SettingsScreen : BaseScreen
         string token = PlayerPrefs.GetString("token");
         string newEmail = m_newEmail.text;
         string oldEmail = m_oldEmail.text;
-        StartCoroutine(m_network.ChangeEmail(token, newEmail, oldEmail, ChangeEmailSuccessed, ChangeEmailFailed));
+        //StartCoroutine(m_network.ChangeEmail(token, newEmail, oldEmail, ChangeEmailSuccessed, ChangeEmailFailed));
     }
 }
