@@ -8,7 +8,6 @@ using UnityEngine.EventSystems;
 using SFB;
 using System.IO;
 using TMPro;
-using UnityEditor;
 
 public class MenuScreen : BaseScreen
 {
@@ -16,6 +15,7 @@ public class MenuScreen : BaseScreen
     public Text m_name;
     public Text m_chips;
     public Transform m_content;
+    public Image Avatar;
 
     [Header("Create new room UI")]
     public Slider m_betSlider;
@@ -57,23 +57,11 @@ public class MenuScreen : BaseScreen
 
     public void OnShow()
     {
-<<<<<<< Updated upstream:Assets/C#/Scripts/Screens/MenuScreen.cs
         StartCoroutine(m_network.GetChips(Session.Token, GetChipsSuccessed, GetChipsFailed));
         StartCoroutine(m_network.GetPlayerId(Session.Token, GetUIdSuccessed, GetUIdFailed));
         StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
 
         StartCoroutine(m_network.GetFreeRooms(sucsessed => 
-=======
-        m_socketNetwork.GetFreeRooms();
-        m_socketNetwork.GetChips(Session.Token);
-
-        m_name.text = Session.Name;
-    }
-
-    public void reloadRooms(uint[] FreeRoomsID)
-    {
-        MainThreadDispatcher.RunOnMainThread(() =>
->>>>>>> Stashed changes:Assets/C#/Screens/MenuScreen.cs
         {
             foreach (uint RoomID in sucsessed)
             {
@@ -125,6 +113,7 @@ public class MenuScreen : BaseScreen
     public void TypeGameValueChangedHandler()
     {
         m_typeOfGame = (ETypeGame)m_typeGameDropdown.value;
+        //this.Filter();
     }
     public void MaxPlayersValueChangedHandler()
     {
@@ -198,58 +187,11 @@ public class MenuScreen : BaseScreen
         m_name.text = "Cant get your name";
     }
 
-<<<<<<< Updated upstream:Assets/C#/Scripts/Screens/MenuScreen.cs
 
     //set avatar
     public void SetAvatarClickHandler()
     {
         OnClick();
-=======
-    ////////\\\\\\\\
-    ///set avatar\\\
-    ////////\\\\\\\\
-    public void OpenFileExplorer()
-    {
-#if UNITY_WEBGL && !UNITY_EDITOR
-        OpenFileExplorerWebGL();
-#else
-        OpenFileExplorerEditor();
-#endif
-    }
-
-    private void OpenFileExplorerEditor()
-    {
-        string[] extensions = { "png", "jpg", "jpeg" };
-        string path = EditorUtility.OpenFilePanel("Select Image", "", string.Join(",", extensions));
-
-        // Обработка выбранного пути к файлу
-        HandleSelectedFilePath(path);
-    }
-
-    private void OpenFileExplorerWebGL()
-    {
-        string jsCode = @"
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = 'image/*';
-            fileInput.onchange = (event) => {
-                const files = event.target.files;
-                if (files && files.length > 0) {
-                    const path = URL.createObjectURL(files[0]);
-                    UnitySendMessage('ImagePicker', 'HandleSelectedFilePath', path);
-                }
-            };
-            fileInput.click();
-        ";
-
-        Application.ExternalEval(jsCode);
-    }
-
-    private void HandleSelectedFilePath(string path)
-    {
-        m_socketNetwork.setAvatar(path);
-        m_socketNetwork.getAvatar(Session.UId);
->>>>>>> Stashed changes:Assets/C#/Screens/MenuScreen.cs
     }
 
 #if UNITY_WEBGL && !UNITY_EDITOR

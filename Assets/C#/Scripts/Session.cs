@@ -12,9 +12,6 @@ public static class Session
     public delegate void UIdChangeEvent(uint UId);
     public static event UIdChangeEvent changeUId;
 
-    public delegate void roleChange(ERole role);
-    public static event roleChange roleChanged;
-
     private static string m_token;
     public static string Token
     {
@@ -74,18 +71,6 @@ public static class Session
     {
         get { return m_sortTrump; }
         set { m_sortTrump = value; }
-    }
-
-    private static ERole _role;
-
-    public static ERole role
-    {
-        set 
-        {
-            _role = value;
-            roleChanged?.Invoke(value);
-        }
-        get { return _role; }
     }
 
     // room
