@@ -120,7 +120,11 @@ MonoBehaviour:
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
   controlID: 60
+=======
+  controlID: 1784
+>>>>>>> parent of 876478b (fgn)
 =======
   controlID: 1784
 >>>>>>> parent of 876478b (fgn)
@@ -149,7 +153,11 @@ MonoBehaviour:
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
 <<<<<<< HEAD
+<<<<<<< HEAD
   controlID: 61
+=======
+  controlID: 1785
+>>>>>>> parent of 876478b (fgn)
 =======
   controlID: 1785
 >>>>>>> parent of 876478b (fgn)
@@ -174,11 +182,19 @@ MonoBehaviour:
     y: 0
     width: 1513
 <<<<<<< HEAD
+<<<<<<< HEAD
     height: 365
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
   controlID: 38
+=======
+    height: 746
+  m_MinSize: {x: 200, y: 50}
+  m_MaxSize: {x: 16192, y: 8096}
+  vertical: 0
+  controlID: 18
+>>>>>>> parent of 876478b (fgn)
 =======
     height: 746
   m_MinSize: {x: 200, y: 50}
@@ -205,9 +221,15 @@ MonoBehaviour:
     y: 0
     width: 312
 <<<<<<< HEAD
+<<<<<<< HEAD
     height: 365
   m_MinSize: {x: 201, y: 221}
   m_MaxSize: {x: 4001, y: 4021}
+=======
+    height: 746
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
+>>>>>>> parent of 876478b (fgn)
 =======
     height: 746
   m_MinSize: {x: 200, y: 200}
@@ -237,7 +259,11 @@ MonoBehaviour:
     y: 0
     width: 1201
 <<<<<<< HEAD
+<<<<<<< HEAD
     height: 365
+=======
+    height: 746
+>>>>>>> parent of 876478b (fgn)
 =======
     height: 746
 >>>>>>> parent of 876478b (fgn)
@@ -267,9 +293,15 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
     y: 365
     width: 1513
     height: 574
+=======
+    y: 746
+    width: 1513
+    height: 193
+>>>>>>> parent of 876478b (fgn)
 =======
     y: 746
     width: 1513
@@ -369,7 +401,11 @@ MonoBehaviour:
     y: 73
     width: 311
 <<<<<<< HEAD
+<<<<<<< HEAD
     height: 344
+=======
+    height: 725
+>>>>>>> parent of 876478b (fgn)
 =======
     height: 725
 >>>>>>> parent of 876478b (fgn)
@@ -389,7 +425,11 @@ MonoBehaviour:
       m_SelectedIDs: 8e540000
       m_LastClickedID: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
       m_ExpandedIDs: 6cf9ffff
+=======
+      m_ExpandedIDs: 2cfbffff3459000096590000865b0000a85b0000b05b0000c05b0000065c0000685c0000865c00008a5c0000bc5c0000185d0000625d0000885d00008a5d0000905d0000e25d0000125e0000a85e0000e45e0000485f0000645f00006a5f00007e5f0000885f0000a05f0000b05f0000b45f0000da5f0000ec5f00002460000062600000726000007a60000094600000a8600000b2600000d2600000e06000001461000062610000726100007c610000ac610000ca610000de61000014620000766200008c620000ba620000c86200006a630000d0630000da630000f2630000186400002c640000426400004664000084640000c6640000e2640000fc640000166500001a6500001c650000206500002c650000366500006265000094650000c0650000ce650000e2650000f0650000046600000a6600004066000066660000a0660000a8660000c8660000cc660000ea660000fa6600002c670000466700004a6700006067000086670000f06700002e6800006868000080680000a4680000b0680000c4680000d4680000d86800000669000068690000a2690000d4690000dc690000e6690000f2690000fe690000206a0000266a0000326a00005c6a00005e6a00006c6a00006e6a0000746a0000866a0000a26a0000ae6a0000cc6a0000d06a0000de6a00000e6b00001c6b00003a6b0000406b00004a6b0000866b00009e6b0000b06b0000d46b0000fc6b0000506c0000846c0000086d00000a6d00002e6d0000466d0000546d00005c6d0000726d0000866d0000946d00009e6d0000406e00005c6e0000946e0000aa6e0000c06e0000fa6e0000266f0000486f0000606f0000726f0000b26f0000b86f0000
+>>>>>>> parent of 876478b (fgn)
 =======
       m_ExpandedIDs: 2cfbffff3459000096590000865b0000a85b0000b05b0000c05b0000065c0000685c0000865c00008a5c0000bc5c0000185d0000625d0000885d00008a5d0000905d0000e25d0000125e0000a85e0000e45e0000485f0000645f00006a5f00007e5f0000885f0000a05f0000b05f0000b45f0000da5f0000ec5f00002460000062600000726000007a60000094600000a8600000b2600000d2600000e06000001461000062610000726100007c610000ac610000ca610000de61000014620000766200008c620000ba620000c86200006a630000d0630000da630000f2630000186400002c640000426400004664000084640000c6640000e2640000fc640000166500001a6500001c650000206500002c650000366500006265000094650000c0650000ce650000e2650000f0650000046600000a6600004066000066660000a0660000a8660000c8660000cc660000ea660000fa6600002c670000466700004a6700006067000086670000f06700002e6800006868000080680000a4680000b0680000c4680000d4680000d86800000669000068690000a2690000d4690000dc690000e6690000f2690000fe690000206a0000266a0000326a00005c6a00005e6a00006c6a00006e6a0000746a0000866a0000a26a0000ae6a0000cc6a0000d06a0000de6a00000e6b00001c6b00003a6b0000406b00004a6b0000866b00009e6b0000b06b0000d46b0000fc6b0000506c0000846c0000086d00000a6d00002e6d0000466d0000546d00005c6d0000726d0000866d0000946d00009e6d0000406e00005c6e0000946e0000aa6e0000c06e0000fa6e0000266f0000486f0000606f0000726f0000b26f0000b86f0000
 >>>>>>> parent of 876478b (fgn)
@@ -711,7 +751,11 @@ MonoBehaviour:
     m_Target: {x: -1.408831, y: -0.4336425, z: 0.4758465}
     speed: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_Value: {x: -3.980555, y: -3.112265, z: 0.4620664}
+=======
+    m_Value: {x: -1.408831, y: -0.4336425, z: 0.4758465}
+>>>>>>> parent of 876478b (fgn)
 =======
     m_Value: {x: -1.408831, y: -0.4336425, z: 0.4758465}
 >>>>>>> parent of 876478b (fgn)
@@ -767,7 +811,11 @@ MonoBehaviour:
     m_Target: 6.3654985
     speed: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_Value: 8.662563
+=======
+    m_Value: 6.3654985
+>>>>>>> parent of 876478b (fgn)
 =======
     m_Value: 6.3654985
 >>>>>>> parent of 876478b (fgn)
@@ -820,7 +868,11 @@ MonoBehaviour:
     y: 73
     width: 1199
 <<<<<<< HEAD
+<<<<<<< HEAD
     height: 344
+=======
+    height: 725
+>>>>>>> parent of 876478b (fgn)
 =======
     height: 725
 >>>>>>> parent of 876478b (fgn)
@@ -841,7 +893,11 @@ MonoBehaviour:
   m_TargetDisplay: 0
   m_ClearColor: {r: 0, g: 0, b: 0, a: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_TargetSize: {x: 1199, y: 323}
+=======
+  m_TargetSize: {x: 1199, y: 704}
+>>>>>>> parent of 876478b (fgn)
 =======
   m_TargetSize: {x: 1199, y: 704}
 >>>>>>> parent of 876478b (fgn)
@@ -862,8 +918,13 @@ MonoBehaviour:
     m_HBaseRangeMin: -599.5
     m_HBaseRangeMax: 599.5
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_VBaseRangeMin: -161.5
     m_VBaseRangeMax: 161.5
+=======
+    m_VBaseRangeMin: -352
+    m_VBaseRangeMax: 352
+>>>>>>> parent of 876478b (fgn)
 =======
     m_VBaseRangeMin: -352
     m_VBaseRangeMax: 352
@@ -887,9 +948,15 @@ MonoBehaviour:
       y: 21
       width: 1199
 <<<<<<< HEAD
+<<<<<<< HEAD
       height: 323
     m_Scale: {x: 1, y: 1}
     m_Translation: {x: 599.5, y: 161.5}
+=======
+      height: 704
+    m_Scale: {x: 1, y: 1}
+    m_Translation: {x: 599.5, y: 352}
+>>>>>>> parent of 876478b (fgn)
 =======
       height: 704
     m_Scale: {x: 1, y: 1}
@@ -903,12 +970,21 @@ MonoBehaviour:
       serializedVersion: 2
       x: -599.5
 <<<<<<< HEAD
+<<<<<<< HEAD
       y: -161.5
       width: 1199
       height: 323
     m_MinimalGUI: 1
   m_defaultScale: 1
   m_LastWindowPixelSize: {x: 1199, y: 344}
+=======
+      y: -352
+      width: 1199
+      height: 704
+    m_MinimalGUI: 1
+  m_defaultScale: 1
+  m_LastWindowPixelSize: {x: 1199, y: 725}
+>>>>>>> parent of 876478b (fgn)
 =======
       y: -352
       width: 1199
@@ -980,9 +1056,15 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
     y: 438
     width: 1512
     height: 553
+=======
+    y: 819
+    width: 1512
+    height: 172
+>>>>>>> parent of 876478b (fgn)
 =======
     y: 819
     width: 1512
@@ -1012,7 +1094,11 @@ MonoBehaviour:
     m_SearchArea: 1
     m_Folders:
 <<<<<<< HEAD
+<<<<<<< HEAD
     - Assets/C#
+=======
+    - Assets/C#/Cards
+>>>>>>> parent of 876478b (fgn)
 =======
     - Assets/C#/Cards
 >>>>>>> parent of 876478b (fgn)
@@ -1024,7 +1110,11 @@ MonoBehaviour:
   m_StartGridSize: 67
   m_LastFolders:
 <<<<<<< HEAD
+<<<<<<< HEAD
   - Assets/C#
+=======
+  - Assets/C#/Cards
+>>>>>>> parent of 876478b (fgn)
 =======
   - Assets/C#/Cards
 >>>>>>> parent of 876478b (fgn)
@@ -1034,15 +1124,21 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
 <<<<<<< HEAD
+<<<<<<< HEAD
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 845c0000
     m_LastClickedID: 23684
     m_ExpandedIDs: 00000000725c0000745c0000765c0000785c00007a5c00007c5c00007e5c0000805c0000825c0000845c000000ca9a3b
 =======
+=======
+>>>>>>> parent of 876478b (fgn)
     scrollPos: {x: 0, y: 55}
     m_SelectedIDs: f6a20000
     m_LastClickedID: 41718
     m_ExpandedIDs: 0000000096740000987400009a7400009c7400009e740000a0740000a2740000a4740000a6740000a8740000a6a20000f8a2000000ca9a3b
+<<<<<<< HEAD
+>>>>>>> parent of 876478b (fgn)
+=======
 >>>>>>> parent of 876478b (fgn)
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1072,7 +1168,11 @@ MonoBehaviour:
     m_SelectedIDs: 
     m_LastClickedID: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_ExpandedIDs: 00000000725c0000745c0000765c0000785c00007a5c00007c5c00007e5c0000805c0000825c0000845c0000
+=======
+    m_ExpandedIDs: 0000000096740000987400009a7400009c7400009e740000a0740000a2740000a4740000a6740000a8740000
+>>>>>>> parent of 876478b (fgn)
 =======
     m_ExpandedIDs: 0000000096740000987400009a7400009c7400009e740000a0740000a2740000a4740000a6740000a8740000
 >>>>>>> parent of 876478b (fgn)
