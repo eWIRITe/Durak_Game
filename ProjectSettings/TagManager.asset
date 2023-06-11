@@ -8,6 +8,8 @@ TagManager:
   - SocketNetwork
   - Network
   - ScreenDirector
+  - Hands
+  - Room
   layers:
   - Default
   - TransparentFX

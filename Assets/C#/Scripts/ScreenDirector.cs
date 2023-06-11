@@ -5,6 +5,7 @@ using UnityEngine;
 public class ScreenDirector : BaseScreen
 {
     public TMP_Text ID_text;
+    public AvatarScr avatar;
 
     public GameObject StartScreen;
     public GameObject SignInScreen;
@@ -111,7 +112,9 @@ public class ScreenDirector : BaseScreen
 
     public void UpdateID(uint ID)
     {
-        if(ID != 0) ID_text.text = "ID: " + ID.ToString();
+        avatar.UserID = ID;
+
+        if (ID != 0) ID_text.text = "ID: " + ID.ToString();
     }
 
     public void activeAdminPanel()
