@@ -25,15 +25,13 @@ namespace JSON
 
         public uint RoomID;
 
-<<<<<<<< Updated upstream:Assets/C#/Scripts/JSON/ServerRoom.cs
         public string key;
 
         public uint RoomOwnerID;
-========
+
         public uint roomOwner;
 
         public int type;
->>>>>>>> Stashed changes:Assets/C#/Datas/JSON/ServerRoom.cs
     }
 
     public class ServerExitRoom

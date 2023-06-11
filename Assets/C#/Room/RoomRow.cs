@@ -8,12 +8,9 @@ public class RoomRow : MonoBehaviour
 
     private Room _room;
 
-<<<<<<<< Updated upstream:Assets/C#/Scripts/RoomRow.cs
     private Network m_network;
-========
     public GameUIs GameUI;
 
->>>>>>>> Stashed changes:Assets/C#/Room/RoomRow.cs
     private SocketNetwork m_socketNetwork;
 
     [Header("RoomDATA")]
