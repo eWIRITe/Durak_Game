@@ -6,7 +6,6 @@ using JSON;
 using System.Runtime.InteropServices;
 using UnityEngine.EventSystems;
 using System.IO;
-using TMPro;
 
 public class MenuScreen : BaseScreen
 {
@@ -23,6 +22,8 @@ public class MenuScreen : BaseScreen
     public Dropdown m_maxPlayersDropdown;
     public Dropdown m_isPrivateDropdown;
 
+<<<<<<< HEAD:Assets/C#/Screens/MenuScreen.cs
+<<<<<<< HEAD:Assets/C#/Screens/MenuScreen.cs
     [Header("free rooms")]
     public VerticalLayoutGroup _listOfFreeRooms;
     public GameObject FreeRoomPanel;
@@ -31,6 +32,10 @@ public class MenuScreen : BaseScreen
     public GameObject MessageScreen;
     public TMP_Text MessageText;
 
+=======
+>>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/Screens/MenuScreen.cs
+=======
+>>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/Screens/MenuScreen.cs
     private uint m_bet;
     private uint m_numberOfCards;
     private ETypeGame m_typeOfGame;
@@ -59,6 +64,8 @@ public class MenuScreen : BaseScreen
 
     public void OnShow()
     {
+<<<<<<< HEAD:Assets/C#/Screens/MenuScreen.cs
+<<<<<<< HEAD:Assets/C#/Screens/MenuScreen.cs
         m_socketNetwork.GetFreeRooms();
         m_socketNetwork.GetChips(Session.Token);
         //StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
@@ -90,6 +97,15 @@ public class MenuScreen : BaseScreen
                 _freeRoomPanel.transform.Find("Button").GetComponent<Button>().onClick.AddListener(() => { m_socketNetwork.EmitJoinRoom(RoomID); });
             }
         });
+=======
+=======
+>>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/Screens/MenuScreen.cs
+        StartCoroutine(m_network.GetChips(Session.Token, GetChipsSuccessed, GetChipsFailed));
+        StartCoroutine(m_network.GetPlayerId(Session.Token, GetUIdSuccessed, GetUIdFailed));
+        StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
+        Debug.Log("ID: " + Session.UId.ToString());
+        m_name.text = Session.Name;
+>>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/Screens/MenuScreen.cs
     }
 
     //////Value changing functions\\\\\\\\
@@ -222,6 +238,7 @@ public class MenuScreen : BaseScreen
     {
         m_screenDirector.ActiveScreen(EScreens.SettingsScreen);
     }
+
 
 
     public void CreateRoomClickHandler()

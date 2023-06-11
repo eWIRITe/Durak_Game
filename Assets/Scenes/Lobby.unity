@@ -2748,7 +2748,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 0.7529412}
+  m_Color: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -22270,11 +22270,17 @@ MonoBehaviour:
   m_typeGameDropdown: {fileID: 4225990604996398598}
   m_maxPlayersDropdown: {fileID: 4225990604942502154}
   m_isPrivateDropdown: {fileID: 4225990606284865378}
+<<<<<<< HEAD
+<<<<<<< HEAD
   _listOfFreeRooms: {fileID: 4225990606097603693}
   FreeRoomPanel: {fileID: 2218199813451837152, guid: 9370cfe332c13734d850869257a08b49,
     type: 3}
   MessageScreen: {fileID: 558224551}
   MessageText: {fileID: 1752765240}
+=======
+>>>>>>> parent of 1408e7d (finish)
+=======
+>>>>>>> parent of 1408e7d (finish)
   m_betText: {fileID: 4225990605825803382}
   m_betValues: 64000000f4010000e80300008813000010270000a0860100400d0300
 --- !u!1 &4225990604977038396
@@ -55292,6 +55298,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4225990606269807810}
   - component: {fileID: 4225990606269807804}
+  - component: {fileID: 4225990606269807811}
   m_Layer: 5
   m_Name: SettingsScreen
   m_TagString: Untagged
@@ -55322,6 +55329,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4225990606269807811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4225990606269807809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3aafba09123a6a4e91dc64ce2521054, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4225990606270414304
 MonoBehaviour:
   m_ObjectHideFlags: 0

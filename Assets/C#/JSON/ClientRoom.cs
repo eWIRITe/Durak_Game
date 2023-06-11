@@ -31,13 +31,31 @@ namespace JSON
 
     public class ClientJoinRoom
     {
-        public uint uid; 
+        public uint JoinUserID; 
 
         public uint RoomID;
+<<<<<<< HEAD:Assets/C#/JSON/ClientRoom.cs
+=======
+
+        public uint players;
+
+        public uint maxPlayers;
+
+        public uint cards;
+
+        public ETypeGame type;
+
+        public uint bet;
+
+        public uint RoomOwnerID;
+<<<<<<< HEAD:Assets/C#/JSON/ClientRoom.cs
+>>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/JSON/ClientRoom.cs
+=======
+>>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/JSON/ClientRoom.cs
     }
 
     public class ClientExitRoom
     {
-        public uint uid;
+        public uint ExitUserID;
     }
 }
