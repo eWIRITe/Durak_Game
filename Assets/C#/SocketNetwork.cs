@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using JSON;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
+using System.IO;
+using System;
+
 
 public class SocketNetwork : MonoBehaviour
 {
@@ -31,7 +34,6 @@ public class SocketNetwork : MonoBehaviour
     // SignIn events
     public delegate void SignInEvent();
     public static event SignInEvent SignInSucsessed;
-    public static event SignInEvent SignInFailed;
 
     // get UId event
     public delegate void get_UID(uint ID);
@@ -50,17 +52,46 @@ public class SocketNetwork : MonoBehaviour
     public static event Players changePlayers;
     public static event Players joinPlayer;
 
-    //Room events
-    public delegate void RoomEvents();
-    public static event RoomEvents ready;
-
     //Card events
     public delegate void CardEvent(Card card);
     public static event CardEvent GetCard;
     public static event CardEvent DestroyCard;
+
+    public delegate void RoomEvents(Card trumpCard);
+    public static event RoomEvents ready;
+
+    public delegate void placeCardEvent(uint UID, Card card);
+    public static event placeCardEvent placeCard;
+
+    public delegate void BeatCardEvent(uint UID, Card beat, Card beating);
+    public static event BeatCardEvent beatCard;
+
+    public delegate void FoldCardEvent();
+    public static event FoldCardEvent FoldAllCards;
+
     public delegate void atherUsersCards(uint uid);
     public static event atherUsersCards userGotCard;
     public static event atherUsersCards userDestroyCard;
+
+    public delegate void GrabEvent();
+    public static event GrabEvent playerGrab;
+
+    public delegate void cl_foldEvent(uint UserID);
+    public static event cl_foldEvent cl_fold;
+
+    public delegate void cl_passEvent(uint UserID);
+    public static event cl_passEvent cl_pass;
+
+    public delegate void cl_grabEvent();
+    public static event cl_grabEvent cl_grab;
+    public static event cl_grabEvent grab;
+
+    public delegate void gotAvagar(uint UserID, Sprite avatar);
+    public static event gotAvagar got_avatar;
+
+    // Turn
+    public delegate void gamesEvents(uint UserID);
+    public static event gamesEvents newTurn;
 
     void Start()
     {
@@ -102,12 +133,19 @@ public class SocketNetwork : MonoBehaviour
 
     //////On server massege\\\\\\\
     /////////////\\\\\\\\\\\\\\\\\
+    ///////////\\\\\\\\\\
+    // Server messages \\
     void HandleMessageFromServer(string message)
     {
         JSON.MessageData data = JsonConvert.DeserializeObject<JSON.MessageData>(message);
 
         switch (data.eventType)
         {
+
+            //////////////////////////
+            // room message handler //
+            //////////////////////////
+
             case "cl_enterInTheRoom":
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
@@ -128,7 +166,7 @@ public class SocketNetwork : MonoBehaviour
             case "cl_enterInTheRoomAsOwner":
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
-                    var enterRoomOwnerData = JsonConvert.DeserializeObject<JSON.ServerCreateRoom>(data.data);
+                    var enterRoomOwnerData = JsonConvert.DeserializeObject<JSON.ServerJoinRoom>(data.data);
 
                     Session.RoomID = enterRoomOwnerData.RoomID;
 
@@ -138,6 +176,9 @@ public class SocketNetwork : MonoBehaviour
                     m_roomRow = Room.GetComponent<RoomRow>();
 
                     m_roomRow.RoomOwner = enterRoomOwnerData.roomOwner;
+
+                    m_roomRow.GameType = (ETypeGame)enterRoomOwnerData.type;
+
                     m_roomRow.RoomID = enterRoomOwnerData.RoomID;
                 });
                 
@@ -159,22 +200,37 @@ public class SocketNetwork : MonoBehaviour
                 });
                 break;
 
+            ///////////////////////////
+            // enter message handler //
+            ///////////////////////////
             case "sucsessedLogin":
-                var loginData = JsonConvert.DeserializeObject<JSON.ClientLogin>(data.data);
-                loginSucsessed?.Invoke(loginData.token);
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var loginData = JsonConvert.DeserializeObject<JSON.ClientLogin>(data.data);
+                    loginSucsessed?.Invoke(loginData.token);
+                });
                 break;
 
             case "sucsessedSignIn":
-                SignInSucsessed?.Invoke();
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    SignInSucsessed?.Invoke();
+                });
                 break;
 
-            case "ID":
-                UId?.Invoke(uint.Parse(data.data));
+            case "cl_getId":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    UId?.Invoke(uint.Parse(data.data));
+                });
                 break;
 
             case "FreeRooms":
-                var freeRoomsID = JsonConvert.DeserializeObject<JSON.Room> (data.data);
-                roomChange?.Invoke(freeRoomsID.FreeRoomsID);
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var freeRoomsID = JsonConvert.DeserializeObject<JSON.FreeRooms>(data.data);
+                    roomChange?.Invoke(freeRoomsID.freeRooms);
+                });
                 break;
 
             case "roomPlayersID":
@@ -186,18 +242,48 @@ public class SocketNetwork : MonoBehaviour
                 break;
 
             case "Chips":
-                var chips = JsonConvert.DeserializeObject<JSON.ClientData>(data.data);
-                gotChips?.Invoke(chips.chips);
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var chips = JsonConvert.DeserializeObject<JSON.ClientData>(data.data);
+                    gotChips?.Invoke(chips.chips);
+                });
                 break;
 
             case "ready":
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
-                    ready?.Invoke();
+                    var ready_data = JsonConvert.DeserializeObject<JSON.ClientReady>(data.data);
+
+                    ready?.Invoke(ready_data.trump);
                 });
                 break;
 
-            case "playerGetCard":
+            /////////////////////////////
+            // playing message handler //
+            /////////////////////////////
+
+            case "cl_getImage":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    Debug.Log("cl_getImage");
+                    Debug.Log(data.data);
+
+                    AvatarData _data = JsonConvert.DeserializeObject<JSON.AvatarData>(data.data);
+
+                    byte[] imageBytes = System.Convert.FromBase64String(_data.avatarImage);
+
+                    // Create a new Texture2D and load the image bytes
+                    Texture2D texture = new Texture2D(1, 1);
+                    texture.LoadImage(imageBytes);
+
+                    // Create a Sprite using the loaded Texture2D
+                    Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * 0.5f);
+
+                    got_avatar?.Invoke(_data.UserID, sprite);
+                });
+                break;
+
+            case "GetCard":
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
                     Card Card = JsonConvert.DeserializeObject<JSON.Card>(data.data);
@@ -217,7 +303,123 @@ public class SocketNetwork : MonoBehaviour
 
                 break;
 
+            case "cl_gotCard":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var user = JsonConvert.DeserializeObject<JSON.Client>(data.data);
+                    userGotCard?.Invoke(user.UserID);
+                });
+                break;
+
+            case "cl_destroyCard":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var user = JsonConvert.DeserializeObject<JSON.Client>(data.data);
+                    userDestroyCard?.Invoke(user.UserID);
+                });
+                break;
+
             case "DestroyCard":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var _data = JsonConvert.DeserializeObject<JSON._Card>(data.data);
+                    DestroyCard?.Invoke(_data.card);
+                });
+                break;
+
+            case "cl_role":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    Role[] role = JsonConvert.DeserializeObject<JSON.Role[]>(data.data);
+
+                    foreach(Role _role in role)
+                    {
+                        if (_role.UserID == Session.UId)
+                        {
+                            Session.role = (ERole)_role.role;
+
+                            if(Session.role == ERole.firstThrower || Session.role == ERole.thrower)
+                            {
+                                m_roomRow.GameUI.showFoldButton();
+                            }
+
+                            m_roomRow.Grabed = false;
+                            m_roomRow.Folded = false;
+                            m_roomRow.Passed = false;
+                        }
+                        else
+                        {
+                            for(int i = 1; i < m_roomRow.roomPlayers.Count; i++)
+                            {
+                                if(m_roomRow.roomPlayers[i].UserID == _role.UserID)
+                                {
+                                    m_roomRow.roomPlayers[i].role = (ERole)_role.role;
+                                }
+                            }
+                        }
+                    }
+                });
+                break;
+
+            case "cl_ThrowedCard":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var _data = JsonConvert.DeserializeObject<JSON._Card>(data.data);
+
+                    placeCard?.Invoke(_data.UId, _data.card);
+                });
+                break;
+
+            case "cl_BeatCard":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var _data = JsonConvert.DeserializeObject<JSON.Battle>(data.data);
+
+                    beatCard?.Invoke(_data.UserID, _data.attacedCard, _data.attacingCard);
+                });
+                break;
+
+            case "grab":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    playerGrab?.Invoke();
+                    Debug.Log("It was a playerGrab event");
+                });
+                break;
+
+            case "cl_grab":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    cl_grab?.Invoke();
+                    Debug.Log("It was a cl_grab event");
+                });
+                break;
+
+            case "cl_playerFold":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var _data = JsonConvert.DeserializeObject<JSON.Client>(data.data);
+
+                    cl_fold?.Invoke(_data.UserID);
+                });
+                break;
+
+            case "cl_pass":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var _data = JsonConvert.DeserializeObject<JSON.Client>(data.data);
+
+                    cl_pass?.Invoke(_data.UserID);
+
+                    Debug.Log("It was a cl_pass event");
+                });
+                break;
+
+            case "cl_fold":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    FoldAllCards?.Invoke();
+                });
                 break;
 
             case "error":
@@ -230,7 +432,6 @@ public class SocketNetwork : MonoBehaviour
         }
     }
 
-    // Отправка сообщения на сервер
     private void SendMessageToServer(string eventType, object data)
     {
         JSON.MessageData messageData = new JSON.MessageData()
@@ -246,7 +447,10 @@ public class SocketNetwork : MonoBehaviour
         }
     }
 
-    // Rooms
+
+    ////////////\\\\\\\\\\\\\
+    // room emit functions \\
+
     public void EmitCreateRoom(string token, int isPrivate, string key, uint bet, uint cards, uint maxPlayers, ETypeGame type)
     {
         switch (type)
@@ -270,7 +474,7 @@ public class SocketNetwork : MonoBehaviour
         var createRoomData = new JSON.ServerCreateRoom()
         {
             token = token,
-            isPrivate = isPrivate,
+            isPrivate = isPrivate == 0?false:true,
             key = key,
             bet = bet,
             cards = cards,
@@ -304,7 +508,7 @@ public class SocketNetwork : MonoBehaviour
         SendMessageToServer("srv_exit", exitRoomData);
     }
 
-    public void getAllRoomPlayersID()
+    public void GetAllRoomPlayersID()
     {
         var exitRoomData = new JSON.Room()
         {
@@ -314,15 +518,32 @@ public class SocketNetwork : MonoBehaviour
         SendMessageToServer("get_RoomPlayers", exitRoomData);
     }
 
-    // Playing functions
-    public void EmitFold()
+    ///////////\\\\\\\\\\\\
+    // Playing functions \\
+
+    public void EmitThrow(Card throw_Card)
     {
-        var foldData = new JSON.Token()
+        var data = new JSON.ClientThrow()
         {
-            token = Session.Token
+            card = throw_Card,
+            RoomID = Session.RoomID,
+            UserID = Session.UId
         };
 
-        SendMessageToServer("srv_fold", foldData);
+        SendMessageToServer("srv_Throw", data);
+    }
+
+    public void EmitBeat(Card beat, Card beating)
+    {
+        var data = new JSON.Battle()
+        {
+            attacedCard = beat,
+            attacingCard = beating,
+            RoomID = Session.RoomID,
+            UserID = Session.UId
+        };
+
+        SendMessageToServer("srv_battle", data);
     }
 
     public void EmitReady(uint RoomID)
@@ -335,62 +556,39 @@ public class SocketNetwork : MonoBehaviour
         SendMessageToServer("srv_ready", readyData);
     }
 
+    public void EmitFold()
+    {
+        var foldData = new JSON.Token()
+        {
+            token = Session.Token
+        };
+
+        SendMessageToServer("srv_fold", foldData);
+    }
     public void EmitPass()
     {
         var tokenData = new JSON.Token()
         {
+            RoomID = Session.RoomID,
             token = Session.Token
         };
 
         SendMessageToServer("srv_pass", tokenData);
     }
-
-    public void EmitWhatsup()
-    {
-        var tokenData = new JSON.Token()
-        {
-            token = Session.Token
-        };
-
-        SendMessageToServer("srv_whatsup", tokenData);
-    }
-
     public void EmitGrab()
     {
         var tokenData = new JSON.Token()
         {
+            RoomID = Session.RoomID,
+
             token = Session.Token
         };
 
         SendMessageToServer("srv_grab", tokenData);
     }
 
-    //public void EmitTransfer(Card card)
-    //{
-    //    var transferData = new JSON.ServerTransfer()
-    //    {
-    //        token = Session.Token,
-    //        card = card.Byte
-    //    };
-
-    //    SendMessageToServer("srv_transfer", transferData);
-    //}
-
-    //public void EmitBattle(List<Card> attacked, List<Card> attacking)
-    //{
-    //    var battleData = new JSON.ServerBattle()
-    //    {
-    //        token = Session.Token,
-    //        attacked = attacked.ConvertAll(c => c.Byte).ToArray(),
-    //        attacking = attacking.ConvertAll(c => c.Byte).ToArray()
-    //    };
-
-    //    SendMessageToServer("srv_battle", battleData);
-    //}
-
-    ////\\\\\
-    //login\\
-    ////\\\\\
+    ////////////\\\\\\\\\\\\\\
+    // enter emit functions \\
     public void Login(string _name, string _password)
     {
         var userData = new JSON.ClientLogin()
@@ -401,9 +599,7 @@ public class SocketNetwork : MonoBehaviour
 
         SendMessageToServer("Login", userData);
     }
-    //////\\\\\\
-    ///SignIn\\\
-    ///::::::\\\
+
     public void Signin(string _name, string _email, string _password)
     {
         var userData = new JSON.ClientSignIN()
@@ -416,8 +612,9 @@ public class SocketNetwork : MonoBehaviour
         SendMessageToServer("Signin", userData);
     }
 
+    ////////////\\\\\\\\\\\\
+    // get emit functions \\
 
-    //get data help functions
     public void GetUserID(string token)
     {
         var userData = new JSON.ClientLogin()
@@ -442,8 +639,29 @@ public class SocketNetwork : MonoBehaviour
 
         SendMessageToServer("getChips", userData);
     }
-    public void GetRoomPlayers(uint RoomID)
+
+    public void getAvatar(uint ID)
     {
-        SendMessageToServer("get_RoomPlayers", new JSON.PlayersInRoom() { RoomID = Session.RoomID });
+        var requestData = new JSON.Client()
+        {
+            UserID = ID
+        };
+
+        SendMessageToServer("getAvatar", requestData);
+    }
+
+    public void setAvatar(string imagePath)
+    {
+        byte[] imageBytes = File.ReadAllBytes(imagePath);
+        string base64Image = Convert.ToBase64String(imageBytes);
+
+        var avatarData = new JSON.AvatarData()
+        {
+            UserID = Session.UId,
+            avatarImage = base64Image
+        };
+        
+        SendMessageToServer("setAvatar", avatarData);
+        Debug.Log("avatar is setted: " + avatarData.ToString());
     }
 }

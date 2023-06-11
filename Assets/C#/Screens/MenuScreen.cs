@@ -6,6 +6,8 @@ using JSON;
 using System.Runtime.InteropServices;
 using UnityEngine.EventSystems;
 using System.IO;
+using TMPro;
+using UnityEditor;
 
 public class MenuScreen : BaseScreen
 {
@@ -13,7 +15,6 @@ public class MenuScreen : BaseScreen
     public Text m_name;
     public Text m_chips;
     public Transform m_content;
-    public Image Avatar;
 
     [Header("Create new room UI")]
     public Slider m_betSlider;
@@ -22,9 +23,6 @@ public class MenuScreen : BaseScreen
     public Dropdown m_maxPlayersDropdown;
     public Dropdown m_isPrivateDropdown;
 
-<<<<<<< HEAD:Assets/C#/Screens/MenuScreen.cs
-<<<<<<< HEAD:Assets/C#/Screens/MenuScreen.cs
-<<<<<<< HEAD:Assets/C#/Screens/MenuScreen.cs
     [Header("free rooms")]
     public VerticalLayoutGroup _listOfFreeRooms;
     public GameObject FreeRoomPanel;
@@ -33,12 +31,6 @@ public class MenuScreen : BaseScreen
     public GameObject MessageScreen;
     public TMP_Text MessageText;
 
-=======
->>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/Screens/MenuScreen.cs
-=======
->>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/Screens/MenuScreen.cs
-=======
->>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/Screens/MenuScreen.cs
     private uint m_bet;
     private uint m_numberOfCards;
     private ETypeGame m_typeOfGame;
@@ -67,14 +59,9 @@ public class MenuScreen : BaseScreen
 
     public void OnShow()
     {
-<<<<<<< HEAD:Assets/C#/Screens/MenuScreen.cs
-<<<<<<< HEAD:Assets/C#/Screens/MenuScreen.cs
-<<<<<<< HEAD:Assets/C#/Screens/MenuScreen.cs
         m_socketNetwork.GetFreeRooms();
         m_socketNetwork.GetChips(Session.Token);
-        //StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
 
-        Debug.Log("ID: " + Session.UId.ToString());
         m_name.text = Session.Name;
     }
 
@@ -82,8 +69,6 @@ public class MenuScreen : BaseScreen
     {
         MainThreadDispatcher.RunOnMainThread(() =>
         {
-            Debug.Log("FreeRoomsID");
-
             for (int i = _listOfFreeRooms.transform.childCount - 1; i >= 0; i--)
             {
                 Destroy(_listOfFreeRooms.transform.GetChild(i).gameObject);
@@ -101,17 +86,6 @@ public class MenuScreen : BaseScreen
                 _freeRoomPanel.transform.Find("Button").GetComponent<Button>().onClick.AddListener(() => { m_socketNetwork.EmitJoinRoom(RoomID); });
             }
         });
-=======
-=======
->>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/Screens/MenuScreen.cs
-=======
->>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/Screens/MenuScreen.cs
-        StartCoroutine(m_network.GetChips(Session.Token, GetChipsSuccessed, GetChipsFailed));
-        StartCoroutine(m_network.GetPlayerId(Session.Token, GetUIdSuccessed, GetUIdFailed));
-        StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
-        Debug.Log("ID: " + Session.UId.ToString());
-        m_name.text = Session.Name;
->>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/Screens/MenuScreen.cs
     }
 
     //////Value changing functions\\\\\\\\
@@ -149,7 +123,6 @@ public class MenuScreen : BaseScreen
     public void TypeGameValueChangedHandler()
     {
         m_typeOfGame = (ETypeGame)m_typeGameDropdown.value;
-        //this.Filter();
     }
     public void MaxPlayersValueChangedHandler()
     {
@@ -169,26 +142,6 @@ public class MenuScreen : BaseScreen
     }
 
 
-    ////////API funcions\\\\\\\\\\
-    //??????????????????????????\\
-
-    //LogOut
-    private void LogoutSuccessed()
-    {
-        Session.Token = string.Empty;
-        m_screenDirector.ActiveScreen(EScreens.StartScreen);
-    }
-    private void LogoutFailed(string resp)
-    {
-        Debug.LogError($"LogoutFailed:\n\t{resp}");
-        Session.Token = string.Empty;
-        m_screenDirector.ActiveScreen(EScreens.StartScreen);
-    }
-    public void ExitClickHandler()
-    {
-        //StartCoroutine(m_network.Logout(Session.Token, LogoutSuccessed, LogoutFailed));
-    }
-
     //Get chips
     public void GetChipsSuccessed(int chips)
     {
@@ -199,29 +152,51 @@ public class MenuScreen : BaseScreen
             else m_chips.text = "You dont have any chips";
         });
     }
-    private void GetChipsFailed(string resp)
-    {
-        Debug.LogError($"GetChipsFailed:\n\t{resp}");
-        m_chips.text = "Cant get your chips";
-    }
 
-    //Get Player Name
-    private void GetPlayerNameSuccessed(string name)
-    {
-        m_name.text = name;
-    }
-    private void GetPlayerNameFailed(string resp)
-    {
-        Debug.LogError($"GetPlayernameFailed:\n\t{resp}");
-        m_name.text = "Cant get your name";
-    }
-
+    
     ////////\\\\\\\\
     ///set avatar\\\
     ////////\\\\\\\\
-    public void SetAvatarClickHandler()
+    public void OpenFileExplorer()
     {
-        Debug.Log("dgbdgbdgb");
+#if UNITY_WEBGL && !UNITY_EDITOR
+        OpenFileExplorerWebGL();
+#else
+        OpenFileExplorerEditor();
+#endif
+    }
+
+    private void OpenFileExplorerEditor()
+    {
+        string[] extensions = { "png", "jpg", "jpeg" };
+        string path = EditorUtility.OpenFilePanel("Select Image", "", string.Join(",", extensions));
+
+        HandleSelectedFilePath(path);
+    }
+
+    private void OpenFileExplorerWebGL()
+    {
+        string jsCode = @"
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.onchange = (event) => {
+                const files = event.target.files;
+                if (files && files.length > 0) {
+                    const path = URL.createObjectURL(files[0]);
+                    UnitySendMessage('ImagePicker', 'HandleSelectedFilePath', path);
+                }
+            };
+            fileInput.click();
+        ";
+
+        Application.ExternalEval(jsCode);
+    }
+
+    private void HandleSelectedFilePath(string path)
+    {
+        m_socketNetwork.setAvatar(path);
+        m_socketNetwork.getAvatar(Session.UId);
     }
 
 
@@ -253,12 +228,10 @@ public class MenuScreen : BaseScreen
 
         if (m_bet == 0 || m_numberOfCards == 0 || m_maxPlayers == 0)
         {
-            Debug.Log("create room mistake");
             return;
         }
 
         m_socketNetwork.EmitCreateRoom(token, m_isPrivate, "", m_bet, m_numberOfCards, m_maxPlayers, m_typeOfGame);
-        Debug.Log("room was created");
     }
 
     //////\\\\\\\
@@ -279,27 +252,4 @@ public class MenuScreen : BaseScreen
             LeanTween.scale(MessageScreen, new Vector3(0, 0, 0), 1).setOnComplete(finishMessage);
         });
     }
-
-    //______\\
-    //Filter\\
-    /////\\\\\
-    //private bool IsRoomFallUnderFilter(RoomRow room)
-    //{
-    //    return !(m_bet == room.Bet && m_numberOfCards == room.NumberOfCards && room.TypeGame == m_typeOfGame && room.MaxNumberOfPlayers == m_maxPlayers);
-    //}
-    //private void Filter()
-    //{
-    //    foreach (DictionaryEntry entry in m_rooms)
-    //    {
-    //        RoomRow row = (RoomRow)entry.Value;
-    //        if (IsRoomFallUnderFilter(row))
-    //        {
-    //            row.gameObject.SetActive(false);
-    //        }
-    //        else
-    //        {
-    //            row.gameObject.SetActive(true);
-    //        }
-    //    }
-    //}
 }

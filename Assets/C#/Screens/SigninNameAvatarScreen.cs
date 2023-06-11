@@ -15,7 +15,6 @@ public class SigninNameAvatarScreen : BaseScreen
     void Start()
     {
         SocketNetwork.SignInSucsessed += SigninSuccessed;
-        SocketNetwork.SignInFailed += SigninFailed;
         SocketNetwork.error += PrintMaessage;
     }
 
@@ -28,10 +27,7 @@ public class SigninNameAvatarScreen : BaseScreen
         });
     }
 
-    private void SigninFailed()
-    {
-        Debug.LogError("LoginFailed");
-    }
+
 
     public void SigninClickHandler()
     {
