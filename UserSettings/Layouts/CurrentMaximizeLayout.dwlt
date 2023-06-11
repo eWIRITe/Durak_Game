@@ -23,6 +23,7 @@ MonoBehaviour:
     height: 939
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
@@ -30,11 +31,16 @@ MonoBehaviour:
 =======
 =======
 >>>>>>> parent of 1408e7d (finish)
+=======
+>>>>>>> parent of 1408e7d (finish)
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
   controlID: 125
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 1408e7d (finish)
+=======
 >>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
@@ -61,6 +67,7 @@ MonoBehaviour:
     serializedVersion: 2
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     x: 0
     y: 839
     width: 1512
@@ -73,11 +80,16 @@ MonoBehaviour:
 =======
 =======
 >>>>>>> parent of 1408e7d (finish)
+=======
+>>>>>>> parent of 1408e7d (finish)
     x: 287
     y: 73
     width: 1224
     height: 648
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 1408e7d (finish)
+=======
 >>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
@@ -169,7 +181,11 @@ MonoBehaviour:
   - {fileID: 4}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   - {fileID: 11}
+=======
+  - {fileID: 9}
+>>>>>>> parent of 1408e7d (finish)
 =======
   - {fileID: 9}
 >>>>>>> parent of 1408e7d (finish)
@@ -184,6 +200,7 @@ MonoBehaviour:
     height: 939
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
@@ -191,11 +208,16 @@ MonoBehaviour:
 =======
 =======
 >>>>>>> parent of 1408e7d (finish)
+=======
+>>>>>>> parent of 1408e7d (finish)
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
   controlID: 126
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 1408e7d (finish)
+=======
 >>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
@@ -221,6 +243,7 @@ MonoBehaviour:
     width: 1513
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     height: 766
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
@@ -229,12 +252,17 @@ MonoBehaviour:
 =======
 =======
 >>>>>>> parent of 1408e7d (finish)
+=======
+>>>>>>> parent of 1408e7d (finish)
     height: 669
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
   controlID: 127
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 1408e7d (finish)
+=======
 >>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
@@ -257,8 +285,13 @@ MonoBehaviour:
     y: 0
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     width: 261
     height: 766
+=======
+    width: 287
+    height: 669
+>>>>>>> parent of 1408e7d (finish)
 =======
     width: 287
     height: 669
@@ -299,6 +332,7 @@ MonoBehaviour:
     y: 73
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     width: 260
     height: 745
   m_SerializedDataModeController:
@@ -306,6 +340,10 @@ MonoBehaviour:
     m_PreferredDataMode: 0
     m_SupportedDataModes: 
     isAutomatic: 1
+=======
+    width: 286
+    height: 648
+>>>>>>> parent of 1408e7d (finish)
 =======
     width: 286
     height: 648
@@ -324,9 +362,15 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       m_SelectedIDs: 9e4c0000
       m_LastClickedID: 0
       m_ExpandedIDs: 7a5cfefff86afeff14a3feff60b0feff68b0fefffac1feff02c2feff36cafeff3ecafeff88d4feff90d4feffcce8feffdcf5feff78fafeff80fafeff3c13ffff4413ffff201bffff4c1bffff5021ffff7c21ffffd42bffffd636ffffca3cffff2a60ffff3260ffffd479ffffbcecffffc4ecffff2cfbffff3659000098590000ee5f0000e6600000f262000038650000646900005e6a0000d26a0000d46a0000886b0000c06b0000d46e0000486f0000
+=======
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: e08bffff2c9dffffaefaffff8058000098580000ac5800002a59000062590000525f0000526000005663000000640000d2690000026f0000
+>>>>>>> parent of 1408e7d (finish)
 =======
       m_SelectedIDs: 
       m_LastClickedID: 0
@@ -377,10 +421,17 @@ MonoBehaviour:
     serializedVersion: 2
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     x: 261
     y: 0
     width: 1252
     height: 766
+=======
+    x: 287
+    y: 0
+    width: 1226
+    height: 669
+>>>>>>> parent of 1408e7d (finish)
 =======
     x: 287
     y: 0
@@ -400,8 +451,12 @@ MonoBehaviour:
   - {fileID: 8}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   - {fileID: 9}
   - {fileID: 10}
+=======
+  - {fileID: 2}
+>>>>>>> parent of 1408e7d (finish)
 =======
   - {fileID: 2}
 >>>>>>> parent of 1408e7d (finish)
@@ -433,6 +488,7 @@ MonoBehaviour:
     serializedVersion: 2
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     x: 261
     y: 73
     width: 1250
@@ -445,11 +501,16 @@ MonoBehaviour:
 =======
 =======
 >>>>>>> parent of 1408e7d (finish)
+=======
+>>>>>>> parent of 1408e7d (finish)
     x: 287
     y: 73
     width: 1224
     height: 648
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 1408e7d (finish)
+=======
 >>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
@@ -769,9 +830,15 @@ MonoBehaviour:
   m_Position:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_Target: {x: 1.2457258, y: 0.18204731, z: 0.5308366}
     speed: 2
     m_Value: {x: 1.2457258, y: 0.18204731, z: 0.5308366}
+=======
+    m_Target: {x: 323.50433, y: 77.50447, z: 1.6782272}
+    speed: 2
+    m_Value: {x: 323.50433, y: 77.50447, z: 1.6782272}
+>>>>>>> parent of 1408e7d (finish)
 =======
     m_Target: {x: 323.50433, y: 77.50447, z: 1.6782272}
     speed: 2
@@ -833,9 +900,15 @@ MonoBehaviour:
   m_Size:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_Target: 5.6963243
     speed: 2
     m_Value: 5.6963243
+=======
+    m_Target: 384.8799
+    speed: 2
+    m_Value: 384.8799
+>>>>>>> parent of 1408e7d (finish)
 =======
     m_Target: 384.8799
     speed: 2
@@ -878,6 +951,7 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   m_EditorHideFlags: 1
@@ -1018,6 +1092,8 @@ MonoBehaviour:
 >>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
+=======
+>>>>>>> parent of 1408e7d (finish)
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: ConsoleWindow
@@ -1026,6 +1102,7 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     y: 766
@@ -1040,6 +1117,20 @@ MonoBehaviour:
   m_Selected: 1
   m_LastSelected: 0
 --- !u!114 &12
+=======
+    y: 669
+    width: 1513
+    height: 270
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_ActualView: {fileID: 11}
+  m_Panes:
+  - {fileID: 10}
+  - {fileID: 11}
+  m_Selected: 1
+  m_LastSelected: 0
+--- !u!114 &10
+>>>>>>> parent of 1408e7d (finish)
 =======
     y: 669
     width: 1513
@@ -1131,6 +1222,7 @@ MonoBehaviour:
   m_FolderTreeState:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: e8730000
     m_LastClickedID: 29672
@@ -1138,11 +1230,16 @@ MonoBehaviour:
 =======
 =======
 >>>>>>> parent of 1408e7d (finish)
+=======
+>>>>>>> parent of 1408e7d (finish)
     scrollPos: {x: 0, y: 207}
     m_SelectedIDs: 32570000
     m_LastClickedID: 22322
     m_ExpandedIDs: 000000001a5700001c5700001e5700003a570000567e000000ca9a3b
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 1408e7d (finish)
+=======
 >>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
@@ -1163,7 +1260,11 @@ MonoBehaviour:
       m_IsRenamingFilename: 1
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       m_ClientGUIView: {fileID: 11}
+=======
+      m_ClientGUIView: {fileID: 9}
+>>>>>>> parent of 1408e7d (finish)
 =======
       m_ClientGUIView: {fileID: 9}
 >>>>>>> parent of 1408e7d (finish)
@@ -1183,7 +1284,11 @@ MonoBehaviour:
     m_LastClickedID: 0
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_ExpandedIDs: 00000000cc730000ce730000d0730000d2730000d4730000d6730000d8730000da730000dc730000de730000e0730000
+=======
+    m_ExpandedIDs: 000000001e57000000ca9a3b
+>>>>>>> parent of 1408e7d (finish)
 =======
     m_ExpandedIDs: 000000001e57000000ca9a3b
 >>>>>>> parent of 1408e7d (finish)
@@ -1216,8 +1321,13 @@ MonoBehaviour:
   m_ListAreaState:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_SelectedInstanceIDs: 9e4c0000
     m_LastClickedInstanceID: 19614
+=======
+    m_SelectedInstanceIDs: d08affff
+    m_LastClickedInstanceID: -30000
+>>>>>>> parent of 1408e7d (finish)
 =======
     m_SelectedInstanceIDs: d08affff
     m_LastClickedInstanceID: -30000
@@ -1245,7 +1355,11 @@ MonoBehaviour:
       m_IsRenamingFilename: 1
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       m_ClientGUIView: {fileID: 11}
+=======
+      m_ClientGUIView: {fileID: 9}
+>>>>>>> parent of 1408e7d (finish)
 =======
       m_ClientGUIView: {fileID: 9}
 >>>>>>> parent of 1408e7d (finish)
@@ -1265,8 +1379,11 @@ MonoBehaviour:
   m_DirectoriesAreaWidth: 207
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!114 &13
 =======
+=======
+>>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
 --- !u!114 &11
@@ -1300,6 +1417,9 @@ MonoBehaviour:
     m_SaveData: []
 --- !u!114 &12
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 1408e7d (finish)
+=======
 >>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
@@ -1355,11 +1475,14 @@ MonoBehaviour:
     height: 918
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
     m_SupportedDataModes: 
     isAutomatic: 1
+=======
+>>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
 =======

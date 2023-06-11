@@ -22272,11 +22272,14 @@ MonoBehaviour:
   m_isPrivateDropdown: {fileID: 4225990606284865378}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   _listOfFreeRooms: {fileID: 4225990606097603693}
   FreeRoomPanel: {fileID: 2218199813451837152, guid: 9370cfe332c13734d850869257a08b49,
     type: 3}
   MessageScreen: {fileID: 558224551}
   MessageText: {fileID: 1752765240}
+=======
+>>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
 =======

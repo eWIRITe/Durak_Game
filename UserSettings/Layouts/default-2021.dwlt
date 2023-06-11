@@ -21,7 +21,11 @@ MonoBehaviour:
   m_ShowMode: 4
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_Title: Hierarchy
+=======
+  m_Title: Console
+>>>>>>> parent of 1408e7d (finish)
 =======
   m_Title: Console
 >>>>>>> parent of 1408e7d (finish)
@@ -129,7 +133,11 @@ MonoBehaviour:
   vertical: 0
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   controlID: 63
+=======
+  controlID: 73
+>>>>>>> parent of 1408e7d (finish)
 =======
   controlID: 73
 >>>>>>> parent of 1408e7d (finish)
@@ -162,7 +170,11 @@ MonoBehaviour:
   vertical: 1
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   controlID: 40
+=======
+  controlID: 74
+>>>>>>> parent of 1408e7d (finish)
 =======
   controlID: 74
 >>>>>>> parent of 1408e7d (finish)
@@ -195,7 +207,11 @@ MonoBehaviour:
   vertical: 0
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   controlID: 41
+=======
+  controlID: 45
+>>>>>>> parent of 1408e7d (finish)
 =======
   controlID: 45
 >>>>>>> parent of 1408e7d (finish)
@@ -255,10 +271,13 @@ MonoBehaviour:
   - {fileID: 15}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   - {fileID: 16}
   m_Selected: 1
   m_LastSelected: 0
 =======
+=======
+>>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
   m_Selected: 0
@@ -299,6 +318,9 @@ MonoBehaviour:
   - {fileID: 12}
   - {fileID: 16}
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 1408e7d (finish)
+=======
 >>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
@@ -327,7 +349,11 @@ MonoBehaviour:
   m_MaxSize: {x: 4001, y: 4021}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_ActualView: {fileID: 18}
+=======
+  m_ActualView: {fileID: 17}
+>>>>>>> parent of 1408e7d (finish)
 =======
   m_ActualView: {fileID: 17}
 >>>>>>> parent of 1408e7d (finish)
@@ -347,6 +373,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 1
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   m_Script: {fileID: 12003, guid: 0000000000000000e000000000000000, type: 0}
@@ -377,6 +404,16 @@ MonoBehaviour:
     m_Text: Project
     m_Image: {fileID: -5467254957812901981, guid: 0000000000000000d000000000000000,
 >>>>>>> parent of 1408e7d (finish)
+=======
+  m_Script: {fileID: 12014, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MinSize: {x: 230, y: 250}
+  m_MaxSize: {x: 10000, y: 10000}
+  m_TitleContent:
+    m_Text: Project
+    m_Image: {fileID: -5467254957812901981, guid: 0000000000000000d000000000000000,
+>>>>>>> parent of 1408e7d (finish)
       type: 0}
     m_Tooltip: 
   m_Pos:
@@ -384,9 +421,15 @@ MonoBehaviour:
     x: 0
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     y: 749
     width: 1512
     height: 242
+=======
+    y: 742
+    width: 1512
+    height: 249
+>>>>>>> parent of 1408e7d (finish)
 =======
     y: 742
     width: 1512
@@ -403,8 +446,11 @@ MonoBehaviour:
     m_SaveData: []
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_OverlaysVisible: 1
 =======
+=======
+>>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
   m_SearchFilter:
@@ -520,6 +566,9 @@ MonoBehaviour:
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 207
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 1408e7d (finish)
+=======
 >>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
@@ -558,9 +607,15 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       m_SelectedIDs: 
       m_LastClickedID: 0
       m_ExpandedIDs: 0ce4ffff40e4ffff96e5ffffa0e5ffff94e7ffffcae7ffffcce7ffffd6e7ffff5ae8ffff90e8ffff92e8ffff9ce8ffffbee9fffff2e9ffff48ebffff52ebffff72f1ffffa8f1fffffef2ffff08f3ffff50f5ffff88f5ffff8af5ffff94f5ffff1ef6ffff56f6ffff80f6ffff8af6ffff36fbffff
+=======
+      m_SelectedIDs: 64100000
+      m_LastClickedID: 0
+      m_ExpandedIDs: ba7affffc27affff547bffff3aeaffff70eaffff72eaffff74ebfffffeebffff34ecffff8cedffff8eeeffff38fbffff7c240100e0240100e0250100e42801008e290100602f010090340100
+>>>>>>> parent of 1408e7d (finish)
 =======
       m_SelectedIDs: 64100000
       m_LastClickedID: 0
@@ -823,9 +878,15 @@ MonoBehaviour:
   m_Position:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_Target: {x: 557.7921, y: 297.47748, z: -11.923481}
     speed: 2
     m_Value: {x: 557.7921, y: 297.47748, z: -11.923481}
+=======
+    m_Target: {x: 590.4657, y: 337.58344, z: -3.9296885}
+    speed: 2
+    m_Value: {x: 590.4657, y: 337.58344, z: -3.9296885}
+>>>>>>> parent of 1408e7d (finish)
 =======
     m_Target: {x: 590.4657, y: 337.58344, z: -3.9296885}
     speed: 2
@@ -888,9 +949,15 @@ MonoBehaviour:
   m_Size:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_Target: 374.3138
     speed: 2
     m_Value: 374.3138
+=======
+    m_Target: 428.13855
+    speed: 2
+    m_Value: 428.13855
+>>>>>>> parent of 1408e7d (finish)
 =======
     m_Target: 428.13855
     speed: 2
@@ -1060,6 +1127,7 @@ MonoBehaviour:
   m_EditorHideFlags: 1
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_Script: {fileID: 12014, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -1071,6 +1139,8 @@ MonoBehaviour:
 =======
 =======
 >>>>>>> parent of 1408e7d (finish)
+=======
+>>>>>>> parent of 1408e7d (finish)
   m_Script: {fileID: 12003, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -1080,6 +1150,9 @@ MonoBehaviour:
     m_Text: Console
     m_Image: {fileID: -4327648978806127646, guid: 0000000000000000d000000000000000,
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 1408e7d (finish)
+=======
 >>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
@@ -1089,6 +1162,7 @@ MonoBehaviour:
     serializedVersion: 2
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     x: 0
     y: 749
     width: 1512
@@ -1096,11 +1170,16 @@ MonoBehaviour:
 =======
 =======
 >>>>>>> parent of 1408e7d (finish)
+=======
+>>>>>>> parent of 1408e7d (finish)
     x: -32000
     y: -31301
     width: 1512
     height: 249
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 1408e7d (finish)
+=======
 >>>>>>> parent of 1408e7d (finish)
 =======
 >>>>>>> parent of 1408e7d (finish)
@@ -1108,6 +1187,7 @@ MonoBehaviour:
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     m_OverlaysVisible: 1
@@ -1224,6 +1304,9 @@ MonoBehaviour:
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 207
 --- !u!114 &18
+=======
+--- !u!114 &17
+>>>>>>> parent of 1408e7d (finish)
 =======
 --- !u!114 &17
 >>>>>>> parent of 1408e7d (finish)

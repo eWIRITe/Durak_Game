@@ -49,6 +49,9 @@ namespace JSON
 
         public uint RoomOwnerID;
 <<<<<<< HEAD:Assets/C#/JSON/ClientRoom.cs
+<<<<<<< HEAD:Assets/C#/JSON/ClientRoom.cs
+>>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/JSON/ClientRoom.cs
+=======
 >>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/JSON/ClientRoom.cs
 =======
 >>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/JSON/ClientRoom.cs

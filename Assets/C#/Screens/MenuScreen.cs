@@ -24,6 +24,7 @@ public class MenuScreen : BaseScreen
 
 <<<<<<< HEAD:Assets/C#/Screens/MenuScreen.cs
 <<<<<<< HEAD:Assets/C#/Screens/MenuScreen.cs
+<<<<<<< HEAD:Assets/C#/Screens/MenuScreen.cs
     [Header("free rooms")]
     public VerticalLayoutGroup _listOfFreeRooms;
     public GameObject FreeRoomPanel;
@@ -32,6 +33,8 @@ public class MenuScreen : BaseScreen
     public GameObject MessageScreen;
     public TMP_Text MessageText;
 
+=======
+>>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/Screens/MenuScreen.cs
 =======
 >>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/Screens/MenuScreen.cs
 =======
@@ -66,6 +69,7 @@ public class MenuScreen : BaseScreen
     {
 <<<<<<< HEAD:Assets/C#/Screens/MenuScreen.cs
 <<<<<<< HEAD:Assets/C#/Screens/MenuScreen.cs
+<<<<<<< HEAD:Assets/C#/Screens/MenuScreen.cs
         m_socketNetwork.GetFreeRooms();
         m_socketNetwork.GetChips(Session.Token);
         //StartCoroutine(m_network.GetAvatar(Session.UId, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
@@ -98,6 +102,8 @@ public class MenuScreen : BaseScreen
             }
         });
 =======
+=======
+>>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/Screens/MenuScreen.cs
 =======
 >>>>>>> parent of 1408e7d (finish):Assets/C#/Scripts/Screens/MenuScreen.cs
         StartCoroutine(m_network.GetChips(Session.Token, GetChipsSuccessed, GetChipsFailed));

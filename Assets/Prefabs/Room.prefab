@@ -2221,11 +2221,15 @@ MonoBehaviour:
   ScreenWith: 1980
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   PlaceMultiplyer: 20
   RotationMultiplyer: 1
   StartScreen: {fileID: 8674856851356497280}
   OwnerStartGameButton: {fileID: 8674856851083822141}
   PlayerCard: {fileID: 0}
+=======
+  MaxUsersLise: -24
+>>>>>>> parent of 1408e7d (finish)
 =======
   MaxUsersLise: -24
 >>>>>>> parent of 1408e7d (finish)
