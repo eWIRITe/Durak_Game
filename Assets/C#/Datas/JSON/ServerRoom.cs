@@ -4,7 +4,7 @@ namespace JSON
     {
         public string token;
 
-        public bool isPrivate;
+        public int isPrivate;
 
         public string key;
 

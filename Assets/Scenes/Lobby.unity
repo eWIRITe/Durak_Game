@@ -97,7 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 03a2cd8757e6b62488f17637be8c5585,
+    type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -20011,7 +20012,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4225990604896280642}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b28ab31f33d31aa438a185b8311468c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 69028098561d54d49b56e9a3e44a8165, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ID_text: {fileID: 1612735818}
@@ -20026,7 +20027,7 @@ MonoBehaviour:
   CollectionsScreen: {fileID: 4225990606176601436}
   RewardsScreen: {fileID: 4225990605026400791}
   SkinsScreen: {fileID: 2083771200841315704}
-  AdminPanel: {fileID: 1168305001}
+  AdminPanel: {fileID: 1056476331}
 --- !u!224 &4225990604902707476
 RectTransform:
   m_ObjectHideFlags: 0
@@ -36805,7 +36806,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 300, y: -93.85}
+  m_AnchoredPosition: {x: 300, y: -93.850006}
   m_SizeDelta: {x: 1000, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4225990605501613270

@@ -74,6 +74,7 @@ public class MenuScreen : BaseScreen
                 Destroy(_listOfFreeRooms.transform.GetChild(i).gameObject);
             }
 
+            if (FreeRoomsID.Length <= 0) return;
 
             foreach (uint RoomID in FreeRoomsID)
             {

@@ -139,6 +139,8 @@ public class SocketNetwork : MonoBehaviour
     {
         JSON.MessageData data = JsonConvert.DeserializeObject<JSON.MessageData>(message);
 
+        Debug.Log(data.data.ToString());
+
         switch (data.eventType)
         {
 
@@ -229,7 +231,7 @@ public class SocketNetwork : MonoBehaviour
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
                     var freeRoomsID = JsonConvert.DeserializeObject<JSON.FreeRooms>(data.data);
-                    roomChange?.Invoke(freeRoomsID.freeRooms);
+                    roomChange?.Invoke(freeRoomsID.FreeRoomsID);
                 });
                 break;
 
@@ -474,7 +476,7 @@ public class SocketNetwork : MonoBehaviour
         var createRoomData = new JSON.ServerCreateRoom()
         {
             token = token,
-            isPrivate = isPrivate == 0?false:true,
+            isPrivate = isPrivate,
             key = key,
             bet = bet,
             cards = cards,

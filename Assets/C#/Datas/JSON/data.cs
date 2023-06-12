@@ -2,7 +2,7 @@ namespace JSON
 {
     public class FreeRooms
     {
-        public uint[] freeRooms;
+        public uint[] FreeRoomsID;
     }
 
     public class PlayersInRoom
