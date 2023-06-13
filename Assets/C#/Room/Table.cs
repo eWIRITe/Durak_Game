@@ -226,16 +226,73 @@ public class Table : BaseScreen
         return false;
     }
 
+    List<GameCard> possibleToBeatCards = new List<GameCard>();
     public GameCard FindCardToBeat(GameCard card)
     {
         foreach (CardPair cardPair in TableCardPairs)
         {
             if (!cardPair.isFull)
             {
-                if (((int)cardPair.FirstCard.GetComponent<GameCard>().Nominal) < ((int)card.Nominal)) { return cardPair.FirstCard.GetComponent<GameCard>(); }
+                if (card.Suit == _roomRow.Trump)
+                {
+                    if (cardPair.FirstCard.GetComponent<GameCard>().Suit != _roomRow.Trump)
+                    {
+                        possibleToBeatCards.Add(cardPair.FirstCard.GetComponent<GameCard>());
+                    }
+                    else
+                    {
+                        if (((int)cardPair.FirstCard.GetComponent<GameCard>().Nominal) < ((int)card.Nominal))
+                        {
+                            possibleToBeatCards.Add(cardPair.FirstCard.GetComponent<GameCard>());
+                        }
+                    }
+                }
+                else
+                {
+                    if (cardPair.FirstCard.GetComponent<GameCard>().Suit != _roomRow.Trump)
+                    {
+                        if (((int)cardPair.FirstCard.GetComponent<GameCard>().Nominal) <= ((int)card.Nominal))
+                        {
+                            possibleToBeatCards.Add(cardPair.FirstCard.GetComponent<GameCard>());
+                        }
+                    }
+                }
+
             }
         }
-        return null;
+
+        if (possibleToBeatCards.Count != 0)
+        { 
+            possibleToBeatCards.Sort((x, y) =>
+            {
+                GameCard cardX = x.GetComponent<GameCard>();
+                GameCard cardY = y.GetComponent<GameCard>();
+
+                // Check if cards are trumps
+                bool isTrumpX = cardX.Suit == _roomRow.Trump;
+                bool isTrumpY = cardY.Suit == _roomRow.Trump;
+
+                // Sort trumps to the end
+                if (isTrumpX && !isTrumpY)
+                    return 1;
+                if (!isTrumpX && isTrumpY)
+                    return -1;
+
+                // Sort non-trump cards by nominal (from smaller to bigger)
+                int result = cardX.Nominal.CompareTo(cardY.Nominal);
+                if (result != 0)
+                    return result;
+
+                // If both cards have the same nominal, sort them by suit (to maintain order within the same nominal)
+                return cardX.Suit.CompareTo(cardY.Suit);
+            });
+
+            return possibleToBeatCards[possibleToBeatCards.Count - 1];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     Vector3 newPos;

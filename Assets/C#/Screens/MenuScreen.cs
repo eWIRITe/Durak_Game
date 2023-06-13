@@ -7,7 +7,8 @@ using System.Runtime.InteropServices;
 using UnityEngine.EventSystems;
 using System.IO;
 using TMPro;
-using UnityEditor;
+using SimpleFileBrowser;
+using UnityEngine.Events;
 
 public class MenuScreen : BaseScreen
 {
@@ -160,19 +161,20 @@ public class MenuScreen : BaseScreen
     ////////\\\\\\\\
     public void OpenFileExplorer()
     {
-#if UNITY_WEBGL && !UNITY_EDITOR
-        OpenFileExplorerWebGL();
-#else
-        OpenFileExplorerEditor();
-#endif
+        // Set the file filter to image files
+        FileBrowser.SetFilters(true, new FileBrowser.Filter("Images", ".png", ".jpg", ".jpeg", ".gif"));
+
+        // Show the file dialog
+        FileBrowser.ShowLoadDialog(HandleSelectedFilePath, null, FileBrowser.PickMode.Files, false, null, null, "Select Image", "Select");
     }
+    /*
 
     private void OpenFileExplorerEditor()
     {
-        string[] extensions = { "png", "jpg", "jpeg" };
-        string path = EditorUtility.OpenFilePanel("Select Image", "", string.Join(",", extensions));
+        //string[] extensions = { "png", "jpg", "jpeg" };
+        //string path = EditorUtility.OpenFilePanel("Select Image", "", string.Join(",", extensions));
 
-        HandleSelectedFilePath(path);
+        //HandleSelectedFilePath(path);
     }
 
     private void OpenFileExplorerWebGL()
@@ -192,14 +194,19 @@ public class MenuScreen : BaseScreen
         ";
 
         Application.ExternalEval(jsCode);
-    }
+    }*/
 
-    private void HandleSelectedFilePath(string path)
+    private void HandleSelectedFilePath(string[] path)
     {
-        m_socketNetwork.setAvatar(path);
+        if (path.Length > 0)
+        {
+            string imagePath = path[0];
+            m_socketNetwork.setAvatar(imagePath);
+        }
+
         m_socketNetwork.getAvatar(Session.UId);
     }
-
+    
 
 
     ////////Screens\\\\\\\\\

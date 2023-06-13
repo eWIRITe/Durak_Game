@@ -151,7 +151,7 @@ public class SocketNetwork : MonoBehaviour
             case "cl_enterInTheRoom":
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
-                    var enterRoomData = JsonConvert.DeserializeObject<JSON.ServerJoinRoom>(data.data);
+                    var enterRoomData = JsonConvert.DeserializeObject<JSON.ClientJoinRoom>(data.data);
 
                     Session.RoomID = enterRoomData.RoomID;
 
@@ -493,6 +493,7 @@ public class SocketNetwork : MonoBehaviour
         var joinRoomData = new JSON.ServerJoinRoom()
         {
             Token = Session.Token,
+            key = "",
             RoomID = (uint)RoomID
         };
 
@@ -562,7 +563,8 @@ public class SocketNetwork : MonoBehaviour
     {
         var foldData = new JSON.Token()
         {
-            token = Session.Token
+            token = Session.Token,
+            RoomID = Session.RoomID
         };
 
         SendMessageToServer("srv_fold", foldData);
@@ -665,5 +667,18 @@ public class SocketNetwork : MonoBehaviour
         
         SendMessageToServer("setAvatar", avatarData);
         Debug.Log("avatar is setted: " + avatarData.ToString());
+    }
+
+    ///////\\\\\\
+    /// admin \\\
+    public void admin_getChips(int newChips)
+    {
+        var data = new JSON.ClientData
+        {
+            token = Session.Token,
+            chips = newChips
+        };
+
+        SendMessageToServer("admin_getChips", data);
     }
 }

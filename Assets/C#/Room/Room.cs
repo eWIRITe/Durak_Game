@@ -37,6 +37,7 @@ public class Room : MonoBehaviour
         ScreenWith = Screen.width;
 
         m_socketNetwork = GameObject.FindGameObjectWithTag("SocketNetwork").GetComponent<SocketNetwork>();
+        m_socketNetwork.GetAllRoomPlayersID();
         SocketNetwork.ready += OnReady;
 
         SocketNetwork.cl_grab += cl_Grab;

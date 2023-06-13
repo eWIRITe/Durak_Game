@@ -17,6 +17,7 @@ namespace JSON
 
     public class ClientData
     {
+        public string token;
         public int chips;
     }
 }

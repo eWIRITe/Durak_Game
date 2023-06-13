@@ -22,7 +22,8 @@ public class User : BaseScreen
         UserID = ID;
         UId.text = "ID: " + ID.ToString();
 
-        //StartCoroutine(m_network.GetAvatar(UserID, sucsessed => { Avatar.sprite = Sprite.Create(sucsessed, new Rect(0, 0, sucsessed.width, sucsessed.height), Vector2.one / 2.0f); }, fail => { Debug.Log(fail); }));
+        Avatar.UserID = ID;
+        m_socketNetwork.getAvatar(ID);
     }
 
     public void PrintMessage(string massege)

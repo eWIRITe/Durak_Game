@@ -6,6 +6,8 @@ public class ScreenDirector : BaseScreen
 {
     public TMP_Text ID_text;
 
+    public AvatarScr avatar;
+
     public GameObject StartScreen;
     public GameObject SignInScreen;
     public GameObject LoginScreenl;
@@ -112,6 +114,9 @@ public class ScreenDirector : BaseScreen
     public void UpdateID(uint ID)
     {
         if(ID != 0) ID_text.text = "ID: " + ID.ToString();
+        avatar.UserID = ID;
+
+        m_socketNetwork.getAvatar(ID);
     }
 
     public void activeAdminPanel()

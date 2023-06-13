@@ -21,13 +21,13 @@ namespace JSON
 
     public class ServerJoinRoom
     {
+        public uint uid;
+
         public string Token;
 
         public uint RoomID;
 
         public string key;
-
-        public uint RoomOwnerID;
 
         public uint roomOwner;
 

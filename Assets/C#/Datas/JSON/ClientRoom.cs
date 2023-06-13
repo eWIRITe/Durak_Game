@@ -34,7 +34,7 @@ namespace JSON
 
         public uint cards;
 
-        public ETypeGame type;
+        public int type;
 
         public uint bet;
 

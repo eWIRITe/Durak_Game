@@ -44,6 +44,7 @@ public class RoomRow : MonoBehaviour
     {
         GameUI = GetComponent<GameUIs>();
         m_socketNetwork = GameObject.FindGameObjectWithTag("SocketNetwork").GetComponent<SocketNetwork>();
+        SocketNetwork.changePlayers += UpdateRoomPlayers;
     }
 
     public void Init(uint roomID) 
@@ -59,6 +60,27 @@ public class RoomRow : MonoBehaviour
 
         PlayerAvatar.UserID = Session.UId;
         m_socketNetwork.getAvatar(Session.UId);
+    }
+
+    private void UpdateRoomPlayers(uint[] PlayersID)
+    {
+        List<uint> usersID = new List<uint>();
+        foreach (User _user in roomPlayers)
+        {
+            usersID.Add(_user.UserID);
+        }
+
+        foreach (uint ID in PlayersID)
+        {
+            if (ID == Session.UId)
+            {
+                break;
+            }
+            else
+            {
+                _room.NewPlayerJoin(ID);
+            }
+        }
     }
 
     public void ExitClickHandler()
