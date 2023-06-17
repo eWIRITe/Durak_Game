@@ -5321,7 +5321,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1
@@ -5723,7 +5723,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
@@ -7166,7 +7166,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1
@@ -7476,7 +7476,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4225990604478096904}
+      - m_Target: {fileID: 4225990604495315792}
         m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
         m_MethodName: setStyle
         m_Mode: 1
@@ -9848,7 +9848,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 18
     m_FontStyle: 1
     m_BestFit: 1
@@ -13610,7 +13610,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4225990604478096904}
+      - m_Target: {fileID: 4225990604717656444}
         m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
         m_MethodName: setStyle
         m_Mode: 1
@@ -14266,19 +14266,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4225990604967248604}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 4225990606176601436}
+      - m_Target: {fileID: 1153157686}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -14290,10 +14278,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1153157686}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 4225990604967248608}
+        m_TargetAssemblyTypeName: MenuScreen, Assembly-CSharp
+        m_MethodName: CollectionsClickHandler
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -15693,7 +15681,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1
@@ -16230,7 +16218,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
@@ -16284,7 +16272,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4225990604822168009
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17691,7 +17679,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 14
     m_FontStyle: 1
     m_BestFit: 1
@@ -18628,7 +18616,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 14
     m_FontStyle: 1
     m_BestFit: 1
@@ -19919,7 +19907,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4225990604961639282
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20714,7 +20702,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 28
     m_FontStyle: 1
     m_BestFit: 1
@@ -22714,7 +22702,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4225990604478096904}
+      - m_Target: {fileID: 4225990605074753728}
         m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
         m_MethodName: setStyle
         m_Mode: 1
@@ -25037,7 +25025,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 25
     m_FontStyle: 1
     m_BestFit: 1
@@ -26840,7 +26828,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
@@ -30690,7 +30678,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1
@@ -32546,7 +32534,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1
@@ -38493,7 +38481,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4225990605739580585
 RectTransform:
   m_ObjectHideFlags: 0
@@ -39223,7 +39211,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4225990604478096904}
+      - m_Target: {fileID: 4225990605760387004}
         m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
         m_MethodName: setStyle
         m_Mode: 1
@@ -42011,7 +41999,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 14
     m_FontStyle: 1
     m_BestFit: 1
@@ -47271,7 +47259,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4225990604478096904}
+      - m_Target: {fileID: 4225990606099004856}
         m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
         m_MethodName: setStyle
         m_Mode: 1
@@ -47568,7 +47556,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 14
     m_FontStyle: 1
     m_BestFit: 1
@@ -47837,7 +47825,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4225990606115385095
 RectTransform:
   m_ObjectHideFlags: 0
@@ -48031,7 +48019,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4225990606138901286
 RectTransform:
   m_ObjectHideFlags: 0
@@ -48773,8 +48761,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1df8b51331e905b42b60f812aaee189b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActiveSprite: {fileID: 0}
-  notActiveSprite: {fileID: 0}
+  ActiveSprite: {fileID: 21300000, guid: 861c0ff13fcdc7e40abb695032e071a4, type: 3}
+  notActiveSprite: {fileID: 21300000, guid: 9af5847fe124b5544848f44070a618b0, type: 3}
   standart_style: {fileID: 4225990605760387003}
   Russian_style: {fileID: 4225990606233965619}
   nature_middleLine_style: {fileID: 4225990604495315789}
@@ -48805,7 +48793,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1
@@ -50374,7 +50362,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4225990604478096904}
+      - m_Target: {fileID: 4225990606233965620}
         m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
         m_MethodName: setStyle
         m_Mode: 1
@@ -50837,7 +50825,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4225990604478096904}
+      - m_Target: {fileID: 4225990606270414312}
         m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
         m_MethodName: setStyle
         m_Mode: 1
@@ -51026,7 +51014,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4225990604478096904}
+      - m_Target: {fileID: 4225990606271996016}
         m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
         m_MethodName: setStyle
         m_Mode: 1
@@ -51721,7 +51709,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1
@@ -51991,7 +51979,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
@@ -52033,7 +52021,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1
@@ -52151,7 +52139,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 28
     m_FontStyle: 1
     m_BestFit: 1
@@ -52619,7 +52607,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1
@@ -53341,7 +53329,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1
@@ -53865,7 +53853,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: e4a467a8fcc8d0f4b9d3d6aa41a169cc, type: 3}
+    m_Font: {fileID: 12800000, guid: 975fa20a5c4e231488d2b9c8bae1c8de, type: 3}
     m_FontSize: 14
     m_FontStyle: 1
     m_BestFit: 1
@@ -55653,7 +55641,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4225990606423641859
 RectTransform:
   m_ObjectHideFlags: 0
