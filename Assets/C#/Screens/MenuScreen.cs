@@ -19,6 +19,7 @@ public class MenuScreen : BaseScreen
 
     [Header("Create new room UI")]
     public Slider m_betSlider;
+    public Image sliderImage;
     public Dropdown m_cardsDropdown;
     public Dropdown m_typeGameDropdown;
     public Dropdown m_maxPlayersDropdown;
@@ -98,10 +99,41 @@ public class MenuScreen : BaseScreen
         try
         {
             uint value = (uint)Mathf.RoundToInt(m_betSlider.value);
-            m_betText.text = m_betValues[value].ToString();
-            m_bet = m_betValues[value];
-            //this.Filter();
 
+            switch (m_betValues[value])
+            {
+                case 100:
+                    m_betText.text = "100";
+                    break;
+                case 500:
+                    m_betText.text = "500";
+                    break;
+                case 2000:
+                    m_betText.text = "2 K";
+                    break;
+                case 5000:
+                    m_betText.text = "5 K";
+                    break;
+                case 10000:
+                    m_betText.text = "10 K";
+                    break;
+                case 50000:
+                    m_betText.text = "50 K";
+                    break;
+                case 100000:
+                    m_betText.text = "100 K";
+                    break;
+                case 500000:
+                    m_betText.text = "500 K";
+                    break;
+                case 1000000:
+                    m_betText.text = "1 M";
+                    break;
+                case 10000000:
+                    m_betText.text = "10 M";
+                    break;
+            }
+            m_bet = m_betValues[value];
         }
         catch (Exception)
         {
@@ -167,34 +199,6 @@ public class MenuScreen : BaseScreen
         // Show the file dialog
         FileBrowser.ShowLoadDialog(HandleSelectedFilePath, null, FileBrowser.PickMode.Files, false, null, null, "Select Image", "Select");
     }
-    /*
-
-    private void OpenFileExplorerEditor()
-    {
-        //string[] extensions = { "png", "jpg", "jpeg" };
-        //string path = EditorUtility.OpenFilePanel("Select Image", "", string.Join(",", extensions));
-
-        //HandleSelectedFilePath(path);
-    }
-
-    private void OpenFileExplorerWebGL()
-    {
-        string jsCode = @"
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = 'image/*';
-            fileInput.onchange = (event) => {
-                const files = event.target.files;
-                if (files && files.length > 0) {
-                    const path = URL.createObjectURL(files[0]);
-                    UnitySendMessage('ImagePicker', 'HandleSelectedFilePath', path);
-                }
-            };
-            fileInput.click();
-        ";
-
-        Application.ExternalEval(jsCode);
-    }*/
 
     private void HandleSelectedFilePath(string[] path)
     {
