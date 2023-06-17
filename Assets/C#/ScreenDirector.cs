@@ -84,6 +84,7 @@ public class ScreenDirector : BaseScreen
 
             case EScreens.CollectionsScreen:
                 CollectionsScreen.SetActive(true);
+                CollectionsScreen.GetComponent<CollectionsScreen>().OnShow();
                 break;
 
             case EScreens.RatingScreen:

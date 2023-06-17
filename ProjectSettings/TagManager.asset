@@ -10,6 +10,7 @@ TagManager:
   - ScreenDirector
   - Hands
   - Room
+  - CollectionScreen
   layers:
   - Default
   - TransparentFX

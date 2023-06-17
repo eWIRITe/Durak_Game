@@ -7018,10 +7018,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SkinsScreen, Assembly-CSharp
-        m_MethodName: SkinClick
-        m_Mode: 3
+      - m_Target: {fileID: 4225990604478096904}
+        m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
+        m_MethodName: setStyle
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7042,8 +7042,9 @@ GameObject:
   - component: {fileID: 4225990604478096897}
   - component: {fileID: 4225990604478096896}
   - component: {fileID: 4225990604478096898}
+  - component: {fileID: 4225990604478096904}
   m_Layer: 5
-  m_Name: Skin (4)
+  m_Name: nature_tropicks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7070,6 +7071,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4225990604478096904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4225990604478096902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d45198d57422bd845b2a8dc6055d7ae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActiveSprite: {fileID: 21300000, guid: 861c0ff13fcdc7e40abb695032e071a4, type: 3}
+  notActiveSprite: {fileID: 21300000, guid: 9af5847fe124b5544848f44070a618b0, type: 3}
+  NeedGames: 200
+  style_name: nature_tropicks
+  available: 0
 --- !u!1 &4225990604480497642
 GameObject:
   m_ObjectHideFlags: 0
@@ -7458,10 +7476,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SkinsScreen, Assembly-CSharp
-        m_MethodName: SkinClick
-        m_Mode: 3
+      - m_Target: {fileID: 4225990604478096904}
+        m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
+        m_MethodName: setStyle
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7482,8 +7500,9 @@ GameObject:
   - component: {fileID: 4225990604495315784}
   - component: {fileID: 4225990604495315791}
   - component: {fileID: 4225990604495315785}
+  - component: {fileID: 4225990604495315792}
   m_Layer: 5
-  m_Name: Skin (3)
+  m_Name: nature_middleLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7540,6 +7559,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4225990604495315792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4225990604495315789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d45198d57422bd845b2a8dc6055d7ae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActiveSprite: {fileID: 21300000, guid: 861c0ff13fcdc7e40abb695032e071a4, type: 3}
+  notActiveSprite: {fileID: 21300000, guid: 9af5847fe124b5544848f44070a618b0, type: 3}
+  NeedGames: 50
+  style_name: nature_middleLine
+  available: 0
 --- !u!222 &4225990604500382368
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8674,7 +8710,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "900 \u043C\u043E\u043D\u0435\u0442"
+  m_Text: 
 --- !u!222 &4225990604545763793
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13574,10 +13610,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SkinsScreen, Assembly-CSharp
-        m_MethodName: SkinClick
-        m_Mode: 3
+      - m_Target: {fileID: 4225990604478096904}
+        m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
+        m_MethodName: setStyle
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -13598,8 +13634,9 @@ GameObject:
   - component: {fileID: 4225990604717656443}
   - component: {fileID: 4225990604717656442}
   - component: {fileID: 4225990604717656436}
+  - component: {fileID: 4225990604717656444}
   m_Layer: 5
-  m_Name: Skin (5)
+  m_Name: cars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13664,6 +13701,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4225990604717656440}
   m_CullTransparentMesh: 1
+--- !u!114 &4225990604717656444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4225990604717656440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d45198d57422bd845b2a8dc6055d7ae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActiveSprite: {fileID: 21300000, guid: 861c0ff13fcdc7e40abb695032e071a4, type: 3}
+  notActiveSprite: {fileID: 21300000, guid: 9af5847fe124b5544848f44070a618b0, type: 3}
+  NeedGames: 400
+  style_name: cars
+  available: 0
 --- !u!224 &4225990604718406256
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22660,10 +22714,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SkinsScreen, Assembly-CSharp
-        m_MethodName: SkinClick
-        m_Mode: 3
+      - m_Target: {fileID: 4225990604478096904}
+        m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
+        m_MethodName: setStyle
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -22684,13 +22738,31 @@ GameObject:
   - component: {fileID: 4225990605074753722}
   - component: {fileID: 4225990605074753721}
   - component: {fileID: 4225990605074753723}
+  - component: {fileID: 4225990605074753728}
   m_Layer: 5
-  m_Name: Skin
+  m_Name: horror
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4225990605074753728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4225990605074753727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d45198d57422bd845b2a8dc6055d7ae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActiveSprite: {fileID: 21300000, guid: 861c0ff13fcdc7e40abb695032e071a4, type: 3}
+  notActiveSprite: {fileID: 21300000, guid: 9af5847fe124b5544848f44070a618b0, type: 3}
+  NeedGames: 500
+  style_name: horror
+  available: 0
 --- !u!114 &4225990605077822064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33615,7 +33687,7 @@ GameObject:
   - component: {fileID: 4225990605519868011}
   - component: {fileID: 4225990605519868010}
   m_Layer: 5
-  m_Name: Content
+  m_Name: Styles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34069,8 +34141,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 351.72}
-  m_SizeDelta: {x: -100, y: 663.44}
+  m_AnchoredPosition: {x: 0, y: 360}
+  m_SizeDelta: {x: -100, y: 600.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4225990605541961748
 CanvasRenderer:
@@ -39151,10 +39223,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SkinsScreen, Assembly-CSharp
-        m_MethodName: SkinClick
-        m_Mode: 3
+      - m_Target: {fileID: 4225990604478096904}
+        m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
+        m_MethodName: setStyle
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -39175,13 +39247,31 @@ GameObject:
   - component: {fileID: 4225990605760386998}
   - component: {fileID: 4225990605760386997}
   - component: {fileID: 4225990605760386999}
+  - component: {fileID: 4225990605760387004}
   m_Layer: 5
-  m_Name: Skin
+  m_Name: standart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4225990605760387004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4225990605760387003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d45198d57422bd845b2a8dc6055d7ae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActiveSprite: {fileID: 21300000, guid: 861c0ff13fcdc7e40abb695032e071a4, type: 3}
+  notActiveSprite: {fileID: 21300000, guid: 9af5847fe124b5544848f44070a618b0, type: 3}
+  NeedGames: 0
+  style_name: standart
+  available: 1
 --- !u!1 &4225990605761045121
 GameObject:
   m_ObjectHideFlags: 0
@@ -47181,10 +47271,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SkinsScreen, Assembly-CSharp
-        m_MethodName: SkinClick
-        m_Mode: 3
+      - m_Target: {fileID: 4225990604478096904}
+        m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
+        m_MethodName: setStyle
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -47205,13 +47295,31 @@ GameObject:
   - component: {fileID: 4225990606099004850}
   - component: {fileID: 4225990606099004849}
   - component: {fileID: 4225990606099004851}
+  - component: {fileID: 4225990606099004856}
   m_Layer: 5
-  m_Name: Skin (2)
+  m_Name: erotick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4225990606099004856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4225990606099004855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d45198d57422bd845b2a8dc6055d7ae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActiveSprite: {fileID: 21300000, guid: 861c0ff13fcdc7e40abb695032e071a4, type: 3}
+  notActiveSprite: {fileID: 21300000, guid: 9af5847fe124b5544848f44070a618b0, type: 3}
+  NeedGames: 1000
+  style_name: erotick
+  available: 0
 --- !u!114 &4225990606103018568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47334,7 +47442,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4225990604823013343}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.67697966
+  m_Size: 0.61275524
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -48612,9 +48720,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4225990606176601437}
   - component: {fileID: 4225990606176601439}
+  - component: {fileID: 4225990606176601440}
   m_Layer: 5
   m_Name: CollectionsScreen
-  m_TagString: Untagged
+  m_TagString: CollectionScreen
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48652,6 +48761,29 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &4225990606176601440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4225990606176601436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1df8b51331e905b42b60f812aaee189b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActiveSprite: {fileID: 0}
+  notActiveSprite: {fileID: 0}
+  standart_style: {fileID: 4225990605760387003}
+  Russian_style: {fileID: 4225990606233965619}
+  nature_middleLine_style: {fileID: 4225990604495315789}
+  Fallout_style: {fileID: 4225990606270414308}
+  nature_tropicks_style: {fileID: 4225990604478096902}
+  herous_style: {fileID: 4225990606271996012}
+  cars_style: {fileID: 4225990604717656440}
+  horror_style: {fileID: 4225990605074753727}
+  erotick_style: {fileID: 4225990606099004855}
 --- !u!114 &4225990606177475248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50242,10 +50374,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SkinsScreen, Assembly-CSharp
-        m_MethodName: SkinClick
-        m_Mode: 3
+      - m_Target: {fileID: 4225990604478096904}
+        m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
+        m_MethodName: setStyle
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -50266,13 +50398,31 @@ GameObject:
   - component: {fileID: 4225990606233965614}
   - component: {fileID: 4225990606233965613}
   - component: {fileID: 4225990606233965615}
+  - component: {fileID: 4225990606233965620}
   m_Layer: 5
-  m_Name: Skin (1)
+  m_Name: Russian
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4225990606233965620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4225990606233965619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d45198d57422bd845b2a8dc6055d7ae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActiveSprite: {fileID: 21300000, guid: 861c0ff13fcdc7e40abb695032e071a4, type: 3}
+  notActiveSprite: {fileID: 21300000, guid: 9af5847fe124b5544848f44070a618b0, type: 3}
+  NeedGames: 10
+  style_name: Russian
+  available: 0
 --- !u!1 &4225990606248287820
 GameObject:
   m_ObjectHideFlags: 0
@@ -50687,10 +50837,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SkinsScreen, Assembly-CSharp
-        m_MethodName: SkinClick
-        m_Mode: 3
+      - m_Target: {fileID: 4225990604478096904}
+        m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
+        m_MethodName: setStyle
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -50711,8 +50861,9 @@ GameObject:
   - component: {fileID: 4225990606270414311}
   - component: {fileID: 4225990606270414310}
   - component: {fileID: 4225990606270414304}
+  - component: {fileID: 4225990606270414312}
   m_Layer: 5
-  m_Name: Skin (2)
+  m_Name: Fallout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50777,6 +50928,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4225990606270414308}
   m_CullTransparentMesh: 1
+--- !u!114 &4225990606270414312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4225990606270414308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d45198d57422bd845b2a8dc6055d7ae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActiveSprite: {fileID: 21300000, guid: 861c0ff13fcdc7e40abb695032e071a4, type: 3}
+  notActiveSprite: {fileID: 21300000, guid: 9af5847fe124b5544848f44070a618b0, type: 3}
+  NeedGames: 100
+  style_name: Fallout
+  available: 0
 --- !u!1 &4225990606271077316
 GameObject:
   m_ObjectHideFlags: 0
@@ -50858,10 +51026,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SkinsScreen, Assembly-CSharp
-        m_MethodName: SkinClick
-        m_Mode: 3
+      - m_Target: {fileID: 4225990604478096904}
+        m_TargetAssemblyTypeName: CollectionnDATA, Assembly-CSharp
+        m_MethodName: setStyle
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -50882,8 +51050,9 @@ GameObject:
   - component: {fileID: 4225990606271996015}
   - component: {fileID: 4225990606271996014}
   - component: {fileID: 4225990606271996008}
+  - component: {fileID: 4225990606271996016}
   m_Layer: 5
-  m_Name: Skin (1)
+  m_Name: herouse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50948,6 +51117,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4225990606271996012}
   m_CullTransparentMesh: 1
+--- !u!114 &4225990606271996016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4225990606271996012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d45198d57422bd845b2a8dc6055d7ae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActiveSprite: {fileID: 21300000, guid: 861c0ff13fcdc7e40abb695032e071a4, type: 3}
+  notActiveSprite: {fileID: 21300000, guid: 9af5847fe124b5544848f44070a618b0, type: 3}
+  NeedGames: 300
+  style_name: herouse
+  available: 0
 --- !u!1 &4225990606272538261
 GameObject:
   m_ObjectHideFlags: 0
