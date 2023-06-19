@@ -30,4 +30,9 @@
         public uint UserID;
         public string avatarImage;
     }
+
+    public class Games
+    {
+        public int games;
+    }
 }

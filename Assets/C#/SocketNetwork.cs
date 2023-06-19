@@ -43,9 +43,17 @@ public class SocketNetwork : MonoBehaviour
     public delegate void chips(int chips);
     public static event chips gotChips;
 
+    // get games event
+    public delegate void games(int games);
+    public static event games gotGames;
+
     //Error event
     public delegate void Error(string error);
     public static event Error error;
+
+    //got raiting event
+    public delegate void Raiting(List<RatingScreen.RatingLine> raiting);
+    public static event Raiting gotRaiting;
 
     //Players number change
     public delegate void Players(uint[] PlayersID);
@@ -251,6 +259,22 @@ public class SocketNetwork : MonoBehaviour
                 });
                 break;
 
+            case "got_rating":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    List<RatingScreen.RatingLine> raitingLine = JsonConvert.DeserializeObject<List<RatingScreen.RatingLine>>(data.data);
+                    gotRaiting?.Invoke(raitingLine);
+                });
+                break;
+
+            case "gameStats":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var games = JsonConvert.DeserializeObject<JSON.Games>(data.data);
+                    gotGames?.Invoke(games.games);
+                });
+                break;
+
             case "ready":
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
@@ -267,9 +291,6 @@ public class SocketNetwork : MonoBehaviour
             case "cl_getImage":
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
-                    Debug.Log("cl_getImage");
-                    Debug.Log(data.data);
-
                     AvatarData _data = JsonConvert.DeserializeObject<JSON.AvatarData>(data.data);
 
                     byte[] imageBytes = System.Convert.FromBase64String(_data.avatarImage);
@@ -669,16 +690,23 @@ public class SocketNetwork : MonoBehaviour
         Debug.Log("avatar is setted: " + avatarData.ToString());
     }
 
-    ///////\\\\\\
-    /// admin \\\
-    public void admin_getChips(int newChips)
+    public void get_gameStat()
     {
-        var data = new JSON.ClientData
+        var token = new JSON.Token()
         {
-            token = Session.Token,
-            chips = newChips
+            token = Session.Token
         };
 
-        SendMessageToServer("admin_getChips", data);
+        SendMessageToServer("get_gamesStat", token);
+    }
+
+    public void getRaiting()
+    {
+        var token = new JSON.Token()
+        {
+            token = Session.Token
+        };
+
+        SendMessageToServer("get_raiting", token);
     }
 }

@@ -89,6 +89,7 @@ public class ScreenDirector : BaseScreen
 
             case EScreens.RatingScreen:
                 RatingScreen.SetActive(true);
+                RatingScreen.GetComponent<RatingScreen>().OnShow();
                 break;
 
             case EScreens.ShopScreen:

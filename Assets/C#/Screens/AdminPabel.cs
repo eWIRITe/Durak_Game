@@ -10,7 +10,7 @@ public class AdminPabel : BaseScreen
 
     public void GetChipsAdminClickHandler()
     {
-        m_socketNetwork.admin_getChips(int.Parse(ChipsInput.text));
+        //m_socketNetwork.admin_getChips(int.Parse(ChipsInput.text));
         m_socketNetwork.GetChips(Session.Token);
     }
 

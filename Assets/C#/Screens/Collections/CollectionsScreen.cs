@@ -25,6 +25,7 @@ public class CollectionsScreen : MonoBehaviour
     {
         if (standart_style != null) collections_list.Add(standart_style);
         if (Russian_style != null) collections_list.Add(Russian_style);
+        if (nature_middleLine_style != null) collections_list.Add(nature_middleLine_style);
         if (Fallout_style != null) collections_list.Add(Fallout_style);
         if (nature_tropicks_style != null) collections_list.Add(nature_tropicks_style);
         if (herous_style != null) collections_list.Add(herous_style);
@@ -35,10 +36,13 @@ public class CollectionsScreen : MonoBehaviour
 
     public void OnShow()
     {
+        Debug.Log(Session.played_games);
 
         foreach (GameObject _collection in collections_list)
         {
-            if(Session.PlayedGames >= _collection.GetComponent<CollectionnDATA>().NeedGames)
+            Debug.Log(_collection.GetComponent<CollectionnDATA>().NeedGames);
+
+            if (Session.PlayedGames >= _collection.GetComponent<CollectionnDATA>().NeedGames)
             {
                 _collection.GetComponent<CollectionnDATA>().available = true;
 
@@ -50,6 +54,8 @@ public class CollectionsScreen : MonoBehaviour
             }
             else
             {
+                Debug.Log(_collection.GetComponent<CollectionnDATA>().NeedGames.ToString() + " - is too muth");
+
                 _collection.GetComponent<CollectionnDATA>().available = false;
 
                 _collection.GetComponent<Button>().interactable = false;

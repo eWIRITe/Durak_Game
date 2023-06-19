@@ -16,11 +16,6 @@ public class AvatarScr : MonoBehaviour
 
     public void SetAvatar(uint ID, Sprite sprite)
     {
-        Debug.Log("public void SetAvatar(uint ID, Sprite sprite)");
-
-        Debug.Log("script UserID: " + UserID.ToString());
-        Debug.Log("event ID: " + ID.ToString());
-
         if (UserID == ID)
         {
             avatarImage.sprite = sprite;

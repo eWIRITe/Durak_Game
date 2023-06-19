@@ -56,6 +56,7 @@ public class MenuScreen : BaseScreen
 
         SocketNetwork.roomChange += reloadRooms;
         SocketNetwork.gotChips += GetChipsSuccessed;
+        SocketNetwork.gotGames += GetGamesStatsSuccessed;
         SocketNetwork.error += PrintMaessage;
     }
 
@@ -63,6 +64,7 @@ public class MenuScreen : BaseScreen
     {
         m_socketNetwork.GetFreeRooms();
         m_socketNetwork.GetChips(Session.Token);
+        m_socketNetwork.get_gameStat();
 
         m_name.text = Session.Name;
     }
@@ -176,7 +178,7 @@ public class MenuScreen : BaseScreen
     }
 
 
-    //Get chips
+    // get functions \\
     public void GetChipsSuccessed(int chips)
     {
         MainThreadDispatcher.RunOnMainThread(() =>
@@ -185,6 +187,11 @@ public class MenuScreen : BaseScreen
             if (chips != 0) m_chips.text = chips.ToString();
             else m_chips.text = "You dont have any chips";
         });
+    }
+    public void GetGamesStatsSuccessed(int games)
+    {
+        Session.played_games = games;
+        Debug.Log("Played games: " + games.ToString());
     }
 
     
