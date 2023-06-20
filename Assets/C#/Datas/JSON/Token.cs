@@ -35,4 +35,16 @@
     {
         public int games;
     }
+    public class send_message
+    {
+        public uint RoomID;
+        public string token;
+        public string message;
+    }
+
+    public class got_message
+    {
+        public uint UserID;
+        public string message;
+    }
 }

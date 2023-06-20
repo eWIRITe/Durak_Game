@@ -38,6 +38,9 @@ public class GameUIs : BaseScreen
     public GameObject roleObj;
     public TMP_Text roleText;
 
+    [Header("chat")]
+    public GameObject chatObject;
+
     // event
     public delegate void loseTime();
     public static event loseTime lose;
@@ -161,5 +164,10 @@ public class GameUIs : BaseScreen
         }
 
         roleText.text = message;
+    }
+
+    public void chatButton()
+    {
+        chatObject.SetActive(!chatObject.activeSelf);
     }
 }

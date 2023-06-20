@@ -101,6 +101,11 @@ public class SocketNetwork : MonoBehaviour
     public delegate void gamesEvents(uint UserID);
     public static event gamesEvents newTurn;
 
+    // Turn
+    public delegate void chat(uint ID, string message);
+    public static event chat got_message;
+
+
     void Start()
     {
         // Server initiolization
@@ -287,6 +292,15 @@ public class SocketNetwork : MonoBehaviour
             /////////////////////////////
             // playing message handler //
             /////////////////////////////
+
+            case "chat_message":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    got_message _data = JsonConvert.DeserializeObject<JSON.got_message>(data.data);
+
+                    got_message?.Invoke(_data.UserID, _data.message);
+                });
+                break;
 
             case "cl_getImage":
                 MainThreadDispatcher.RunOnMainThread(() =>
@@ -708,5 +722,17 @@ public class SocketNetwork : MonoBehaviour
         };
 
         SendMessageToServer("get_raiting", token);
+    }
+
+    public void Emit_sendMessage(string message)
+    {
+        var data = new JSON.send_message()
+        {
+            RoomID = Session.RoomID,
+            token = Session.Token, 
+            message = message
+        };
+
+        SendMessageToServer("send_message", data);
     }
 }
