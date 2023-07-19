@@ -1,3 +1,4 @@
+using JSON_server;
 using Newtonsoft.Json.Linq;
 using System.Xml.Linq;
 using TMPro;
@@ -38,22 +39,12 @@ public class LoginScreen : BaseScreen
         }
     }
 
-    public void LoginSuccessed(string token)
+    public void LoginSuccessed(string token, string name)
     {
         Debug.Log($"My token is {token}");
 
-        if (m_remember.isOn)
-        {
-            PlayerPrefs.SetInt("remember", 1);
-            PlayerPrefs.SetString("name", m_name.text);
-            PlayerPrefs.SetString("password", m_password.text);
-        }
-        else
-        {
-        }
-
         Session.Token = token;
-        Session.Name = m_name.text;
+        Session.Name = name;
 
         m_socketNetwork.GetUserID(token);
 
@@ -90,11 +81,22 @@ public class LoginScreen : BaseScreen
     {
         if (string.IsNullOrEmpty(m_name.text) || string.IsNullOrEmpty(m_password.text))
         {
-            Message.text = "Incorrect data";
+            PrintMaessage("Incorrect data");
+            return;
+        }
+        if (!data_validator.CheckPassword(m_password.text))
+        {
+            PrintMaessage("Incorrect password type.");
             return;
         }
 
-        m_socketNetwork.Login(m_name.text, m_password.text);
+        m_socketNetwork.Emit_login(m_name.text, m_password.text);
+    }
+
+    public void clearEverything()
+    {
+        m_name.text = "";
+        m_password.text = "";
     }
 
     public void PrintMaessage(string Message)

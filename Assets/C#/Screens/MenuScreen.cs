@@ -2,7 +2,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using JSON;
 using System.Runtime.InteropServices;
 using UnityEngine.EventSystems;
 using System.IO;
@@ -33,10 +32,13 @@ public class MenuScreen : BaseScreen
     public GameObject MessageScreen;
     public TMP_Text MessageText;
 
+    [Header("exit button")]
+    public Button exitButton;
+
     private uint m_bet;
     private uint m_numberOfCards;
     private ETypeGame m_typeOfGame;
-    private uint m_maxPlayers;
+    private int m_maxPlayers;
     private int m_isPrivate;
     //private string m_key;
 
@@ -58,6 +60,16 @@ public class MenuScreen : BaseScreen
         SocketNetwork.gotChips += GetChipsSuccessed;
         SocketNetwork.gotGames += GetGamesStatsSuccessed;
         SocketNetwork.error += PrintMaessage;
+
+        exitButton.onClick.AddListener(() => m_screenDirector.ActiveScreen(EScreens.LoginScreen));
+    }
+
+    private void OnDestroy()
+    {
+        SocketNetwork.roomChange -= reloadRooms;
+        SocketNetwork.gotChips -= GetChipsSuccessed;
+        SocketNetwork.gotGames -= GetGamesStatsSuccessed;
+        SocketNetwork.error -= PrintMaessage;
     }
 
     public void OnShow()
@@ -164,7 +176,7 @@ public class MenuScreen : BaseScreen
     {
         try
         {
-            m_maxPlayers = UInt32.Parse(m_maxPlayersDropdown.options[m_maxPlayersDropdown.value].text);
+            m_maxPlayers = int.Parse(m_maxPlayersDropdown.options[m_maxPlayersDropdown.value].text);
             //this.Filter();
         }
         catch (Exception)
@@ -270,5 +282,10 @@ public class MenuScreen : BaseScreen
         {
             LeanTween.scale(MessageScreen, new Vector3(0, 0, 0), 1).setOnComplete(finishMessage);
         });
+    }
+
+    private void OnApplicationQuit()
+    {
+        m_screenDirector.ActiveScreen(EScreens.StartScreen);
     }
 }

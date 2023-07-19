@@ -11,19 +11,23 @@ public class User : BaseScreen
     public AvatarScr Avatar;
     public TMP_Text UId;
 
-    public ERole role;
+    public ERole role = ERole.thrower;
 
     public List<GameObject> UserCards;
 
     public TMP_Text MassegeText;
 
-    public void Initi(uint ID)
+    public void Init(uint ID)
     {
         UserID = ID;
-        UId.text = "ID: " + ID.ToString();
+        UId.text = "BOT";
 
-        Avatar.UserID = ID;
-        m_socketNetwork.getAvatar(ID);
+        if(ID != 0)
+        {
+            UId.text = "ID: " + ID.ToString();
+            Avatar.UserID = ID;
+            m_socketNetwork.getAvatar(ID);
+        }
     }
 
     public void PrintMessage(string massege)

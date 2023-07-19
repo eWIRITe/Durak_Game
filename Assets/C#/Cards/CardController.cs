@@ -1,4 +1,5 @@
-﻿using JSON;
+﻿using JSON_card;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,15 +14,73 @@ public class CardController: MonoBehaviour
     public GameObject m_prefabCard;
     public GameObject m_prefabBackCard;
 
+    [Space, Space, Header("Styleshes"), Space]
+
+    [Header("base")]
     public List<Sprite> BaseCardsHeartsTexturies;
     public List<Sprite> BaseCardsDiamondsTexturies;
     public List<Sprite> BaseCardsClubsTexturies;
     public List<Sprite> BaseCardsSpadesTexturies;
+    
+    [Header("russisn")]
+    public List<Sprite> RussisnCardsHeartsTexturies;
+    public List<Sprite> RussisnCardsDiamondsTexturies;
+    public List<Sprite> RussisnCardsClubsTexturies;
+    public List<Sprite> RussisnCardsSpadesTexturies;
 
+    [Header("natureMiddleLine")]
+    public List<Sprite> natureMiddleLineCardsHeartsTexturies;
+    public List<Sprite> natureMiddleLineCardsDiamondsTexturies;
+    public List<Sprite> natureMiddleLineCardsClubsTexturies;
+    public List<Sprite> natureMiddleLineCardsSpadesTexturies;
+
+    [Header("fallout")]
+    public List<Sprite> falloutCardsHeartsTexturies;
+    public List<Sprite> falloutCardsDiamondsTexturies;
+    public List<Sprite> falloutCardsClubsTexturies;
+    public List<Sprite> falloutCardsSpadesTexturies;
+
+    [Header("natureTropicks")]
+    public List<Sprite> natureTropicksCardsHeartsTexturies;
+    public List<Sprite> natureTropicksCardsDiamondsTexturies;
+    public List<Sprite> natureTropicksCardsClubsTexturies;
+    public List<Sprite> natureTropicksCardsSpadesTexturies;
+
+    [Header("herouse")]
+    public List<Sprite> herouseCardsHeartsTexturies;
+    public List<Sprite> herouseCardsDiamondsTexturies;
+    public List<Sprite> herouseCardsClubsTexturies;
+    public List<Sprite> herouseCardsSpadesTexturies;
+
+    [Header("cars")]
+    public List<Sprite> carsCardsHeartsTexturies;
+    public List<Sprite> carsCardsDiamondsTexturies;
+    public List<Sprite> carsCardsClubsTexturies;
+    public List<Sprite> carsCardsSpadesTexturies;
+    
+    [Header("horror")]
+    public List<Sprite> horrorCardsHeartsTexturies;
+    public List<Sprite> horrorCardsDiamondsTexturies;
+    public List<Sprite> horrorCardsClubsTexturies;
+    public List<Sprite> horrorCardsSpadesTexturies;
+
+    [Header("erotick")]
+    public List<Sprite> erotickCardsHeartsTexturies;
+    public List<Sprite> erotickCardsDiamondsTexturies;
+    public List<Sprite> erotickCardsClubsTexturies;
+    public List<Sprite> erotickCardsSpadesTexturies;
+
+    [Space, Space]
     // storage card-gameobjects
     public Transform StartOfCards;
 
-    public List<GameObject> PlayerCards = new List<GameObject>();
+    public List<GameCard> PlayerCards = new List<GameCard>();
+
+    public List<Sprite> cards_texturies_Hearts = new List<Sprite>();
+    public List<Sprite> cards_texturies_Diamonds = new List<Sprite>();
+    public List<Sprite> cards_texturies_Clubs = new List<Sprite>();
+    public List<Sprite> cards_texturies_Spades = new List<Sprite>();
+
 
     private void Start()
     {
@@ -31,6 +90,74 @@ public class CardController: MonoBehaviour
         SocketNetwork.DestroyCard += DestroyCard;
         SocketNetwork.userGotCard += AtherUserGotCard;
         SocketNetwork.userDestroyCard += AtherUserDestroyCard;
+
+        string style = PlayerPrefs.GetString("Style");
+
+        switch (style)
+        {
+            case "Russian":
+                cards_texturies_Hearts = RussisnCardsHeartsTexturies;
+                cards_texturies_Diamonds = RussisnCardsDiamondsTexturies;
+                cards_texturies_Clubs = RussisnCardsClubsTexturies;
+                cards_texturies_Spades = RussisnCardsSpadesTexturies;
+                break;
+
+            case "nature_middleLine":
+                cards_texturies_Hearts = natureMiddleLineCardsHeartsTexturies;
+                cards_texturies_Diamonds = natureMiddleLineCardsDiamondsTexturies;
+                cards_texturies_Clubs = natureMiddleLineCardsClubsTexturies;
+                cards_texturies_Spades = natureMiddleLineCardsSpadesTexturies;
+                break;
+
+            case "Fallout":
+                cards_texturies_Hearts = falloutCardsHeartsTexturies;
+                cards_texturies_Diamonds = falloutCardsDiamondsTexturies;
+                cards_texturies_Clubs = falloutCardsClubsTexturies;
+                cards_texturies_Spades = falloutCardsSpadesTexturies;
+                break;
+
+            case "nature_tropicks":
+                cards_texturies_Hearts = natureTropicksCardsHeartsTexturies;
+                cards_texturies_Diamonds = natureTropicksCardsDiamondsTexturies;
+                cards_texturies_Clubs = natureTropicksCardsClubsTexturies;
+                cards_texturies_Spades = natureTropicksCardsSpadesTexturies;
+                break;
+
+            case "herouse":
+                cards_texturies_Hearts = herouseCardsHeartsTexturies;
+                cards_texturies_Diamonds = herouseCardsDiamondsTexturies;
+                cards_texturies_Clubs = herouseCardsClubsTexturies;
+                cards_texturies_Spades = herouseCardsSpadesTexturies;
+                break;
+
+            case "cars":
+                cards_texturies_Hearts = carsCardsHeartsTexturies;
+                cards_texturies_Diamonds = carsCardsDiamondsTexturies;
+                cards_texturies_Clubs = carsCardsClubsTexturies;
+                cards_texturies_Spades = carsCardsSpadesTexturies;
+                break;
+
+            case "horror":
+                cards_texturies_Hearts = horrorCardsHeartsTexturies;
+                cards_texturies_Diamonds = horrorCardsDiamondsTexturies;
+                cards_texturies_Clubs = horrorCardsClubsTexturies;
+                cards_texturies_Spades = horrorCardsSpadesTexturies;
+                break;
+
+            case "erotick":
+                cards_texturies_Hearts = erotickCardsHeartsTexturies;
+                cards_texturies_Diamonds = erotickCardsDiamondsTexturies;
+                cards_texturies_Clubs = erotickCardsClubsTexturies;
+                cards_texturies_Spades = erotickCardsSpadesTexturies;
+                break;
+
+            default:
+                cards_texturies_Hearts = BaseCardsHeartsTexturies;
+                cards_texturies_Diamonds = BaseCardsDiamondsTexturies;
+                cards_texturies_Clubs = BaseCardsClubsTexturies;
+                cards_texturies_Spades = BaseCardsSpadesTexturies;
+                break;
+        }
     }
 
     /////////////\\\\\\\\\\\\\
@@ -41,6 +168,7 @@ public class CardController: MonoBehaviour
         GameObject pref_card = Instantiate(m_prefabCard, StartOfCards.position, StartOfCards.rotation);
         pref_card.transform.localScale = StartOfCards.localScale;
         pref_card.transform.SetParent(gameObject.transform);
+        pref_card.tag = "tableNotBeatingCard";
 
         GameCard cardData = pref_card.GetComponent<GameCard>();
 
@@ -49,32 +177,32 @@ public class CardController: MonoBehaviour
         switch (cardData.Suit)
         {
             case ESuit.CLOVERS:
-                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(BaseCardsClubsTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(cards_texturies_Clubs, cardData.Nominal);
                 break;
             case ESuit.TILE:
-                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(BaseCardsDiamondsTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(cards_texturies_Diamonds, cardData.Nominal);
                 break;
             case ESuit.PIKES:
-                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(BaseCardsSpadesTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(cards_texturies_Spades, cardData.Nominal);
                 break;
             default:
-                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(BaseCardsHeartsTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(cards_texturies_Hearts, cardData.Nominal);
                 break;
         }
 
-        PlayerCards.Add(pref_card);
+        PlayerCards.Add(pref_card.GetComponent<GameCard>());
 
         SetAllCardsPos();
     }
     public void DestroyCard(Card cardbytes)
     {
-        foreach(GameObject card in PlayerCards)
+        foreach(GameCard card in PlayerCards)
         {
-            if(card.GetComponent<GameCard>().strimg_Suit == cardbytes.suit)
+            if(card.strimg_Suit == cardbytes.suit)
             {
-                if(card.GetComponent<GameCard>().str_Nnominal == cardbytes.nominal)
+                if(card.str_Nnominal == cardbytes.nominal)
                 {
-                    Destroy(card);
+                    Destroy(card.gameObject);
                     PlayerCards.Remove(card);
 
                     SetAllCardsPos();
@@ -90,7 +218,12 @@ public class CardController: MonoBehaviour
         {
             if (m_room._roomRow.roomPlayers[i].UserID == UserID)
             {
-                GameObject card = Instantiate(m_prefabBackCard);
+                GameObject card = new GameObject();
+
+                Sprite back_card_sprite = Sprite.Create(m_room._roomRow.GameUI.back_card_image, new Rect(0, 0, m_room._roomRow.GameUI.back_card_image.width, m_room._roomRow.GameUI.back_card_image.height), Vector2.zero);
+                card.AddComponent<SpriteRenderer>().sprite = back_card_sprite;
+                card.GetComponent<SpriteRenderer>().sortingLayerName = "Cards";
+
                 m_room._roomRow.roomPlayers[i].UserCards.Add(card);
             }
         }
@@ -121,7 +254,7 @@ public class CardController: MonoBehaviour
 
     public void SetAllCardsPos()
     {
-        Sort();
+        Sort(new CardSorter());
 
         for (int i = 0; i < PlayerCards.Count; i++)
         {
@@ -167,81 +300,39 @@ public class CardController: MonoBehaviour
         }
     }
 
-    private void Sort()
+    public void Sort(IComparer<GameCard> comparer) => PlayerCards.Sort(comparer);
+}
+
+class CardSorter : IComparer<GameCard>
+{
+    public CardOrderMethod SortBy = PlayerPrefs.GetString("SortType") == "Suit" ? CardOrderMethod.SuitThenKind : CardOrderMethod.KindThenSuit;
+
+    public int Compare(GameCard x, GameCard y)
     {
-        string SortType = PlayerPrefs.GetString("SortType");
-        string trumpSort = PlayerPrefs.GetString("trumpSortType");
-
-        if (SortType == "Suit")
+        if (SortBy == CardOrderMethod.SuitThenKind)
         {
-            PlayerCards.Sort(new Suit());
-        }
-        else
-        {
-            PlayerCards.Sort(new Number());
-        }
-
-
-        PlayerCards.Sort((x, y) =>
-        {
-            if(x.GetComponent<GameCard>().Suit != y.GetComponent<GameCard>().Suit)
+            if (x.Suit > y.Suit)
             {
-                if (x.GetComponent<GameCard>().Suit == m_room._roomRow.Trump)
-                {
-                    Debug.Log("trump");
-                    if (trumpSort == "toLeft")
-                    {
-                        Debug.Log("toLeft");
-                        return -1;
-                    }
-                    else if (trumpSort == "toRight")
-                    {
-                        Debug.Log("toRight");
-                        return 1;
-                    }
-                    else return 0;
-                }
-                return 0;
+                return 1;
             }
-            return 0;
-        });
-
-    }
-}
-
-public class Suit : IComparer<GameObject>
-{
-    public int Compare(GameObject x, GameObject y)
-    {
-        if (((int)x.GetComponent<GameCard>().Suit) < ((int)y.GetComponent<GameCard>().Suit))
-        {
-            return -1;
+            if (x.Suit < y.Suit)
+            {
+                return -1;
+            }
+            return x.Nominal > y.Nominal ? 1 : -1;
         }
-        else if (((int)x.GetComponent<GameCard>().Suit) > ((int)y.GetComponent<GameCard>().Suit))
+        if (SortBy == CardOrderMethod.KindThenSuit)
         {
-            return 1;
+            if (x.Nominal > y.Nominal)
+            {
+                return 1;
+            }
+            if (x.Nominal < y.Nominal)
+            {
+                return -1;
+            }
+            return x.Suit > y.Suit ? 1 : -1;
         }
-        else
-        {
-            return 0;
-        }
-    }
-}
-public class Number : IComparer<GameObject>
-{
-    public int Compare(GameObject x, GameObject y)
-    {
-        if (((int)x.GetComponent<GameCard>().Nominal) < ((int)y.GetComponent<GameCard>().Nominal))
-        {
-            return -1;
-        }
-        else if (((int)x.GetComponent<GameCard>().Nominal)> ((int)y.GetComponent<GameCard>().Nominal))
-        {
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
+        throw new NotImplementedException($"CardOrderMethod {SortBy} is not implemented.");
     }
 }

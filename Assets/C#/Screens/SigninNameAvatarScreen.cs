@@ -1,3 +1,4 @@
+using JSON_server;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,12 +28,23 @@ public class SigninNameAvatarScreen : BaseScreen
         });
     }
 
-
-
     public void SigninClickHandler()
     {
-        m_socketNetwork.Signin(m_name.text, m_email.text, m_password.text);
+        if (!data_validator.CheckEmail(m_email.text))
+        {
+            PrintMaessage("incorrect email type");
+            return;
+        }
+        if (!data_validator.CheckPassword(m_password.text))
+        {
+            PrintMaessage("incorrect password type");
+            return;
+        }
+
+        m_socketNetwork.Emit_signIn(m_name.text, m_email.text, m_password.text);
     }
+
+
     public void PrintMaessage(string Message)
     {
         MainThreadDispatcher.RunOnMainThread(() =>

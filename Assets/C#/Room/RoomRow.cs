@@ -1,14 +1,13 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RoomRow : MonoBehaviour
+public class RoomRow : BaseScreen
 {
     private Room _room;
 
     public GameUIs GameUI;
-
-    private SocketNetwork m_socketNetwork;
 
     [Header("RoomDATA")]
 
@@ -16,6 +15,9 @@ public class RoomRow : MonoBehaviour
     private uint _roomID;
     public ESuit Trump;
     public ETypeGame GameType;
+    public int maxCards_number;
+    public int maxPlayers_number;
+    public int Bet;
 
     public uint RoomOwner
     {
@@ -40,11 +42,19 @@ public class RoomRow : MonoBehaviour
     public bool Grabed;
     public bool Folded;
 
-    public void Awake()
+    [Header("bet's")]
+    public TMP_Text Users_Bet;
+    public TMP_Text Rooms_Bet;
+
+    public void Start()
     {
         GameUI = GetComponent<GameUIs>();
-        m_socketNetwork = GameObject.FindGameObjectWithTag("SocketNetwork").GetComponent<SocketNetwork>();
         SocketNetwork.changePlayers += UpdateRoomPlayers;
+    }
+
+    private void OnDestroy()
+    {
+        SocketNetwork.changePlayers -= UpdateRoomPlayers;
     }
 
     public void Init(uint roomID) 
@@ -60,6 +70,9 @@ public class RoomRow : MonoBehaviour
 
         PlayerAvatar.UserID = Session.UId;
         m_socketNetwork.getAvatar(Session.UId);
+
+        Users_Bet.text = Session.Chips.ToString();
+        Rooms_Bet.text = Bet.ToString();
     }
 
     private void UpdateRoomPlayers(uint[] PlayersID)
@@ -88,5 +101,7 @@ public class RoomRow : MonoBehaviour
         m_socketNetwork.EmitExitRoom(_roomID);
 
         Destroy(gameObject);
+
+        m_screenDirector.ActiveScreen();
     }
 }

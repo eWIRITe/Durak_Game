@@ -11,6 +11,8 @@ TagManager:
   - Hands
   - Room
   - CollectionScreen
+  - tableBeatingCard
+  - tableNotBeatingCard
   layers:
   - Default
   - TransparentFX

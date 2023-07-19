@@ -1,5 +1,5 @@
-﻿public enum ESortGeneral
+﻿enum CardOrderMethod
 {
-    Suit,
-    Nominal
+    SuitThenKind,
+    KindThenSuit,
 }

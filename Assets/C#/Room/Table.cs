@@ -1,4 +1,4 @@
-using JSON;
+using JSON_card;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,62 +22,44 @@ public class Table : BaseScreen
         _roomRow = GetComponent<RoomRow>();
         _room = GetComponent<Room>();
 
-        SocketNetwork.placeCard += PlaceCard;
-        SocketNetwork.beatCard += BeatCard;
+        SocketNetwork.placeCard += placeCard;
+        SocketNetwork.beatCard += beatCard;
         SocketNetwork.FoldAllCards += foldCards;
     }
 
     // server functions
     public void ThrowCard(GameCard card)
     {
-        if (Session.role == ERole.main) return;
-
-        else if (Session.role == ERole.firstThrower)
+        if (isAbleToThrow(card))
         {
-            if (_roomRow.Passed || _roomRow.Folded)
-            {
-                return;
-            }
-
-            if (TableCardPairs.Count == 0) m_socketNetwork.EmitThrow(new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
-            else
-            {
-                if (isRightCard(card)) m_socketNetwork.EmitThrow(new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
-                else _room.SetPositionsForAllUserCards();
-            }
-        }
-        else
-        {
-            if (_roomRow.Passed || _roomRow.Folded)
-            {
-                return;
-            }
-
-            if (TableCardPairs.Count > 0)
-            {
-                if(isRightCard(card)) m_socketNetwork.EmitThrow(new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
-            }
+            m_socketNetwork.EmitThrow(new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
         }
     }
-    public void BeatCard(GameCard card)
+    public void BeatCard(GameCard card, GameCard beatingCard)
     {
+        Debug.Log("BeatCard checking");
+
         if (Session.role == ERole.main)
         {
+            Debug.Log("BeatCard checking EmitBeat - _roomRow.Grabed");
+
             if (_roomRow.Grabed)
             {
                 return;
             }
 
-            GameCard attacedCard = FindCardToBeat(card);
-            if(attacedCard != null)
+            Debug.Log("BeatCard checking EmitBeat - bleToBe");
+
+            if (isAbleToBeat(card, beatingCard))
             {
-                m_socketNetwork.EmitBeat(new Card { suit = attacedCard.strimg_Suit, nominal = attacedCard.str_Nnominal }, new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
+                Debug.Log("EmitBeat");
+                m_socketNetwork.EmitBeat(new Card { suit = beatingCard.strimg_Suit, nominal = beatingCard.str_Nnominal }, new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
             }
         }
     }
 
     //client functions
-    public void PlaceCard(uint UserID, Card card)
+    public void placeCard(uint UserID, Card card)
     {
         if (Session.role == ERole.main)
         {
@@ -90,6 +72,7 @@ public class Table : BaseScreen
         GameObject pref_card = Instantiate(_cardController.m_prefabCard);
         pref_card.transform.localScale = _cardController.StartOfCards.localScale;
         pref_card.transform.SetParent(gameObject.transform);
+        pref_card.tag = "tableBeatingCard";
 
         GameCard cardData = pref_card.GetComponent<GameCard>();
 
@@ -126,11 +109,12 @@ public class Table : BaseScreen
             return;
         }
     }
-    public void BeatCard(uint UserID, Card beatCard, Card beatingCard)
+    public void beatCard(uint UserID, Card beatCard, Card beatingCard)
     {
         GameObject pref_card = Instantiate(_cardController.m_prefabCard);
         pref_card.transform.localScale = _cardController.StartOfCards.localScale;
         pref_card.transform.SetParent(gameObject.transform);
+        pref_card.tag = "tableNotBeatingCard";
 
         GameCard cardData = pref_card.GetComponent<GameCard>();
 
@@ -157,6 +141,7 @@ public class Table : BaseScreen
         {
             if(TableCardPairs[i].FirstCard.GetComponent<GameCard>().strimg_Suit == beatCard.suit && TableCardPairs[i].FirstCard.GetComponent<GameCard>().str_Nnominal == beatCard.nominal)
             {
+                TableCardPairs[i].FirstCard.tag = "tableNotBeatingCard";
                 TableCardPairs[i].SecondCard = pref_card;
                 TableCardPairs[i].isFull = true;
             }
@@ -200,7 +185,9 @@ public class Table : BaseScreen
     {
         for (int i = 0; i < TableCardPairs.Count; i++)
         {
-            Debug.Log("folding card");
+            TableCardPairs[i].FirstCard.tag = "tableNotBeatingCard";
+            if (TableCardPairs[i].SecondCard != null) TableCardPairs[i].SecondCard.tag = "tableNotBeatingCard";
+
             StartCoroutine(TableCardPairs[i].FirstCard.GetComponent<GameCard>().MoveTo(new Vector3(FoldPlace.position.x, (float)((float)(FoldPlace.position.y) - (float)(i / 10)), FoldPlace.position.z), new Vector3(0, 0, 0), TableCardPairs[i].FirstCard.transform.localScale, 1));
             if (TableCardPairs[i].SecondCard != null) StartCoroutine(TableCardPairs[i].SecondCard.GetComponent<GameCard>().MoveTo(new Vector3(FoldPlace.position.x, (float)((float)(FoldPlace.position.y) - (float)(i / 15)), FoldPlace.position.z), new Vector3(0, 0, 0), TableCardPairs[i].SecondCard.transform.localScale, 1));
         }
@@ -226,73 +213,56 @@ public class Table : BaseScreen
         return false;
     }
 
-    List<GameCard> possibleToBeatCards = new List<GameCard>();
-    public GameCard FindCardToBeat(GameCard card)
+    public bool isAbleToBeat(GameCard beatCard, GameCard beatingCard)
     {
-        foreach (CardPair cardPair in TableCardPairs)
+        if(((int)beatCard.Nominal) > ((int)beatingCard.Nominal))
         {
-            if (!cardPair.isFull)
+            if (beatingCard.Suit != _roomRow.Trump)
             {
-                if (card.Suit == _roomRow.Trump)
-                {
-                    if (cardPair.FirstCard.GetComponent<GameCard>().Suit != _roomRow.Trump)
-                    {
-                        possibleToBeatCards.Add(cardPair.FirstCard.GetComponent<GameCard>());
-                    }
-                    else
-                    {
-                        if (((int)cardPair.FirstCard.GetComponent<GameCard>().Nominal) < ((int)card.Nominal))
-                        {
-                            possibleToBeatCards.Add(cardPair.FirstCard.GetComponent<GameCard>());
-                        }
-                    }
-                }
-                else
-                {
-                    if (cardPair.FirstCard.GetComponent<GameCard>().Suit != _roomRow.Trump)
-                    {
-                        if (((int)cardPair.FirstCard.GetComponent<GameCard>().Nominal) <= ((int)card.Nominal))
-                        {
-                            possibleToBeatCards.Add(cardPair.FirstCard.GetComponent<GameCard>());
-                        }
-                    }
-                }
-
+                return true;
             }
-        }
-
-        if (possibleToBeatCards.Count != 0)
-        { 
-            possibleToBeatCards.Sort((x, y) =>
+            else
             {
-                GameCard cardX = x.GetComponent<GameCard>();
-                GameCard cardY = y.GetComponent<GameCard>();
-
-                // Check if cards are trumps
-                bool isTrumpX = cardX.Suit == _roomRow.Trump;
-                bool isTrumpY = cardY.Suit == _roomRow.Trump;
-
-                // Sort trumps to the end
-                if (isTrumpX && !isTrumpY)
-                    return 1;
-                if (!isTrumpX && isTrumpY)
-                    return -1;
-
-                // Sort non-trump cards by nominal (from smaller to bigger)
-                int result = cardX.Nominal.CompareTo(cardY.Nominal);
-                if (result != 0)
-                    return result;
-
-                // If both cards have the same nominal, sort them by suit (to maintain order within the same nominal)
-                return cardX.Suit.CompareTo(cardY.Suit);
-            });
-
-            return possibleToBeatCards[possibleToBeatCards.Count - 1];
+                if(beatCard.Suit == _roomRow.Trump)
+                {
+                    return true;
+                }
+            }
         }
         else
         {
-            return null;
+            if(beatCard.Suit == _roomRow.Trump)
+            {
+                if (beatingCard.Suit != _roomRow.Trump)
+                {
+                    return true;
+                }
+            }
         }
+
+        Debug.Log("return false;");
+
+        return false;
+    }
+
+    public bool isAbleToThrow(GameCard card)
+    {
+        if(TableCardPairs.Count == 0)
+        {
+            if(Session.role == ERole.firstThrower)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            if (Session.role != ERole.main)
+            {
+                if (isRightCard(card)) return true;
+            }
+        }
+
+        return false;
     }
 
     Vector3 newPos;

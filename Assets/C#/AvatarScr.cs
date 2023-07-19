@@ -14,6 +14,11 @@ public class AvatarScr : MonoBehaviour
         avatarImage = GetComponent<Image>();
     }
 
+    private void OnDestroy()
+    {
+        SocketNetwork.got_avatar -= SetAvatar;
+    }
+
     public void SetAvatar(uint ID, Sprite sprite)
     {
         if (UserID == ID)

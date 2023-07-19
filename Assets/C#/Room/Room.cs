@@ -1,4 +1,4 @@
-using JSON;
+using JSON_card;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,6 +32,9 @@ public class Room : MonoBehaviour
     public GameObject card;
     public GameObject ColodaObject;
 
+    [Header("alone game bots")]
+    public GameObject alone_Game_BOT;
+
     private void Start()
     {
         ScreenWith = Screen.width;
@@ -49,6 +52,15 @@ public class Room : MonoBehaviour
         _roomRow = GetComponent<RoomRow>();
     }
 
+    private void OnDestroy()
+    {
+        SocketNetwork.ready -= OnReady;
+        SocketNetwork.cl_grab -= cl_Grab;
+        SocketNetwork.playerGrab -= GrabCards;
+        Session.roleChanged -= ((ERole role) => { _roomRow.Folded = false; _roomRow.Grabed = false; _roomRow.Passed = false; });
+
+    }
+
     ///////\\\\\\
     /// ready \\\
     ///////\\\\\\
@@ -56,15 +68,25 @@ public class Room : MonoBehaviour
     {
         m_socketNetwork.EmitReady(_roomRow.RoomID);
     }
+
+    public void startGameAlone()
+    {
+        alone_Game_BOT game_BOT = Instantiate(alone_Game_BOT, gameObject.transform).GetComponent<alone_Game_BOT>();
+
+        game_BOT.Init(this, _roomRow);
+
+        OnReady(game_BOT._trump);
+    }
+
     public void OnReady(Card trump)
     {
         StartScreen.SetActive(false);
 
         _roomRow.isGameStarted = true;
 
-        Instantiate(ColodaObject, Coloda.position, Coloda.rotation);
+        Instantiate(ColodaObject, Coloda.transform);
 
-        GameObject pref_card = Instantiate(card, TrumpCardPos.position, TrumpCardPos.rotation);
+        GameObject pref_card = Instantiate(card, TrumpCardPos.transform);
         pref_card.transform.localScale = TrumpCardPos.localScale;
         pref_card.transform.SetParent(gameObject.transform);
 
@@ -75,16 +97,16 @@ public class Room : MonoBehaviour
         switch (cardData.Suit)
         {
             case ESuit.CLOVERS:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsClubsTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Clubs, cardData.Nominal);
                 break;
             case ESuit.TILE:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsDiamondsTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Diamonds, cardData.Nominal);
                 break;
             case ESuit.PIKES:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsSpadesTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Spades, cardData.Nominal);
                 break;
             default:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsHeartsTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Hearts, cardData.Nominal);
                 break;
         }
 
@@ -100,7 +122,7 @@ public class Room : MonoBehaviour
     /////////////\\\\\\\\\\\\
     /// players functions \\\
     /////////////\\\\\\\\\\\\
-    public void NewPlayerJoin(uint UId)
+    public User NewPlayerJoin(uint UId = 0)
     {
         User _user = Instantiate(NewPlayer, NewPlayerSpawnPoint.position, NewPlayerSpawnPoint.rotation).GetComponent<User>();
 
@@ -110,9 +132,11 @@ public class Room : MonoBehaviour
 
         _roomRow.roomPlayers.Add(_user);
 
-        _user.Initi(UId);
+        _user.Init(UId);
 
         SetPositionsForAllUsers(_roomRow.roomPlayers);
+
+        return _user;
     }
     public void DeletePlayer(uint UId)
     {
@@ -142,10 +166,10 @@ public class Room : MonoBehaviour
 
                 _roomRow.roomPlayers[j].UserCards[i].gameObject.GetComponent<SpriteRenderer>().sortingOrder = i;
 
-                Vector3 pos = new Vector3((Screen.height / PlaceMultiplyer) * (i - ((_roomRow.roomPlayers[j].UserCards.Count) / 2)), gameObject.transform.position.y - 0.5f, 0);
-                Vector3 rotate = new Vector3(0, 0, (RotationMultiplyer * (i - ((_roomRow.roomPlayers[j].UserCards.Count) / 2))) * -1);
+                Vector3 pos = new Vector3((Screen.height / PlaceMultiplyer) * (i - ((_roomRow.roomPlayers[j].UserCards.Count) / 2)), gameObject.transform.position.y - 1.2f, 0);
+                Vector3 rotate = new Vector3(0, 0, 0);
 
-                _roomRow.roomPlayers[j].UserCards[i].transform.localScale = new Vector3(40, 40, 40);
+                _roomRow.roomPlayers[j].UserCards[i].transform.localScale = new Vector3(20,20,20);
 
                 StartCoroutine(MoveCard(_roomRow.roomPlayers[j].UserCards[i], pos, rotate));
             }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using JSON_card;
+using System.Collections;
 using UnityEngine;
 
 public class GameCard : MonoBehaviour
@@ -102,12 +103,39 @@ public class GameCard : MonoBehaviour
         }
     }
 
+    public GameCard nowChoosedCard = null;
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "tableBeatingCard")
+        {
+            GameCard beatingCard = collision.gameObject.GetComponent<GameCard>();
+
+            if (beatingCard != null) nowChoosedCard = beatingCard;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "tableBeatingCard")
+        {
+            GameCard beatingCard = collision.gameObject.GetComponent<GameCard>();
+
+            if (beatingCard != null)
+            {
+                if(beatingCard == nowChoosedCard)
+                {
+                    nowChoosedCard = null;
+                }
+            }
+        }
+    }
+
     public void Start()
     {
         _table = GameObject.FindGameObjectWithTag("Room").GetComponent<Table>();
     }
 
-    public void Init(JSON.Card card)
+    public void Init(Card card)
     {
         _suit = card.suit;
         _nominal = card.nominal;
@@ -140,20 +168,15 @@ public class GameCard : MonoBehaviour
         {
             isDragging = false;
 
-            if (gameObject.transform.position.y >= 1)
+            if (Session.role == ERole.main)
             {
-                if(Session.role == ERole.main)
-                {
-                    _table.BeatCard(this);
+                Debug.Log("BeatCard");
+                if (nowChoosedCard != null) _table.BeatCard(this, nowChoosedCard);
+            }
 
-                    Debug.Log("_table.BeatCard(this);");
-                }
-                else
-                {
-                    _table.ThrowCard(this);
-
-                    Debug.Log("_table.ThrowCard(this);");
-                }
+            else if (gameObject.transform.position.y >= 1)
+            {
+                _table.ThrowCard(this);
             }
 
             GameObject.Find("Hands").GetComponent<CardController>().SetAllCardsPos();
