@@ -12,6 +12,11 @@ namespace JSON_client
         public string name;
         public uint UserID;
     }
+
+    public class Sucsessed_emailChange
+    {
+        public string newEmail;
+    }
     #endregion
 
     #region basic requests

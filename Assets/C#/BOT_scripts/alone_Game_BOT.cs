@@ -185,6 +185,21 @@ public class alone_Game_BOT : MonoBehaviour
         }
     }
 
+    public void setAllDefaultStatus()
+    {
+        for(int i = 0; i < _players.Count; i++)
+        {
+            if(i == 0)
+            {
+                B_roomRow.status = EStatus.Null;
+            }
+            else
+            {
+                _players[i].user.status = EStatus.Null;
+            }
+        }
+    }
+
     public static void Shuffle(List<Card> ts)
     {
         var count = ts.Count;

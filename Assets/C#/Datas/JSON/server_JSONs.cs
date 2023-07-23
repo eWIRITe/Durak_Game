@@ -24,37 +24,8 @@ namespace JSON_server
     {
         public string token;
 
-        private string old_email_priv;
-        private string new_email_priv;
-
-        public string old_email
-        {
-            set
-            {
-                if (data_validator.CheckEmail(value))
-                {
-                    old_email_priv = value;
-                }
-                else
-                {
-                    return;
-                }
-            }
-        }
-        public string new_email
-        {
-            set
-            {
-                if (data_validator.CheckEmail(value))
-                {
-                    new_email_priv = value;
-                }
-                else
-                {
-                    return;
-                }
-            }
-        }
+        public string old_email;
+        public string new_email;
     }
 
     public class UserData

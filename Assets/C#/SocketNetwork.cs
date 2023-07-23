@@ -42,6 +42,10 @@ public class SocketNetwork : MonoBehaviour
     public delegate void SignInEvent();
     public static event SignInEvent SignInSucsessed;
 
+    // email change
+    public delegate void emailChange(string email);
+    public static event emailChange Sucsessed_emailChange;
+
     // get UId event
     public delegate void get_UID(uint ID);
     public static event get_UID UId;
@@ -71,6 +75,11 @@ public class SocketNetwork : MonoBehaviour
     public delegate void CardEvent(Card card);
     public static event CardEvent GetCard;
     public static event CardEvent DestroyCard;
+
+    // deck events
+    public delegate void deckEvents();
+    public static event deckEvents deckIsEmpty;
+    public static event deckEvents trumpIsDone;
 
     public delegate void RoomEvents(Card trumpCard);
     public static event RoomEvents ready;
@@ -252,6 +261,15 @@ public class SocketNetwork : MonoBehaviour
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
                     SignInSucsessed?.Invoke();
+                });
+                break;
+
+            case "Sucsessed_emailChange":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var newEmail = JsonConvert.DeserializeObject<JSON_client.Sucsessed_emailChange>(data.data);
+
+                    Sucsessed_emailChange?.Invoke(newEmail.newEmail);
                 });
                 break;
 
@@ -659,9 +677,16 @@ public class SocketNetwork : MonoBehaviour
         SendMessageToServer("Emit_signIn", userData);
     }
 
-    public void Emit_changeEmail(string tocken, string email)
+    public void Emit_changeEmail(string token, string oldEmail, string newEmail)
     {
+        var userData = new JSON_server.Client_changeEmail()
+        {
+            token = token,
+            old_email = oldEmail,
+            new_email = newEmail
+        };
 
+        SendMessageToServer("Emit_changeEmail", userData);
     }
     #endregion
 

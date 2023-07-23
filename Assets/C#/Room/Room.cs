@@ -201,7 +201,7 @@ public class Room : MonoBehaviour
 
     public void cl_Grab()
     {
-        if(Session.role == ERole.firstThrower || Session.role == ERole.thrower)
+        if(Session.role != ERole.main)
         {
             _roomRow.GameUI.showPassButton();
         }
@@ -259,6 +259,11 @@ public class Room : MonoBehaviour
             }
 
             GetComponent<Table>().SetAllTableCardsPos();
+        }
+
+        if (_roomRow.isAlone)
+        {
+            alone_Game_BOT.GetComponent<alone_Game_BOT>().setAllDefaultStatus();
         }
     }
 

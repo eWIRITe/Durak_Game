@@ -44,6 +44,8 @@ public class alone_User_BOT : MonoBehaviour
 
                 if (_table.TableCardPairs.Count > 0)
                 {
+                    Debug.Log("main player: " + _payer.user.UserID + ", cant beat");
+
                     _payer.user.status = EStatus.Grab;
                     _cardController.m_room.cl_Grab();
 

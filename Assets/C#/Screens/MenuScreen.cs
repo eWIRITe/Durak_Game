@@ -40,13 +40,10 @@ public class MenuScreen : BaseScreen
     private ETypeGame m_typeOfGame;
     private int m_maxPlayers;
     private int m_isPrivate;
-    //private string m_key;
 
     public Text m_betText;
 
     public uint[] m_betValues;
-
-    private Hashtable m_rooms = new Hashtable();
 
     public void Start()
     {
@@ -62,14 +59,6 @@ public class MenuScreen : BaseScreen
         SocketNetwork.error += PrintMaessage;
 
         exitButton.onClick.AddListener(() => m_screenDirector.ActiveScreen(EScreens.LoginScreen));
-    }
-
-    private void OnDestroy()
-    {
-        SocketNetwork.roomChange -= reloadRooms;
-        SocketNetwork.gotChips -= GetChipsSuccessed;
-        SocketNetwork.gotGames -= GetGamesStatsSuccessed;
-        SocketNetwork.error -= PrintMaessage;
     }
 
     public void OnShow()
@@ -205,10 +194,8 @@ public class MenuScreen : BaseScreen
         Debug.Log("Played games: " + games.ToString());
     }
 
-    
-    ////////\\\\\\\\
-    ///set avatar\\\
-    ////////\\\\\\\\
+
+    #region  set avatar
     public void OpenFileExplorer()
     {
         // Set the file filter to image files
@@ -228,11 +215,10 @@ public class MenuScreen : BaseScreen
 
         m_socketNetwork.getAvatar(Session.UId);
     }
-    
+    #endregion
 
 
-    ////////Screens\\\\\\\\\
-    //--------------------\\
+    #region Screens
     public void AddChipsClickHandler(){ }
     public void ExchangeChipsClickHandler() { }
     public void RatingClickHandler()
@@ -249,24 +235,41 @@ public class MenuScreen : BaseScreen
     {
         m_screenDirector.ActiveScreen(EScreens.SettingsScreen);
     }
-
+    #endregion
 
 
     public void CreateRoomClickHandler()
     {
         string token = Session.Token;
 
-        if (m_bet == 0 || m_numberOfCards == 0 || m_maxPlayers == 0)
+        if (m_bet == 0 || m_maxPlayers == 0)
         {
             return;
+        }
+
+        switch (m_maxPlayers)
+        {
+            case 2:
+                m_numberOfCards = 24;
+                break;
+            case 3:
+                m_numberOfCards = 36;
+                break;
+            case 4:
+                m_numberOfCards = 52;
+                break;
+            case 5:
+                m_numberOfCards = 52;
+                break;
+
+            default:
+                break;
         }
 
         m_socketNetwork.EmitCreateRoom(token, m_isPrivate, "", m_bet, m_numberOfCards, m_maxPlayers, m_typeOfGame);
     }
 
-    //////\\\\\\\
-    ///Message\\\
-    //////\\\\\\\
+    #region Message
     public void PrintMaessage(string Message)
     {
         MainThreadDispatcher.RunOnMainThread(() =>
@@ -282,6 +285,7 @@ public class MenuScreen : BaseScreen
             LeanTween.scale(MessageScreen, new Vector3(0, 0, 0), 1).setOnComplete(finishMessage);
         });
     }
+    #endregion
 
     private void OnApplicationQuit()
     {
