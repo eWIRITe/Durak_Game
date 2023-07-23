@@ -10,6 +10,7 @@ namespace JSON_client
     {
         public string token;
         public string name;
+        public uint UserID;
     }
     #endregion
 

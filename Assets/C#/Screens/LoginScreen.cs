@@ -22,7 +22,6 @@ public class LoginScreen : BaseScreen
     private void Start()
     {
         SocketNetwork.loginSucsessed += LoginSuccessed;
-        SocketNetwork.UId += UpdateUID;
         SocketNetwork.error += PrintMaessage;
     }
 
@@ -39,28 +38,19 @@ public class LoginScreen : BaseScreen
         }
     }
 
-    public void LoginSuccessed(string token, string name)
+    public void LoginSuccessed(string token, string name, uint UserID)
     {
         Debug.Log($"My token is {token}");
 
         Session.Token = token;
         Session.Name = name;
 
-        m_socketNetwork.GetUserID(token);
+        Session.UId = UserID;
 
         MainThreadDispatcher.RunOnMainThread(() =>
         {
             m_screenDirector.ActiveScreen(EScreens.MenuScreen);
         });
-    }
-
-    private void UpdateUID(uint UId)
-    {
-        MainThreadDispatcher.RunOnMainThread(() =>
-        {
-            Session.UId = UId;
-        });
-        
     }
 
     private void LoginFailed(string resp)

@@ -35,7 +35,7 @@ public class SocketNetwork : MonoBehaviour
     public static event RoomChangeEvent roomChange;
 
     // Logins events
-    public delegate void LoginEvent(string token, string name);
+    public delegate void LoginEvent(string token, string name, uint UserID);
     public static event LoginEvent loginSucsessed;
 
     // SignIn events
@@ -117,7 +117,7 @@ public class SocketNetwork : MonoBehaviour
     void Start()
     {
         // Server initiolization
-        string url = "ws://localhost:9954";
+        string url = "ws://127.0.0.1:9954";
         websocket = new WebSocket(url);
 
         websocket.OnOpen += (sender, e) =>
@@ -244,7 +244,7 @@ public class SocketNetwork : MonoBehaviour
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
                     var loginData = JsonConvert.DeserializeObject<JSON_client.ClientLogin>(data.data);
-                    loginSucsessed?.Invoke(loginData.token, loginData.name);
+                    loginSucsessed?.Invoke(loginData.token, loginData.name, loginData.UserID);
                 });
                 break;
 
@@ -252,13 +252,6 @@ public class SocketNetwork : MonoBehaviour
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
                     SignInSucsessed?.Invoke();
-                });
-                break;
-
-            case "cl_getId":
-                MainThreadDispatcher.RunOnMainThread(() =>
-                {
-                    UId?.Invoke(uint.Parse(data.data));
                 });
                 break;
 
@@ -400,9 +393,7 @@ public class SocketNetwork : MonoBehaviour
                                 m_roomRow.GameUI.showFoldButton();
                             }
 
-                            m_roomRow.Grabed = false;
-                            m_roomRow.Folded = false;
-                            m_roomRow.Passed = false;
+                            m_roomRow.status = EStatus.Null;
                         }
                         else
                         {
@@ -676,16 +667,6 @@ public class SocketNetwork : MonoBehaviour
 
     ////////////\\\\\\\\\\\\
     // get emit functions \\
-
-    public void GetUserID(string token)
-    {
-        var userData = new JSON_server.UserData()
-        {
-            token = token
-        };
-
-        SendMessageToServer("getId", userData);
-    }
 
     public void GetFreeRooms()
     {

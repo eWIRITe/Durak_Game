@@ -11,11 +11,25 @@ public class User : BaseScreen
     public AvatarScr Avatar;
     public TMP_Text UId;
 
-    public ERole role = ERole.thrower;
+    private ERole _role = ERole.thrower;
+    public ERole role
+    {
+        set
+        {
+            _role = value;
+            PrintMessage(value.ToString());
+        }
+        get
+        {
+            return _role;
+        }
+    }
 
     public List<GameObject> UserCards;
 
     public TMP_Text MassegeText;
+
+    public EStatus status = EStatus.Null;
 
     public void Init(uint ID)
     {
@@ -32,7 +46,7 @@ public class User : BaseScreen
 
     public void PrintMessage(string massege)
     {
-        MassegeText.text = massege;
+        if(MassegeText != null) MassegeText.text = massege;
     }
 
     public IEnumerator MoveTo(Vector2 MoveToPoint)

@@ -2,6 +2,10 @@
 using System.Collections;
 using UnityEngine;
 
+// game card
+// the script that is responseble for 
+// gaming cards on the table
+
 public class GameCard : MonoBehaviour
 {
     public Table _table;

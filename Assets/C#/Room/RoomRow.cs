@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class RoomRow : BaseScreen
 {
+    public bool isAlone = false;
+
     private Room _room;
 
     public GameUIs GameUI;
@@ -38,9 +40,7 @@ public class RoomRow : BaseScreen
     [Header("Players")]
     public List<User> roomPlayers;
 
-    public bool Passed;
-    public bool Grabed;
-    public bool Folded;
+    public EStatus status;
 
     [Header("bet's")]
     public TMP_Text Users_Bet;

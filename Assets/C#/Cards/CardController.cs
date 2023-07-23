@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// cadrs controller
+// responseble for graphic getting and destroying
+// user's and ather player's cards
+
 public class CardController: MonoBehaviour
 {
     public int RotationMultiplyer;
@@ -14,6 +18,7 @@ public class CardController: MonoBehaviour
     public GameObject m_prefabCard;
     public GameObject m_prefabBackCard;
 
+    #region styles
     [Space, Space, Header("Styleshes"), Space]
 
     [Header("base")]
@@ -80,7 +85,7 @@ public class CardController: MonoBehaviour
     public List<Sprite> cards_texturies_Diamonds = new List<Sprite>();
     public List<Sprite> cards_texturies_Clubs = new List<Sprite>();
     public List<Sprite> cards_texturies_Spades = new List<Sprite>();
-
+    #endregion
 
     private void Start()
     {
@@ -160,9 +165,7 @@ public class CardController: MonoBehaviour
         }
     }
 
-    /////////////\\\\\\\\\\\\\
-    // main cards functions \\
-    /////////////\\\\\\\\\\\\\
+    #region hands cards
     public void GetCard(Card cardbytes)
     {
         GameObject pref_card = Instantiate(m_prefabCard, StartOfCards.position, StartOfCards.rotation);
@@ -211,7 +214,9 @@ public class CardController: MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region ather users cards
     public void AtherUserGotCard(uint UserID)
     {
         for(int i = 1; i< m_room._roomRow.roomPlayers.Count; i++)
@@ -230,7 +235,6 @@ public class CardController: MonoBehaviour
 
         m_room.SetPositionsForAllUserCards();
     }
-
     public void AtherUserDestroyCard(uint UserID)
     {
         if (m_room != null && m_room._roomRow != null)
@@ -247,11 +251,9 @@ public class CardController: MonoBehaviour
             m_room.SetPositionsForAllUserCards();
         }
     }
+    #endregion
 
-    /////////\\\\\\\\\\
-    //helped function\\
-    /////////\\\\\\\\\\
-
+    #region help functions
     public void SetAllCardsPos()
     {
         Sort(new CardSorter());
@@ -266,7 +268,6 @@ public class CardController: MonoBehaviour
             StartCoroutine(PlayerCards[i].GetComponent<GameCard>().MoveTo(pos, rotate, new Vector3(1.5f, 1.5f, 1.5f)));
         }
     }
-
     public Sprite chooseCardNumber(List<Sprite> Cards, ENominal nominal)
     {
         switch (nominal)
@@ -299,8 +300,8 @@ public class CardController: MonoBehaviour
                 return Cards[0];
         }
     }
-
     public void Sort(IComparer<GameCard> comparer) => PlayerCards.Sort(comparer);
+    #endregion
 }
 
 class CardSorter : IComparer<GameCard>

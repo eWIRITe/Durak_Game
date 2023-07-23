@@ -10,8 +10,7 @@ public class alone_Game_BOT : MonoBehaviour
 
     public Room B_room;
     public RoomRow B_roomRow;
-
-    public GameObject user_bot_prefab;
+    public Table B_table;
 
     public List<Card> B_room_Deck =  new List<Card>();
     public List<Card> B_room_FoldDeck = new List<Card>();
@@ -19,22 +18,25 @@ public class alone_Game_BOT : MonoBehaviour
 
     public List<Player> _players = new List<Player>();
 
-    string[] suits = { "♥", "♦", "♣", "♠" };
-    string[] nominals = { "2 ", "3 ", "4 ", "5 ", "6 ", "7 ", "8 ", "9 ", "10", "В ", "Д ", "К ", "Т " };
+    static string[] suits = { "♥", "♦", "♣", "♠" };
+    static string[] nominals = { "2 ", "3 ", "4 ", "5 ", "6 ", "7 ", "8 ", "9 ", "10", "В ", "Д ", "К ", "Т " };
 
-    public void Init(Room Room, RoomRow RoomRow)
+    public delegate void startBots();
+    public static event startBots _startBots;
+
+    public void Init(Room Room, RoomRow RoomRow, Table table)
     {
         B_room = Room;
-        B_roomRow = RoomRow;
+        B_roomRow = RoomRow; 
+        B_table = table;
 
         init_Deck();
 
-        _trump = B_room_Deck[0];
+        _trump = B_room_Deck[B_room_Deck.Count-1];
 
         Player main_player = new Player();
 
-        main_player._user = B_roomRow.roomPlayers[0];
-        main_player.bot_index = 0;
+        main_player.user = new User();
 
         _players.Add(main_player);
 
@@ -42,23 +44,32 @@ public class alone_Game_BOT : MonoBehaviour
         {
             Debug.Log("new player: " + i.ToString());
 
-            alone_User_BOT _bot = Instantiate(user_bot_prefab, gameObject.transform).GetComponent<alone_User_BOT>();
-            User _user = B_room.NewPlayerJoin();
+            User _user = B_room.NewPlayerJoin((uint)i);
 
             Player _player = new Player();
 
-            _player.bot = _bot;
-            _player._user = _user;
-            _player.bot_index = i;
+            _player.user = _user;
 
             _players.Add(_player);
         }
 
-        _players[0]._user.role = ERole.main;
+        giveCards();
+
+        _players[0].user.role = ERole.main;
 
         give_roles();
 
-        Session.role = ERole.main;
+        _startBots?.Invoke();
+
+        handleTurn();
+    }
+
+    public void handleTurn()
+    {
+        for(int i = 1; i < _players.Count; i++)
+        {
+            StartCoroutine(alone_User_BOT.HandleTurn(this, B_room._cardController, B_table, _players[i]));
+        }
     }
 
     public void init_Deck()
@@ -96,32 +107,82 @@ public class alone_Game_BOT : MonoBehaviour
 
     public void giveCards()
     {
+        int minCards = Math.Min(B_room_Deck.Count, 6 - B_room._cardController.PlayerCards.Count);
 
+        for (int i = 0; i < minCards; i++)
+        {
+            B_room._cardController.GetCard(B_room_Deck[0]);
+            B_room_Deck.RemoveAt(0);
+        }
+
+        for(int i = 1; i < _players.Count; i++)
+        {
+            distribCards(_players[i]);
+        }
     }
 
     public void give_roles()
     {
-        for(int i = 0; i < _players.Count; i++)
+        for (int i = 0; i < _players.Count; i++)
         {
-            Debug.Log(_players[i]._user.role);
-            switch (_players[i]._user.role)
+            if (_players[i].user.role == ERole.main)
             {
-                case ERole.main:
-                    _players[i]._user.role = ERole.thrower;
-                    _players[i + 1]._user.role = ERole.main;
-                    _players[i + 2]._user.role = ERole.firstThrower;
-                    break;
-                default:
-                    break;
+                setAllThrowers();
+
+                _players[getNormIndex(_players.Count, i + 1)].user.role = ERole.main;
+                _players[getNormIndex(_players.Count, i + 2)].user.role = ERole.firstThrower;
+
+                Session.role = _players[0].user.role;
+
+                return;
             }
         }
     }
 
     public void distribCards(Player _player)
     {
-        _player.Cards.Add(B_room_Deck[0]);
-        B_room_Deck.RemoveAt(0);
+        int minCards = Math.Min(B_room_Deck.Count, 6 - _player.cards.Count);
 
+        for (int i = 0; i < minCards; i++)
+        {
+            B_room._cardController.AtherUserGotCard(_player.user.UserID);
+
+            _player.cards.Add(B_room_Deck[0]);
+            Debug.Log("bot, " + _player.user.UserID + ", got card: " + B_room_Deck[0].nominal.ToString() + B_room_Deck[0].suit.ToString());
+            B_room_Deck.RemoveAt(0);
+        }
+
+        Debug.Log("minCards, for bot, " + _player.user.UserID + ": " + minCards.ToString());
+    }
+
+    #region help functions
+    public EStatus getMain_stat()
+    {
+        for (int i = 0; i < _players.Count; i++)
+        {
+            if(_players[i].user.role == ERole.main)
+            {
+                if(i == 0)
+                {
+                    return B_roomRow.status;
+                }
+                else
+                {
+                    return _players[i].user.status;
+                }
+            }
+        }
+        return EStatus.Null;
+    }
+
+    private void setAllThrowers()
+    {
+        Session.role = ERole.thrower;
+
+        foreach (Player _player in _players)
+        {
+            _player.user.role = ERole.thrower;
+        }
     }
 
     public static void Shuffle(List<Card> ts)
@@ -136,14 +197,35 @@ public class alone_Game_BOT : MonoBehaviour
             ts[r] = tmp;
         }
     }
+
+    public static int getNormIndex(int count, int index)
+    {
+        return index % count;
+    }
+
+    public static int toCompare(string needSymbol)
+    {
+        for (int i = 0; i < suits.Length; i++) 
+        {
+            if(suits[i] == needSymbol)
+            {
+                return i;
+            }
+        }
+        for (int i = 0; i < nominals.Length; i++)
+        {
+            if (nominals[i] == needSymbol)
+            {
+                return i;
+            }
+        }
+        return 0;
+    }
+    #endregion
 }
 
 public class Player
 {
-    public alone_User_BOT bot;
-
-    public User _user;
-    public List<Card> Cards;
-
-    public int bot_index;
+    public User user;
+    public List<Card> cards = new List<Card>();
 }

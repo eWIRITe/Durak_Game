@@ -3987,6 +3987,7 @@ MonoBehaviour:
   OwnerStartGameButton: {fileID: 6564345373818982283}
   PlayerCard: {fileID: 0}
   _cardController: {fileID: 5701826683997811945}
+  _table: {fileID: 4278524013874578173}
   _roomRow: {fileID: 6250464796534710757}
   Coloda: {fileID: 6948284911437996495}
   TrumpCardPos: {fileID: 824937241817692142}

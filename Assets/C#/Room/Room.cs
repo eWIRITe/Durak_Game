@@ -21,6 +21,7 @@ public class Room : MonoBehaviour
 
     public CardController _cardController;
 
+    public Table _table;
     public RoomRow _roomRow;
 
     private SocketNetwork m_socketNetwork;
@@ -45,7 +46,7 @@ public class Room : MonoBehaviour
 
         SocketNetwork.cl_grab += cl_Grab;
         SocketNetwork.playerGrab += GrabCards;
-        Session.roleChanged += ((ERole role) => { _roomRow.Folded = false; _roomRow.Grabed = false; _roomRow.Passed = false; });
+        Session.roleChanged += ((ERole role) => { _roomRow.status = EStatus.Null; });
 
         GameObject.Find("UI").GetComponent<Canvas>().worldCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
 
@@ -57,7 +58,7 @@ public class Room : MonoBehaviour
         SocketNetwork.ready -= OnReady;
         SocketNetwork.cl_grab -= cl_Grab;
         SocketNetwork.playerGrab -= GrabCards;
-        Session.roleChanged -= ((ERole role) => { _roomRow.Folded = false; _roomRow.Grabed = false; _roomRow.Passed = false; });
+        Session.roleChanged -= ((ERole role) => { _roomRow.status = EStatus.Null; });
 
     }
 
@@ -71,9 +72,11 @@ public class Room : MonoBehaviour
 
     public void startGameAlone()
     {
+        _roomRow.isAlone = true;
+
         alone_Game_BOT game_BOT = Instantiate(alone_Game_BOT, gameObject.transform).GetComponent<alone_Game_BOT>();
 
-        game_BOT.Init(this, _roomRow);
+        game_BOT.Init(this, _roomRow, _table);
 
         OnReady(game_BOT._trump);
     }
@@ -263,27 +266,27 @@ public class Room : MonoBehaviour
     {
         GetComponent<GameUIs>().hideFoldButton();
 
-        _roomRow.Folded = true;
+        _roomRow.status = EStatus.Fold;
 
-        m_socketNetwork.EmitFold();
+        if (!_roomRow.isAlone) m_socketNetwork.EmitFold();
     }
 
     public void Pass()
     {
         GetComponent<GameUIs>().hidePassButton();
 
-        _roomRow.Passed = true;
+        _roomRow.status = EStatus.Pass;
 
-        m_socketNetwork.EmitPass();
+        if (!_roomRow.isAlone)  m_socketNetwork.EmitPass();
     }
 
     public void Grab()
     {
         GetComponent<GameUIs>().hideGrabButton();
 
-        _roomRow.Grabed = true;
+        _roomRow.status = EStatus.Grab;
 
-        m_socketNetwork.EmitGrab();
+        if (!_roomRow.isAlone)  m_socketNetwork.EmitGrab();
     }
 
     //////////////\\\\\\\\\\\\\

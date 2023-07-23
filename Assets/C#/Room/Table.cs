@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Table;
 
+// table 
+// responseble for folding, beatind/throwing cards on the table
+
 public class Table : BaseScreen
 {
     public CardController _cardController;
@@ -27,38 +30,51 @@ public class Table : BaseScreen
         SocketNetwork.FoldAllCards += foldCards;
     }
 
-    // server functions
+    // server BEAT/THROW pre-emit functions
     public void ThrowCard(GameCard card)
     {
-        if (isAbleToThrow(card))
+        if (Session.role != ERole.main)
         {
-            m_socketNetwork.EmitThrow(new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
+            if (_roomRow.status == EStatus.Fold || _roomRow.status == EStatus.Pass)
+            {
+                return;
+            }
+            if (isAbleToThrow(card))
+            {
+                if (!_roomRow.isAlone) m_socketNetwork.EmitThrow(new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
+                else
+                {
+                    placeCard(Session.UId, new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
+                    _cardController.DestroyCard(new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
+
+                    _room.alone_Game_BOT.GetComponent<alone_Game_BOT>().handleTurn();
+                }
+            }
         }
     }
     public void BeatCard(GameCard card, GameCard beatingCard)
     {
-        Debug.Log("BeatCard checking");
-
         if (Session.role == ERole.main)
         {
-            Debug.Log("BeatCard checking EmitBeat - _roomRow.Grabed");
-
-            if (_roomRow.Grabed)
+            if (_roomRow.status == EStatus.Grab)
             {
                 return;
             }
-
-            Debug.Log("BeatCard checking EmitBeat - bleToBe");
-
             if (isAbleToBeat(card, beatingCard))
             {
-                Debug.Log("EmitBeat");
-                m_socketNetwork.EmitBeat(new Card { suit = beatingCard.strimg_Suit, nominal = beatingCard.str_Nnominal }, new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
+                if (!_roomRow.isAlone) m_socketNetwork.EmitBeat(new Card { suit = beatingCard.strimg_Suit, nominal = beatingCard.str_Nnominal }, new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
+                else
+                {
+                    beatCard(Session.UId, new Card { suit = beatingCard.strimg_Suit, nominal = beatingCard.str_Nnominal }, new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
+                    _cardController.DestroyCard(new Card { suit = beatingCard.strimg_Suit, nominal = beatingCard.str_Nnominal });
+
+                    _room.alone_Game_BOT.GetComponent<alone_Game_BOT>().handleTurn();
+                }
             }
         }
     }
 
-    //client functions
+    //client BEAT/THROW handle functions
     public void placeCard(uint UserID, Card card)
     {
         if (Session.role == ERole.main)
@@ -180,7 +196,6 @@ public class Table : BaseScreen
         }
     }
 
-
     public void foldCards()
     {
         for (int i = 0; i < TableCardPairs.Count; i++)
@@ -194,28 +209,10 @@ public class Table : BaseScreen
         TableCardPairs = new List<CardPair>();
     }
 
-
-    ////////////////////
-    // help functions //
-    ////////////////////
-    
-    public bool isRightCard(GameCard card)
-    {
-        foreach (CardPair cardPair in TableCardPairs)
-        {
-            if (cardPair.FirstCard.GetComponent<GameCard>().str_Nnominal == card.str_Nnominal) return true;
-
-            else if (cardPair.SecondCard != null)
-            {
-                if (cardPair.SecondCard.GetComponent<GameCard>().str_Nnominal == card.str_Nnominal) return true;
-            }
-        }
-        return false;
-    }
-
+    #region checkers
     public bool isAbleToBeat(GameCard beatCard, GameCard beatingCard)
     {
-        if(((int)beatCard.Nominal) > ((int)beatingCard.Nominal))
+        if (((int)beatCard.Nominal) > ((int)beatingCard.Nominal))
         {
             if (beatingCard.Suit != _roomRow.Trump)
             {
@@ -223,7 +220,7 @@ public class Table : BaseScreen
             }
             else
             {
-                if(beatCard.Suit == _roomRow.Trump)
+                if (beatCard.Suit == _roomRow.Trump)
                 {
                     return true;
                 }
@@ -231,7 +228,7 @@ public class Table : BaseScreen
         }
         else
         {
-            if(beatCard.Suit == _roomRow.Trump)
+            if (beatCard.Suit == _roomRow.Trump)
             {
                 if (beatingCard.Suit != _roomRow.Trump)
                 {
@@ -244,12 +241,11 @@ public class Table : BaseScreen
 
         return false;
     }
-
     public bool isAbleToThrow(GameCard card)
     {
-        if(TableCardPairs.Count == 0)
+        if (TableCardPairs.Count == 0)
         {
-            if(Session.role == ERole.firstThrower)
+            if (Session.role == ERole.firstThrower)
             {
                 return true;
             }
@@ -265,6 +261,22 @@ public class Table : BaseScreen
         return false;
     }
 
+    public bool isRightCard(GameCard card)
+    {
+        foreach (CardPair cardPair in TableCardPairs)
+        {
+            if (cardPair.FirstCard.GetComponent<GameCard>().str_Nnominal == card.str_Nnominal) return true;
+
+            else if (cardPair.SecondCard != null)
+            {
+                if (cardPair.SecondCard.GetComponent<GameCard>().str_Nnominal == card.str_Nnominal) return true;
+            }
+        }
+        return false;
+    }
+    #endregion
+
+    #region
     Vector3 newPos;
     Vector3 newRotate = new Vector3(0, 0, 0);
     public void SetAllTableCardsPos()
@@ -324,6 +336,7 @@ public class Table : BaseScreen
         public bool isFull = false;
 
     }
+    #endregion
 }
 public class CardPairComparer : IComparer<CardPair>
 {

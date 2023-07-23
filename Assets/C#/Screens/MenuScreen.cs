@@ -159,8 +159,7 @@ public class MenuScreen : BaseScreen
         try
         {
             string selected = m_cardsDropdown.options[m_cardsDropdown.value].text;
-            m_numberOfCards = UInt32.Parse(selected.Split(" ")[0]); // XX <-- cards
-            //this.Filter();
+            m_numberOfCards = UInt32.Parse(selected.Split(" ")[0]); 
         }
         catch (Exception)
         {
