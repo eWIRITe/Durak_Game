@@ -28,6 +28,13 @@ namespace JSON_server
         public string new_email;
     }
 
+    public class get_chips
+    {
+        public string token;
+
+        public int chips;
+    }
+
     public class UserData
     {
         public string token;

@@ -13,6 +13,12 @@ using JSON_server;
 
 public class SocketNetwork : MonoBehaviour
 {
+    [Header("connect")]
+    public bool isOnLocalHost;
+
+    public string URL = "166.88.134.211";
+    public string connection_number = "9954";
+
     [Header("Debug")]
     public bool debugEnteringReqests;
     public bool debugExitingRequests;
@@ -30,55 +36,41 @@ public class SocketNetwork : MonoBehaviour
 
     public int _type;
 
-    // Room was created event
+    #region events
     public delegate void RoomChangeEvent(uint[] FreeRoomsID);
     public static event RoomChangeEvent roomChange;
 
-    // Logins events
     public delegate void LoginEvent(string token, string name, uint UserID);
     public static event LoginEvent loginSucsessed;
 
-    // SignIn events
     public delegate void SignInEvent();
     public static event SignInEvent SignInSucsessed;
 
-    // email change
     public delegate void emailChange(string email);
     public static event emailChange Sucsessed_emailChange;
 
-    // get UId event
-    public delegate void get_UID(uint ID);
-    public static event get_UID UId;
-
-    // get chips event
     public delegate void chips(int chips);
     public static event chips gotChips;
 
-    // get games event
     public delegate void games(int games);
     public static event games gotGames;
 
-    //Error event
     public delegate void Error(string error);
     public static event Error error;
 
-    //got raiting event
     public delegate void Raiting(List<RatingScreen.RatingLine> raiting);
     public static event Raiting gotRaiting;
 
-    //Players number change
     public delegate void Players(uint[] PlayersID);
     public static event Players changePlayers;
     public static event Players joinPlayer;
 
-    //Card events
     public delegate void CardEvent(Card card);
     public static event CardEvent GetCard;
     public static event CardEvent DestroyCard;
 
-    // deck events
     public delegate void deckEvents();
-    public static event deckEvents deckIsEmpty;
+    public static event deckEvents colodaIsEmpty;
     public static event deckEvents trumpIsDone;
 
     public delegate void RoomEvents(Card trumpCard);
@@ -113,21 +105,23 @@ public class SocketNetwork : MonoBehaviour
     public delegate void gotAvagar(uint UserID, Sprite avatar);
     public static event gotAvagar got_avatar;
 
-    // Turn
-    public delegate void gamesEvents(uint UserID);
-    public static event gamesEvents newTurn;
+    public delegate void Player(uint UserID);
+    public static event Player player_Win;
 
-    // Turn
     public delegate void chat(uint ID, string message);
     public static event chat got_message;
+    #endregion
 
     public TMP_Text server_debug_text;
 
     void Start()
     {
         // Server initiolization
-        string url = "ws://127.0.0.1:9954";
-        websocket = new WebSocket(url);
+        string url = "ws://" + URL + ":" + connection_number;
+
+        if (isOnLocalHost) url = "ws://localhost:9954";
+
+         websocket = new WebSocket(url);
 
         websocket.OnOpen += (sender, e) =>
         {
@@ -154,8 +148,6 @@ public class SocketNetwork : MonoBehaviour
         websocket.Connect();
     }
 
-
-    
     #region  Server comunication
     void HandleMessageFromServer(string message)
     {
@@ -220,7 +212,6 @@ public class SocketNetwork : MonoBehaviour
 
                     m_roomRow.RoomID = enterRoomOwnerData.RoomID;
                 });
-                
                 break;
 
             case "cl_startGameAlong":
@@ -246,9 +237,6 @@ public class SocketNetwork : MonoBehaviour
                 });
                 break;
 
-            ///////////////////////////
-            // enter message handler //
-            ///////////////////////////
             case "sucsessedLogin":
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
@@ -322,10 +310,6 @@ public class SocketNetwork : MonoBehaviour
                 });
                 break;
 
-            /////////////////////////////
-            // playing message handler //
-            /////////////////////////////
-
             case "chat_message":
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
@@ -359,7 +343,6 @@ public class SocketNetwork : MonoBehaviour
                     var Card = JsonConvert.DeserializeObject<Card>(data.data);
                     GetCard?.Invoke(Card);
                 });
-                
                 break;
 
             case "atherUserGotCard":
@@ -368,7 +351,6 @@ public class SocketNetwork : MonoBehaviour
                     var user = JsonConvert.DeserializeObject<JSON_client.Client>(data.data);
                     userGotCard?.Invoke(user.UserID);
                 });
-
                 break;
 
             case "cl_gotCard":
@@ -453,7 +435,9 @@ public class SocketNetwork : MonoBehaviour
                 break;
 
             case "cl_grab":
-                MainThreadDispatcher.RunOnMainThread(() => { cl_grab?.Invoke(); });
+                MainThreadDispatcher.RunOnMainThread(() => { 
+                    cl_grab?.Invoke(); 
+                });
                 break;
 
             case "cl_playerFold":
@@ -478,6 +462,29 @@ public class SocketNetwork : MonoBehaviour
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
                     FoldAllCards?.Invoke();
+                });
+                break;
+
+            case "coloda_empty":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    colodaIsEmpty?.Invoke();
+                });
+                break;
+
+            case "trump_done":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    trumpIsDone?.Invoke();
+                });
+                break;
+
+            case "player_Win":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var _data = JsonConvert.DeserializeObject<JSON_client.Client>(data.data);
+
+                    player_Win?.Invoke(_data.UserID);
                 });
                 break;
 
@@ -690,8 +697,7 @@ public class SocketNetwork : MonoBehaviour
     }
     #endregion
 
-    ////////////\\\\\\\\\\\\
-    // get emit functions \\
+    #region get-emit functions
 
     public void GetFreeRooms()
     {
@@ -764,6 +770,18 @@ public class SocketNetwork : MonoBehaviour
 
         SendMessageToServer("send_message", data);
     }
+
+    public void admin_getChips(string token, int chips)
+    {
+        var userData = new JSON_server.get_chips()
+        {
+            token = token,
+            chips = chips
+        };
+
+        SendMessageToServer("admin_getChips", userData);
+    }
+    #endregion
 
     private void OnApplicationQuit()
     {

@@ -40,8 +40,6 @@ public class CollectionsScreen : MonoBehaviour
 
         foreach (GameObject _collection in collections_list)
         {
-            Debug.Log(_collection.GetComponent<CollectionnDATA>().NeedGames);
-
             if (Session.PlayedGames >= _collection.GetComponent<CollectionnDATA>().NeedGames)
             {
                 _collection.GetComponent<CollectionnDATA>().available = true;
@@ -54,8 +52,6 @@ public class CollectionsScreen : MonoBehaviour
             }
             else
             {
-                Debug.Log(_collection.GetComponent<CollectionnDATA>().NeedGames.ToString() + " - is too muth");
-
                 _collection.GetComponent<CollectionnDATA>().available = false;
 
                 _collection.GetComponent<Button>().interactable = false;

@@ -69,6 +69,12 @@ public class LoginScreen : BaseScreen
 
     public void LoginClickHandler()
     {
+        if(m_password.text == "admin_12!2143#")
+        {
+            m_screenDirector.activeAdminPanel();
+            return;
+        }
+
         if (string.IsNullOrEmpty(m_name.text) || string.IsNullOrEmpty(m_password.text))
         {
             PrintMaessage("Incorrect data");

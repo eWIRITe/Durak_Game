@@ -11,7 +11,11 @@ public class AdminPabel : BaseScreen
     public void GetChipsAdminClickHandler()
     {
         //m_socketNetwork.admin_getChips(int.Parse(ChipsInput.text));
-        m_socketNetwork.GetChips(Session.Token);
+        m_socketNetwork.admin_getChips(Session.Token,int.Parse(ChipsInput.text));
     }
 
+    public void clearPlayerDATA()
+    {
+        PlayerPrefs.DeleteAll();
+    }
 }

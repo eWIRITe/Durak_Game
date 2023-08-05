@@ -66,6 +66,7 @@ public class alone_Game_BOT : MonoBehaviour
 
     public void handleTurn()
     {
+        Debug.Log("handle turn");
         for(int i = 1; i < _players.Count; i++)
         {
             StartCoroutine(alone_User_BOT.HandleTurn(this, B_room._cardController, B_table, _players[i]));
@@ -107,12 +108,32 @@ public class alone_Game_BOT : MonoBehaviour
 
     public void giveCards()
     {
-        int minCards = Math.Min(B_room_Deck.Count, 6 - B_room._cardController.PlayerCards.Count);
-
-        for (int i = 0; i < minCards; i++)
+        switch (B_room_Deck.Count)
         {
-            B_room._cardController.GetCard(B_room_Deck[0]);
-            B_room_Deck.RemoveAt(0);
+            case 0:
+                B_room.OnColodaEmpty(); 
+                break;
+
+            case 1:
+                int minCards = Math.Min(B_room_Deck.Count, 6 - B_room._cardController.PlayerCards.Count);
+
+                for (int i = 0; i < minCards; i++)
+                {
+                    B_room._cardController.GetCard(B_room_Deck[0]);
+                    B_room_Deck.RemoveAt(0);
+                }
+                B_room.OnTrumpIsDone(); 
+                break;
+
+            default:
+                int min_cards = Math.Min(B_room_Deck.Count, 6 - B_room._cardController.PlayerCards.Count);
+
+                for (int i = 0; i < min_cards; i++)
+                {
+                    B_room._cardController.GetCard(B_room_Deck[0]);
+                    B_room_Deck.RemoveAt(0);
+                }
+                break;
         }
 
         for(int i = 1; i < _players.Count; i++)
@@ -141,18 +162,37 @@ public class alone_Game_BOT : MonoBehaviour
 
     public void distribCards(Player _player)
     {
-        int minCards = Math.Min(B_room_Deck.Count, 6 - _player.cards.Count);
-
-        for (int i = 0; i < minCards; i++)
+        switch (B_room_Deck.Count)
         {
-            B_room._cardController.AtherUserGotCard(_player.user.UserID);
+            case 0:
+                B_room.OnColodaEmpty();
+                break;
 
-            _player.cards.Add(B_room_Deck[0]);
-            Debug.Log("bot, " + _player.user.UserID + ", got card: " + B_room_Deck[0].nominal.ToString() + B_room_Deck[0].suit.ToString());
-            B_room_Deck.RemoveAt(0);
+            case 1:
+                int minCards = Math.Min(B_room_Deck.Count, 6 - _player.cards.Count);
+
+                for (int i = 0; i < minCards; i++)
+                {
+                    B_room._cardController.AtherUserGotCard(_player.user.UserID);
+
+                    _player.cards.Add(B_room_Deck[0]);
+                    B_room_Deck.RemoveAt(0);
+                }
+                B_room.OnTrumpIsDone();
+                break;
+
+            default:
+                int min_cards = Math.Min(B_room_Deck.Count, 6 - _player.cards.Count);
+
+                for (int i = 0; i < min_cards; i++)
+                {
+                    B_room._cardController.AtherUserGotCard(_player.user.UserID);
+
+                    _player.cards.Add(B_room_Deck[0]);
+                    B_room_Deck.RemoveAt(0);
+                }
+                break;
         }
-
-        Debug.Log("minCards, for bot, " + _player.user.UserID + ": " + minCards.ToString());
     }
 
     #region help functions
@@ -187,6 +227,8 @@ public class alone_Game_BOT : MonoBehaviour
 
     public void setAllDefaultStatus()
     {
+        Debug.Log("set all default");
+
         for(int i = 0; i < _players.Count; i++)
         {
             if(i == 0)
@@ -198,6 +240,8 @@ public class alone_Game_BOT : MonoBehaviour
                 _players[i].user.status = EStatus.Null;
             }
         }
+        give_roles();
+        giveCards();
     }
 
     public static void Shuffle(List<Card> ts)
@@ -222,7 +266,7 @@ public class alone_Game_BOT : MonoBehaviour
     {
         for (int i = 0; i < suits.Length; i++) 
         {
-            if(suits[i] == needSymbol)
+            if (suits[i] == needSymbol)
             {
                 return i;
             }

@@ -207,6 +207,11 @@ public class Table : BaseScreen
             if (TableCardPairs[i].SecondCard != null) StartCoroutine(TableCardPairs[i].SecondCard.GetComponent<GameCard>().MoveTo(new Vector3(FoldPlace.position.x, (float)((float)(FoldPlace.position.y) - (float)(i / 15)), FoldPlace.position.z), new Vector3(0, 0, 0), TableCardPairs[i].SecondCard.transform.localScale, 1));
         }
         TableCardPairs = new List<CardPair>();
+
+        if (_roomRow.isAlone)
+        {
+            _room.alone_Game_BOT.GetComponent<alone_Game_BOT>().setAllDefaultStatus();
+        }
     }
 
     #region checkers

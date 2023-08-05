@@ -38,15 +38,6 @@ public class ScreenDirector : BaseScreen
         screens.Add(RewardsScreen);
         screens.Add(SkinsScreen);
 
-        string token = PlayerPrefs.GetString("token");
-        if (string.IsNullOrEmpty(token))
-        {
-            if (PlayerPrefs.GetInt("remember") == 1)
-            {
-                ActiveScreen(EScreens.MenuScreen);
-                return;
-            }
-        }
         ActiveScreen(EScreens.StartScreen);
 
         Session.changeUId += UpdateID;
