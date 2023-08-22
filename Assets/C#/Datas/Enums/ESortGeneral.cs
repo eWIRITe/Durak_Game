@@ -1,5 +1,0 @@
-﻿enum CardOrderMethod
-{
-    SuitThenKind,
-    KindThenSuit,
-}

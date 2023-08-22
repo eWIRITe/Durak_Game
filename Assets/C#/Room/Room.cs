@@ -33,8 +33,8 @@ public class Room : MonoBehaviour
     public GameObject card;
     public GameObject ColodaObject;
 
-    private GameObject _coloda;
-    private GameObject _trump;
+    public GameObject _coloda_Obj;
+    public GameObject _trump_Obj;
 
     [Header("alone game bots")]
     public GameObject alone_Game_BOT;
@@ -94,29 +94,29 @@ public class Room : MonoBehaviour
 
         _roomRow.isGameStarted = true;
 
-        _coloda = Instantiate(ColodaObject, Coloda.transform);
+        _coloda_Obj = Instantiate(ColodaObject, Coloda.transform);
 
-        _trump = Instantiate(card, TrumpCardPos.transform);
-        _trump.transform.localScale = TrumpCardPos.localScale;
-        _trump.transform.SetParent(gameObject.transform);
+        _trump_Obj = Instantiate(card, TrumpCardPos.transform);
+        _trump_Obj.transform.localScale = TrumpCardPos.localScale;
+        _trump_Obj.transform.SetParent(gameObject.transform);
 
-        GameCard cardData = _trump.GetComponent<GameCard>();
+        GameCard cardData = _trump_Obj.GetComponent<GameCard>();
 
         cardData.Init(trump);
 
         switch (cardData.Suit)
         {
             case ESuit.CLOVERS:
-                _trump.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Clubs, cardData.Nominal);
+                _trump_Obj.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Clubs, cardData.Nominal);
                 break;
             case ESuit.TILE:
-                _trump.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Diamonds, cardData.Nominal);
+                _trump_Obj.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Diamonds, cardData.Nominal);
                 break;
             case ESuit.PIKES:
-                _trump.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Spades, cardData.Nominal);
+                _trump_Obj.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Spades, cardData.Nominal);
                 break;
             default:
-                _trump.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Hearts, cardData.Nominal);
+                _trump_Obj.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Hearts, cardData.Nominal);
                 break;
         }
 
@@ -125,11 +125,13 @@ public class Room : MonoBehaviour
 
     public void OnColodaEmpty()
     {
-        if(_coloda.activeSelf) _coloda.SetActive(false);
+        Debug.Log("OnColodaEmpty");
+        _coloda_Obj.SetActive(false);
     }
     public void OnTrumpIsDone()
     {
-        if(_trump.activeSelf) _trump.SetActive(false);
+        Debug.Log("OnTrumpIsDone");
+        _trump_Obj.SetActive(false);
     }
 
     ///////\\\\\\\

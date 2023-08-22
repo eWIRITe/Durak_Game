@@ -15,6 +15,12 @@ public class alone_User_BOT : MonoBehaviour
 
     private static void handlBot(alone_Game_BOT alone_Game_BOT, CardController _cardController, Table _table, Player _payer)
     {
+        if(_payer.cards.Count <= 0)
+        {
+            Debug.Log("playerIsWon");
+            return;
+        }
+
         switch (_payer.user.role)
         {
             case ERole.main:

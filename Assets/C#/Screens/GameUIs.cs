@@ -10,23 +10,21 @@ public class GameUIs : BaseScreen
     public RoomRow _roomRow;
     public Room _room;
 
+
+    public float timer;
+    public float timeToEnd;
+
     [Header("Fold timer")]
     public Image BeatTimerLine;
     public TMP_Text BeatTimerText;
-    private float BeatTimer;
-    public float BeatTimeToSet;
 
     [Header("Grab Timer")]
     public Image TakeTimerLine;
     public TMP_Text TakeTimerText;
-    private float TakeTimer;
-    public float TakeTimeToSet;
 
     [Header("Pass Timer")]
     public Image PassTimerLine;
     public TMP_Text PassTimerText;
-    private float PassTimer;
-    public float PassTimeToSet;
 
     [Header("Buttons")]
     public GameObject PassButton;
@@ -44,6 +42,7 @@ public class GameUIs : BaseScreen
     public delegate void loseTime();
     public static event loseTime Lose;
 
+    #region styles
 
     [Space, Space, Header("styles")]
 
@@ -109,6 +108,7 @@ public class GameUIs : BaseScreen
     private Texture2D table_image;
     public Texture2D back_card_image;
     public Texture2D coloda_image;
+#endregion
 
     private void Start()
     {
@@ -200,7 +200,7 @@ public class GameUIs : BaseScreen
     public void hideGrabButton()
     {
         GrabButton.SetActive(false);
-        TakeTimer = 0;
+        timer = 0;
     }
     public void showGrabButton()
     {
@@ -208,13 +208,13 @@ public class GameUIs : BaseScreen
         hideFoldButton();
 
         GrabButton.SetActive(true);
-        TakeTimer = TakeTimeToSet;
+        timer = timeToEnd;
     }
 
     public void hidePassButton()
     {
         PassButton.SetActive(false);
-        PassTimer = 0;
+        timer = 0;
     }
     public void showPassButton()
     {
@@ -222,13 +222,13 @@ public class GameUIs : BaseScreen
         hideFoldButton();
 
         PassButton.SetActive(true);
-        PassTimer = PassTimeToSet;
+        timer = timeToEnd;
     }
 
     public void hideFoldButton()
     {
         FoldButton.SetActive(false);
-        BeatTimer = 0;
+        timer = 0;
     }
     public void showFoldButton()
     {
@@ -236,55 +236,29 @@ public class GameUIs : BaseScreen
         hideGrabButton();
 
         FoldButton.SetActive(true);
-        BeatTimer = BeatTimeToSet;
+        timer = timeToEnd;
     }
 
     private void FixedUpdate()
     {
-        // Take timer
-        if(TakeTimer > 0)
+        timer += Time.deltaTime;
+
+        if (timer < 0)
         {
-            TakeTimer -= Time.deltaTime;
+            hide_all_buttons();
 
-            TakeTimerLine.fillAmount = TakeTimer / TakeTimeToSet;
-
-            TakeTimerText.text = "Can you beat any card? : " + Mathf.Round(TakeTimer);
-
-            if (TakeTimer <= 0)
+            if (Session.role == ERole.main)
             {
-                GrabButton.SetActive(false);
+                _room.Grab();
+            }
+            else
+            {
                 _room.Fold();
             }
         }
-        // Pass timer
-        if (PassTimer > 0)
+        else
         {
-            PassTimer -= Time.deltaTime;
 
-            PassTimerLine.fillAmount = PassTimer / PassTimeToSet;
-
-            PassTimerText.text = "Do you have anything to throw? : " + Mathf.Round(PassTimer);
-
-            if (PassTimer <= 0)
-            {
-                PassButton.SetActive(false);
-                _room.Pass();
-            }
-        }
-        // Beat timer
-        if (BeatTimer > 0)
-        {
-            BeatTimer -= Time.deltaTime;
-
-            BeatTimerLine.fillAmount = BeatTimer / BeatTimeToSet;
-
-            BeatTimerText.text = "Do you have anything to throw? : " + Mathf.Round(BeatTimer);
-
-            if (BeatTimer <= 0)
-            {
-                FoldButton.SetActive(false);
-                _room.Grab();
-            }
         }
     }
 
@@ -313,5 +287,12 @@ public class GameUIs : BaseScreen
     public void chatButton()
     {
         chatObject.SetActive(!chatObject.activeSelf);
+    }
+
+    public void hide_all_buttons()
+    {
+        hideGrabButton();
+        hideFoldButton();
+        hidePassButton();
     }
 }

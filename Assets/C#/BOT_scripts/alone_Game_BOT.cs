@@ -108,34 +108,33 @@ public class alone_Game_BOT : MonoBehaviour
 
     public void giveCards()
     {
-        switch (B_room_Deck.Count)
+        if(B_room_Deck.Count == 0) 
         {
-            case 0:
-                B_room.OnColodaEmpty(); 
-                break;
-
-            case 1:
-                int minCards = Math.Min(B_room_Deck.Count, 6 - B_room._cardController.PlayerCards.Count);
-
-                for (int i = 0; i < minCards; i++)
-                {
-                    B_room._cardController.GetCard(B_room_Deck[0]);
-                    B_room_Deck.RemoveAt(0);
-                }
-                B_room.OnTrumpIsDone(); 
-                break;
-
-            default:
-                int min_cards = Math.Min(B_room_Deck.Count, 6 - B_room._cardController.PlayerCards.Count);
-
-                for (int i = 0; i < min_cards; i++)
-                {
-                    B_room._cardController.GetCard(B_room_Deck[0]);
-                    B_room_Deck.RemoveAt(0);
-                }
-                break;
         }
 
+        else if (B_room_Deck.Count == 1) 
+        {
+            int minCards = Math.Min(B_room_Deck.Count, 6 - B_room._cardController.PlayerCards.Count);
+
+            for (int i = 0; i < minCards; i++)
+            {
+                B_room._cardController.GetCard(B_room_Deck[0]);
+                B_room_Deck.RemoveAt(0);
+            }
+            B_room.OnColodaEmpty(); 
+        }
+
+        else
+        {
+            int min_cards = Math.Min(B_room_Deck.Count, 6 - B_room._cardController.PlayerCards.Count);
+
+            for (int i = 0; i < min_cards; i++)
+            {
+                B_room._cardController.GetCard(B_room_Deck[0]);
+                B_room_Deck.RemoveAt(0);
+            }
+        }
+              
         for(int i = 1; i < _players.Count; i++)
         {
             distribCards(_players[i]);
