@@ -217,34 +217,13 @@ public class Table : BaseScreen
     #region checkers
     public bool isAbleToBeat(GameCard beatCard, GameCard beatingCard)
     {
-        if (((int)beatCard.Nominal) > ((int)beatingCard.Nominal))
-        {
-            if (beatingCard.Suit != _roomRow.Trump)
-            {
-                return true;
-            }
-            else
-            {
-                if (beatCard.Suit == _roomRow.Trump)
-                {
-                    return true;
-                }
-            }
-        }
-        else
-        {
-            if (beatCard.Suit == _roomRow.Trump)
-            {
-                if (beatingCard.Suit != _roomRow.Trump)
-                {
-                    return true;
-                }
-            }
-        }
+        if (beatCard.Suit == _roomRow.Trump && beatingCard.Suit != _roomRow.Trump)
+            return false;
 
-        Debug.Log("return false;");
+        if (beatingCard.Suit == _roomRow.Trump && beatCard.Suit != _roomRow.Trump)
+            return true;
 
-        return false;
+        return ((int)beatCard.Nominal) > ((int)beatingCard.Nominal);
     }
     public bool isAbleToThrow(GameCard card)
     {

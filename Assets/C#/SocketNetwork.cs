@@ -479,12 +479,21 @@ public class SocketNetwork : MonoBehaviour
                 });
                 break;
 
-            case "player_Win":
+            case "playerWon":
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
-                    var _data = JsonConvert.DeserializeObject<JSON_client.Client>(data.data);
+                    var _data = JsonConvert.DeserializeObject<JSON_client.playerWon>(data.data);
 
                     player_Win?.Invoke(_data.UserID);
+                });
+                break;
+
+            case "won":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    var _data = JsonConvert.DeserializeObject<JSON_client.won>(data.data);
+
+                    gotChips?.Invoke(_data.chips);
                 });
                 break;
 

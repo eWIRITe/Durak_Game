@@ -134,6 +134,14 @@ namespace JSON_client
     {
         public uint uid;
     }
+    public class playerWon
+    {
+        public uint UserID;
+    }
+    public class won
+    {
+        public int chips;
+    }
     #endregion
 
     #region chat client requests

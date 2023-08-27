@@ -3951,6 +3951,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64d19756e0c3ffa4ea11212d25affcd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAlone: 0
   GameUI: {fileID: 5953481624497244440}
   _roomOwnerID: 0
   Trump: 0
@@ -3961,9 +3962,7 @@ MonoBehaviour:
   isGameStarted: 0
   PlayerAvatar: {fileID: 6525080726845126175}
   roomPlayers: []
-  Passed: 0
-  Grabed: 0
-  Folded: 0
+  status: 0
   Users_Bet: {fileID: 7331770195568493200}
   Rooms_Bet: {fileID: 7700087770187674911}
 --- !u!114 &4830577197957817605
@@ -3994,6 +3993,8 @@ MonoBehaviour:
   card: {fileID: 5098536998660792207, guid: f83665b83bc48e249987c990649714cc, type: 3}
   ColodaObject: {fileID: 6254559133375912471, guid: cfa2c94aeed167844b3f3ecf1b3ed113,
     type: 3}
+  _coloda_Obj: {fileID: 0}
+  _trump_Obj: {fileID: 0}
   alone_Game_BOT: {fileID: 2184042176421405502, guid: 48ed3c095e4acb5419791a8d3aca27b4,
     type: 3}
   NewPlayer: {fileID: 7847554855596269028, guid: dbf34bc284fde7b478a0f95e1d71bc92,
@@ -4030,15 +4031,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _roomRow: {fileID: 6250464796534710757}
   _room: {fileID: 4830577197957817605}
+  timer: 0
+  timeToEnd: 0
   BeatTimerLine: {fileID: 401240853640567810}
   BeatTimerText: {fileID: 8905869715304339582}
-  BeatTimeToSet: 60
   TakeTimerLine: {fileID: 2148805748360359262}
   TakeTimerText: {fileID: 3141932187122274375}
-  TakeTimeToSet: 60
   PassTimerLine: {fileID: 916386098500823583}
   PassTimerText: {fileID: 8348760412669565944}
-  PassTimeToSet: 60
   PassButton: {fileID: 8034210023419313561}
   GrabButton: {fileID: 8676499439952712353}
   FoldButton: {fileID: 2518829697998328248}
@@ -5412,6 +5412,7 @@ GameObject:
   - component: {fileID: 8586103766123514753}
   - component: {fileID: 6627500929273812125}
   - component: {fileID: 7331770195568493200}
+  - component: {fileID: 3893226137272404300}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -5537,6 +5538,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3893226137272404300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8421442673226671018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 445a6a23ceef1fa45ab7375820fdb56b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chips_text: {fileID: 0}
 --- !u!1 &8442458601424853607
 GameObject:
   m_ObjectHideFlags: 0

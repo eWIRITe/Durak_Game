@@ -13,7 +13,7 @@ public class MenuScreen : BaseScreen
 {
     [Header("User data")]
     public Text m_name;
-    public Text m_chips;
+    public TMP_Text m_chips;
     public Transform m_content;
 
     [Header("Create new room UI")]
