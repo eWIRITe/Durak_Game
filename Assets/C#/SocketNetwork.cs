@@ -105,8 +105,8 @@ public class SocketNetwork : MonoBehaviour
     public delegate void gotAvagar(uint UserID, Sprite avatar);
     public static event gotAvagar got_avatar;
 
-    public delegate void Player(uint UserID);
-    public static event Player player_Win;
+    public delegate void PlayerWon(uint UserID);
+    public static event PlayerWon player_Win;
 
     public delegate void chat(uint ID, string message);
     public static event chat got_message;
@@ -173,6 +173,7 @@ public class SocketNetwork : MonoBehaviour
 
                     m_room = Room.GetComponent<Room>();
                     m_roomRow = Room.GetComponent<RoomRow>();
+                    card = m_room._cardController;
 
                     m_roomRow.RoomOwner = enterRoomData.roomOwnerID;
 
@@ -488,15 +489,6 @@ public class SocketNetwork : MonoBehaviour
                 });
                 break;
 
-            case "won":
-                MainThreadDispatcher.RunOnMainThread(() =>
-                {
-                    var _data = JsonConvert.DeserializeObject<JSON_client.won>(data.data);
-
-                    gotChips?.Invoke(_data.chips);
-                });
-                break;
-
             case "error":
                 error?.Invoke(data.data);
                 break;
@@ -530,7 +522,7 @@ public class SocketNetwork : MonoBehaviour
     {
         switch (type)
         {
-            case ETypeGame.Regular:
+            case ETypeGame.usual:
                 _type = 0;
                 break;
 
@@ -538,12 +530,12 @@ public class SocketNetwork : MonoBehaviour
                 _type = 1;
                 break;
 
-            case ETypeGame.Transferrable:
+            case ETypeGame.Transferable:
                 _type = 2;
                 break;
 
             default:
-                break;
+                return;
         }
 
         var createRoomData = new JSON_server.ServerCreateRoom()

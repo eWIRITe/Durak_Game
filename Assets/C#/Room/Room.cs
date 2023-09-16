@@ -39,6 +39,17 @@ public class Room : MonoBehaviour
     [Header("alone game bots")]
     public GameObject alone_Game_BOT;
 
+    [Space, Header("win panel")]
+    public GameObject win_panel;
+
+    #region events
+    public delegate void Events();
+    public static event Events foldEvent;
+    public static event Events grabEvent;
+    public static event Events passEvent;
+    public static event Events grabbing;
+    #endregion
+
     private void Start()
     {
         ScreenWith = Screen.width;
@@ -46,6 +57,7 @@ public class Room : MonoBehaviour
         m_socketNetwork = GameObject.FindGameObjectWithTag("SocketNetwork").GetComponent<SocketNetwork>();
         m_socketNetwork.GetAllRoomPlayersID();
         SocketNetwork.ready += OnReady;
+        SocketNetwork.player_Win += OnWinning;
 
         SocketNetwork.colodaIsEmpty += OnColodaEmpty;
         SocketNetwork.trumpIsDone += OnTrumpIsDone;
@@ -62,11 +74,14 @@ public class Room : MonoBehaviour
     private void OnDestroy()
     {
         SocketNetwork.ready -= OnReady;
+        SocketNetwork.player_Win -= OnWinning;
+
+        SocketNetwork.colodaIsEmpty -= OnColodaEmpty;
+        SocketNetwork.trumpIsDone -= OnTrumpIsDone;
+
         SocketNetwork.cl_grab -= cl_Grab;
         SocketNetwork.playerGrab -= GrabCards;
-
         Session.roleChanged -= ((ERole role) => { _roomRow.status = EStatus.Null; });
-
     }
 
     ///////\\\\\\
@@ -121,6 +136,24 @@ public class Room : MonoBehaviour
         }
 
         _roomRow.Trump = cardData.Suit;
+    }
+
+    public void OnWinning(uint UserID)
+    {
+        if(UserID == Session.UId)
+        {
+            win_panel.SetActive(true);
+        }
+        else
+        {
+            for (int i = 1; i < _roomRow.roomPlayers.Count; i++)
+            {
+                if (_roomRow.roomPlayers[i].UserID == UserID)
+                {
+                    _roomRow.roomPlayers[i].PrintMessage("i won!!!");
+                }
+            }
+        }
     }
 
     public void OnColodaEmpty()
@@ -281,7 +314,7 @@ public class Room : MonoBehaviour
 
         if (_roomRow.isAlone)
         {
-            alone_Game_BOT.GetComponent<alone_Game_BOT>().setAllDefaultStatus();
+            grabbing?.Invoke();
         }
     }
 
@@ -292,6 +325,10 @@ public class Room : MonoBehaviour
         _roomRow.status = EStatus.Fold;
 
         if (!_roomRow.isAlone) m_socketNetwork.EmitFold();
+        else
+        {
+            foldEvent?.Invoke();
+        }
     }
 
     public void Pass()
@@ -301,6 +338,11 @@ public class Room : MonoBehaviour
         _roomRow.status = EStatus.Pass;
 
         if (!_roomRow.isAlone)  m_socketNetwork.EmitPass();
+        else
+        {
+            Debug.Log("start pass event");
+            passEvent?.Invoke();
+        }
     }
 
     public void Grab()
@@ -310,6 +352,10 @@ public class Room : MonoBehaviour
         _roomRow.status = EStatus.Grab;
 
         if (!_roomRow.isAlone)  m_socketNetwork.EmitGrab();
+        else
+        {
+            grabEvent?.Invoke();
+        }
     }
 
     //////////////\\\\\\\\\\\\\

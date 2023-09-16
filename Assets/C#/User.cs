@@ -16,7 +16,7 @@ public class User : BaseScreen
     {
         set
         {
-            Debug.Log("set role");
+            Debug.Log("set role: " + value.ToString());
             _role = value;
             PrintMessage(value.ToString());
         }

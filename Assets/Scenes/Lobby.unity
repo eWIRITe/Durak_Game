@@ -20654,7 +20654,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: "\u041E\u0431\u044B\u0447\u043D\u044B\u0439"
+    - m_Text: "O\u0431\u044B\u0447\u043D\u044B\u0439"
       m_Image: {fileID: 0}
     - m_Text: "\u041F\u043E\u0434\u043A\u0438\u0434\u043D\u043E\u0439"
       m_Image: {fileID: 0}
@@ -31311,7 +31311,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u041E\u0431\u044B\u0447\u043D\u044B\u0439"
+  m_Text: "O\u0431\u044B\u0447\u043D\u044B\u0439"
 --- !u!222 &4225990605460137801
 CanvasRenderer:
   m_ObjectHideFlags: 0

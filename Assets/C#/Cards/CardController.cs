@@ -164,6 +164,13 @@ public class CardController: MonoBehaviour
                 break;
         }
     }
+    private void OnDestroy()
+    {
+        SocketNetwork.GetCard -= GetCard;
+        SocketNetwork.DestroyCard -= DestroyCard;
+        SocketNetwork.userGotCard -= AtherUserGotCard;
+        SocketNetwork.userDestroyCard -= AtherUserDestroyCard;
+    }
 
     #region hands cards
     public void GetCard(Card cardbytes)

@@ -1,4 +1,5 @@
 ﻿using JSON_card;
+using JSON_client;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,30 +22,31 @@ public class alone_Game_BOT : MonoBehaviour
     static string[] suits = { "♥", "♦", "♣", "♠" };
     static string[] nominals = { "2 ", "3 ", "4 ", "5 ", "6 ", "7 ", "8 ", "9 ", "10", "В ", "Д ", "К ", "Т " };
 
-    public delegate void startBots();
-    public static event startBots _startBots;
-
     public void Init(Room Room, RoomRow RoomRow, Table table)
     {
         B_room = Room;
         B_roomRow = RoomRow; 
         B_table = table;
 
+        Table.beatCard_event += handleTurn;
+        Table.throwCard_event += handleTurn;
+
+        Room.foldEvent += FoldHandler;
+        Room.grabEvent += GrabHandler;
+        Room.passEvent += PassHandler;
+
+        Room.grabbing += (() => setAllDefaultStatus(LastMove.grabbing));
+        Table.folding += (() => setAllDefaultStatus());
+
         init_Deck();
 
-        _trump = B_room_Deck[B_room_Deck.Count-1];
-
-        Player main_player = new Player();
-
-        main_player.user = new User();
-
-        _players.Add(main_player);
+        _trump = B_room_Deck[B_room_Deck.Count - 1];
 
         for (int i = 1; i < B_roomRow.maxPlayers_number; i++)
         {
             Debug.Log("new player: " + i.ToString());
 
-            User _user = B_room.NewPlayerJoin((uint)i);
+            User _user = B_room.NewPlayerJoin();
 
             Player _player = new Player();
 
@@ -59,17 +61,35 @@ public class alone_Game_BOT : MonoBehaviour
 
         give_roles();
 
-        _startBots?.Invoke();
-
         handleTurn();
+    }
+
+    private void OnDestroy()
+    {
+        Table.beatCard_event -= handleTurn;
+        Table.throwCard_event -= handleTurn;
+
+        Room.foldEvent -= FoldHandler;
+        Room.grabEvent -= GrabHandler;
+        Room.passEvent -= PassHandler;
+
+        Room.grabbing -= (() => setAllDefaultStatus());
+        Table.folding -= (() => setAllDefaultStatus());
     }
 
     public void handleTurn()
     {
-        Debug.Log("handle turn");
-        for(int i = 1; i < _players.Count; i++)
+        StartCoroutine(HT());
+    }
+    public IEnumerator HT()
+    {
+        yield return new WaitForSeconds(1);
+        
+        Debug.Log(_players.Count);
+        for (int i = 0; i < _players.Count; i++)
         {
-            StartCoroutine(alone_User_BOT.HandleTurn(this, B_room._cardController, B_table, _players[i]));
+            Debug.Log("handle turn: " + i.ToString());
+            handlBot(B_room._cardController, B_table, _players[i]);
         }
     }
 
@@ -110,6 +130,8 @@ public class alone_Game_BOT : MonoBehaviour
     {
         if(B_room_Deck.Count == 0) 
         {
+            B_room.OnTrumpIsDone();
+            return;
         }
 
         else if (B_room_Deck.Count == 1) 
@@ -135,26 +157,48 @@ public class alone_Game_BOT : MonoBehaviour
             }
         }
               
-        for(int i = 1; i < _players.Count; i++)
+        for(int i = 0; i < _players.Count; i++)
         {
             distribCards(_players[i]);
         }
     }
 
-    public void give_roles()
+    public void give_roles(LastMove lastMove = LastMove.folding)
     {
+        List<ERole> roles = new List<ERole>();
+
         for (int i = 0; i < _players.Count; i++)
         {
-            if (_players[i].user.role == ERole.main)
+            roles.Add(_players[i].user.role);
+        }
+        roles.Add(Session.role);
+
+        for (int i = 0; i < roles.Count; i++)
+        {
+            if (roles[i] == ERole.main)
             {
-                setAllThrowers();
+                if(lastMove == LastMove.grabbing)
+                {
+                    roles[i] = ERole.main;
+                    roles[i + 1 % roles.Count] = ERole.firstThrower;
+                }
+                else if(lastMove == LastMove.folding)
+                {
+                    roles[i] = ERole.firstThrower;
+                    roles[(i + 1) % roles.Count] = ERole.main;
+                }
+            }
+        }
 
-                _players[getNormIndex(_players.Count, i + 1)].user.role = ERole.main;
-                _players[getNormIndex(_players.Count, i + 2)].user.role = ERole.firstThrower;
-
-                Session.role = _players[0].user.role;
-
-                return;
+        for (int i = 0; i < roles.Count; i++)
+        {
+            if(i == roles.Count - 1)
+            {
+                Session.role = roles[i];    
+            }
+            else
+            {
+                _players[i].user.role = roles[i];
             }
         }
     }
@@ -201,30 +245,13 @@ public class alone_Game_BOT : MonoBehaviour
         {
             if(_players[i].user.role == ERole.main)
             {
-                if(i == 0)
-                {
-                    return B_roomRow.status;
-                }
-                else
-                {
-                    return _players[i].user.status;
-                }
+                return _players[i].user.status;
             }
         }
         return EStatus.Null;
     }
 
-    private void setAllThrowers()
-    {
-        Session.role = ERole.thrower;
-
-        foreach (Player _player in _players)
-        {
-            _player.user.role = ERole.thrower;
-        }
-    }
-
-    public void setAllDefaultStatus()
+    public void setAllDefaultStatus(LastMove lastMove = LastMove.folding)
     {
         Debug.Log("set all default");
 
@@ -239,7 +266,7 @@ public class alone_Game_BOT : MonoBehaviour
                 _players[i].user.status = EStatus.Null;
             }
         }
-        give_roles();
+        give_roles(lastMove);
         giveCards();
     }
 
@@ -254,11 +281,6 @@ public class alone_Game_BOT : MonoBehaviour
             ts[i] = ts[r];
             ts[r] = tmp;
         }
-    }
-
-    public static int getNormIndex(int count, int index)
-    {
-        return index % count;
     }
 
     public static int toCompare(string needSymbol)
@@ -280,6 +302,274 @@ public class alone_Game_BOT : MonoBehaviour
         return 0;
     }
     #endregion
+
+    public void PassHandler()
+    {
+        if (getMain_stat() == EStatus.Grab)
+        {
+            B_room._cardController.m_room._roomRow.status = EStatus.Grab;
+
+            for (int i = 0; i < _players.Count; i++)
+            {
+                if (_players[i].user.role != ERole.main)
+                {
+                    if (_players[i].user.status != EStatus.Pass) return;
+                }
+            }
+
+            Debug.Log("grabCards");
+            B_room._cardController.m_room.GrabCards();
+        }
+    }
+
+    public void FoldHandler()
+    {
+        B_room._cardController.m_room._roomRow.status = EStatus.Fold;
+
+        for (int i = 0; i < _players.Count; i++)
+        {
+            if (_players[i].user.role != ERole.main)
+            {
+                if (_players[i].user.status != EStatus.Fold) return;
+            }
+        }
+
+        B_table.foldCards();
+    }
+
+    public void GrabHandler()
+    {
+
+    }
+
+    public void handle_main(Player _player)
+    {
+        Debug.Log("case ERole.main:");
+        for (int i = 0; i < B_table.TableCardPairs.Count; i++)
+        {
+            if (!B_table.TableCardPairs[i].isFull)
+            {
+                foreach (Card playerCard in _player.cards)
+                {
+                    GameCard newGameCard = new GameCard();
+                    newGameCard.Init(playerCard);
+
+                    if (B_table.isAbleToBeat(newGameCard, B_table.TableCardPairs[i].FirstCard.GetComponent<GameCard>()))
+                    {
+                        B_room._cardController.AtherUserDestroyCard(_player.user.UserID);
+                        B_table.beatCard(_player.user.UserID, new Card { suit = B_table.TableCardPairs[i].FirstCard.GetComponent<GameCard>().strimg_Suit, nominal =B_table.TableCardPairs[i].FirstCard.GetComponent<GameCard>().str_Nnominal }, playerCard);
+
+                        _player.cards.Remove(playerCard);
+
+                        handleTurn();
+
+                        return;
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < B_table.TableCardPairs.Count; i++)
+        {
+            if (!B_table.TableCardPairs[i].isFull)
+            {
+                _player.user.status = EStatus.Grab;
+                B_room._cardController.m_room.cl_Grab();
+
+                handleTurn();
+            }
+        }
+    }
+
+    public void handle_firstThrower(Player _player)
+    {
+        Debug.Log("case ERole.firstThrower:");
+        if (B_table.TableCardPairs.Count == 0)
+        {
+            Card minCard = _player.cards[0];
+            foreach (Card _card in _player.cards)
+            {
+                if (toCompare(_card.suit) < toCompare(minCard.suit) && toCompare(_card.nominal) < toCompare(minCard.nominal))
+                {
+                    minCard = _card;
+                }
+            }
+            B_room._cardController.AtherUserDestroyCard(_player.user.UserID);
+            B_table.placeCard(_player.user.UserID, minCard);
+
+            _player.cards.Remove(minCard);
+
+            handleTurn();
+
+            return;
+        }
+        else
+        {
+            for (int i = 0; i < _player.cards.Count; i++)
+            {
+                GameCard newCard = new GameCard();
+                newCard.Init(_player.cards[i]);
+
+                if (B_table.isAbleToThrow(newCard))
+                {
+                    B_table.placeCard(_player.user.UserID, _player.cards[i]);
+                    B_room._cardController.AtherUserDestroyCard(_player.user.UserID);
+
+                    _player.cards.RemoveAt(i);
+
+                    handleTurn();
+
+                    return;
+                }
+            }
+        }
+        if (getMain_stat() == EStatus.Grab)
+        {
+            _player.user.status = EStatus.Pass;
+
+            for (int i = 0; i < _players.Count; i++)
+            {
+                if (i == 0)
+                {
+                    if (Session.role != ERole.main)
+                    {
+                        if (B_room._cardController.m_room._roomRow.status != EStatus.Pass) return;
+                    }
+                    continue;
+                }
+                if (_players[i].user.role != ERole.main)
+                {
+                    if (_players[i].user.status != EStatus.Pass) return;
+                }
+            }
+
+            B_room._cardController.m_room.GrabCards();
+        }
+
+        else
+        {
+            _player.user.status = EStatus.Fold;
+
+            for (int i = 0; i < _players.Count; i++)
+            {
+                if (i == 0)
+                {
+                    if (Session.role != ERole.main)
+                    {
+                        if (B_room._cardController.m_room._roomRow.status != EStatus.Fold) return;
+                    }
+                    continue;
+                }
+                if (_players[i].user.role != ERole.main)
+                {
+                    if (_players[i].user.status != EStatus.Fold) return;
+                }
+            }
+
+            B_table.foldCards();
+        }
+    }
+
+    public void handle_thrower(Player _player)
+    {
+        Debug.Log("case ERole.thrower:");
+        if (B_table.TableCardPairs.Count > 0)
+        {
+            for (int i = 0; i < _player.cards.Count; i++)
+            {
+                GameCard newCard = new GameCard();
+                newCard.Init(_player.cards[i]);
+
+                if (B_table.isAbleToThrow(newCard))
+                {
+                    B_table.placeCard(_player.user.UserID, _player.cards[i]);
+                    B_room._cardController.AtherUserDestroyCard(_player.user.UserID);
+
+                    _player.cards.RemoveAt(i);
+
+                    handleTurn();
+
+                    return;
+                }
+            }
+        }
+
+        if (getMain_stat() == EStatus.Grab)
+        {
+            _player.user.status = EStatus.Pass;
+
+            for (int i = 0; i < _players.Count; i++)
+            {
+                if (i == 0)
+                {
+                    if (Session.role != ERole.main)
+                    {
+                        if (B_room._cardController.m_room._roomRow.status != EStatus.Pass) return;
+                    }
+                    continue;
+                }
+                if (_players[i].user.role != ERole.main)
+                {
+                    if (_players[i].user.status != EStatus.Pass) return;
+                }
+            }
+
+            B_room._cardController.m_room.GrabCards();
+        }
+        else
+        {
+            _player.user.status = EStatus.Fold;
+
+            for (int i = 0; i < _players.Count; i++)
+            {
+                if (i == 0)
+                {
+                    if (Session.role != ERole.main)
+                    {
+                        if (B_room._cardController.m_room._roomRow.status != EStatus.Fold) return;
+                    }
+                    continue;
+                }
+                if (_players[i].user.role != ERole.main)
+                {
+                    if (_players[i].user.status != EStatus.Fold) return;
+                }
+            }
+
+            B_table.foldCards();
+        }
+
+        handleTurn();
+    }
+
+    public void handlBot(CardController _cardController, Table _table, Player _player)
+    {
+        if (_player.cards.Count <= 0)
+        {
+            Debug.Log("playerIsWon");
+            return;
+        }
+
+        switch (_player.user.role)
+        {
+            case ERole.main:
+                handle_main(_player);
+
+                break;
+
+            case ERole.firstThrower:
+                handle_firstThrower(_player);
+
+                break;
+
+            case ERole.thrower:
+                handle_thrower(_player);
+
+                break;
+
+            default:
+                break;
+        }
+    }
 }
 
 public class Player

@@ -2,6 +2,7 @@ using JSON_card;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using WebSocketSharp;
 using static Table;
 
 // table 
@@ -17,6 +18,15 @@ public class Table : BaseScreen
     public Transform FoldPlace;
 
     public List<CardPair> TableCardPairs = new List<CardPair>();
+
+    public delegate void BeatCardEvent();
+    public static event BeatCardEvent beatCard_event;
+
+    public delegate void ThrowCardEvent();
+    public static event ThrowCardEvent throwCard_event;
+
+    public delegate void Events();
+    public static event Events folding;
 
     private void Start()
     {
@@ -47,7 +57,7 @@ public class Table : BaseScreen
                     placeCard(Session.UId, new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
                     _cardController.DestroyCard(new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
 
-                    _room.alone_Game_BOT.GetComponent<alone_Game_BOT>().handleTurn();
+                    throwCard_event?.Invoke();
                 }
             }
         }
@@ -68,8 +78,12 @@ public class Table : BaseScreen
                     beatCard(Session.UId, new Card { suit = beatingCard.strimg_Suit, nominal = beatingCard.str_Nnominal }, new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
                     _cardController.DestroyCard(new Card { suit = beatingCard.strimg_Suit, nominal = beatingCard.str_Nnominal });
 
-                    _room.alone_Game_BOT.GetComponent<alone_Game_BOT>().handleTurn();
+                    beatCard_event?.Invoke();
                 }
+            }
+            if(_roomRow.GameType == ETypeGame.Transferable && card.Nominal == beatingCard.Nominal)
+            {
+                m_socketNetwork.EmitBeat(new Card { suit = beatingCard.strimg_Suit, nominal = beatingCard.str_Nnominal }, new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
             }
         }
     }
@@ -210,7 +224,7 @@ public class Table : BaseScreen
 
         if (_roomRow.isAlone)
         {
-            _room.alone_Game_BOT.GetComponent<alone_Game_BOT>().setAllDefaultStatus();
+            folding?.Invoke();
         }
     }
 
@@ -218,12 +232,19 @@ public class Table : BaseScreen
     public bool isAbleToBeat(GameCard beatCard, GameCard beatingCard)
     {
         if (beatCard.Suit == _roomRow.Trump && beatingCard.Suit != _roomRow.Trump)
-            return false;
-
-        if (beatingCard.Suit == _roomRow.Trump && beatCard.Suit != _roomRow.Trump)
             return true;
 
-        return ((int)beatCard.Nominal) > ((int)beatingCard.Nominal);
+        if (beatingCard.Suit == _roomRow.Trump && beatCard.Suit != _roomRow.Trump)
+            return false;
+
+        if(((int)beatingCard.Suit) == ((int)beatCard.Suit))
+        {
+            return ((int)beatCard.Nominal) > ((int)beatingCard.Nominal);
+        }
+        else
+        {
+            return false;
+        }
     }
     public bool isAbleToThrow(GameCard card)
     {

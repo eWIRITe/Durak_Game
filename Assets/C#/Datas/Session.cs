@@ -84,6 +84,7 @@ public static class Session
     {
         set
         {
+            Debug.Log("set role of main: " + value.ToString());
             _role = value;
             roleChanged?.Invoke(value);
         }

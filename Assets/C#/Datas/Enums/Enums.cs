@@ -1,9 +1,11 @@
+using System;
+using Unity.VisualScripting;
+
 public enum ETypeGame
 {
-    Regular = 0,
+    usual = 0,
     ThrowIn = 1,
-    Transferrable = 2,
-    Count = -1
+    Transferable = 2
 }
 
 public enum ESuit
@@ -88,4 +90,9 @@ public enum ENominal
     KING = 11,
     ACE = 12,
     COUNT = 13
+}
+public enum LastMove
+{
+    folding = 0,
+    grabbing = 1
 }
