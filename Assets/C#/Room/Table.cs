@@ -40,6 +40,13 @@ public class Table : BaseScreen
         SocketNetwork.FoldAllCards += foldCards;
     }
 
+    private void OnDestroy()
+    {
+        SocketNetwork.placeCard -= placeCard;
+        SocketNetwork.beatCard -= beatCard;
+        SocketNetwork.FoldAllCards -= foldCards;
+    }
+
     // server BEAT/THROW pre-emit functions
     public void ThrowCard(GameCard card)
     {

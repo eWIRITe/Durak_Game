@@ -4219,7 +4219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f09a25fc33523ff40853507daa7595cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOnLocalHost: 1
+  isOnLocalHost: 0
   URL: 166.88.134.211
   connection_number: 9954
   debugEnteringReqests: 1
@@ -16566,7 +16566,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -14.988892}
+  m_AnchoredPosition: {x: 0, y: -14.989044}
   m_SizeDelta: {x: -520, y: -152.4149}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4225990604852351723

@@ -12,6 +12,10 @@ public class player_chips : MonoBehaviour
         chips_text = gameObject.GetComponent<TMP_Text>();
         Session.changeChips += changeChips;
     }
+    private void OnDestroy()
+    {
+        Session.changeChips -= changeChips;
+    }
 
     public void changeChips(uint chips)
     {
